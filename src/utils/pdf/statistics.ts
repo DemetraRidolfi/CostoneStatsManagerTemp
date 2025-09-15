@@ -1,0 +1,180 @@
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import type { PlayResult } from '../../types';
+import { schemes } from '../../data/schemes';
+import { TABLE_DEFAULTS } from './constants';
+import { addDocumentHeader, addPageTitle } from './header';
+import { calculateFieldGoals } from '../calculateFieldGoals';
+import { calculatePoints } from '../calculatePoints';
+
+export async function addPlayerStats(
+  doc: jsPDF, 
+  player: { id: number; name: string; number: string }, 
+  plays: PlayResult[]
+): Promise<void> {
+  try {
+    // Filter plays for this specific player only
+    const playerPlays = plays.filter(p => p.playerId === player.id);
+    if (playerPlays.length === 0) return;
+
+    await addDocumentHeader(doc);
+    addPageTitle(doc, `#${player.number} ${player.name}`);
+
+    // Get all unique schemes used by this player
+    const playerSchemeIds = [...new Set(playerPlays.map(p => p.schemeId))];
+    
+    // Calculate statistics for each scheme used by this player
+    const schemeStats = playerSchemeIds.map(schemeId => {
+      const scheme = schemes.find(s => s.id === schemeId);
+      const schemePlays = playerPlays.filter(p => p.schemeId === schemeId);
+      
+      const fieldGoals = calculateFieldGoals(schemePlays);
+      const points = calculatePoints(schemePlays);
+      const efficiency = calculateEfficiency(schemePlays);
+      const productivity = calculateProductivity(schemePlays);
+
+      return {
+        name: scheme?.name || 'Unknown',
+        category: scheme?.category || 'Uomo',
+        total: schemePlays.length,
+        ...fieldGoals,
+        foulInbound: schemePlays.filter(p => p.type === 'foulInbound').length,
+        foulShot: schemePlays.filter(p => p.type === 'foulShot').length,
+        turnover: schemePlays.filter(p => p.type === 'turnover').length,
+        points,
+        efficiency,
+        productivity,
+      };
+    });
+
+    // Group statistics by category
+    const uomoSchemes = schemeStats
+      .filter(s => s.category === 'Uomo' && !s.name.includes('ZONA'))
+      .sort((a, b) => b.points.total - a.points.total);
+
+    const zonaSchemes = schemeStats
+      .filter(s => s.name.includes('ZONA'))
+      .sort((a, b) => b.points.total - a.points.total);
+
+    const rimesseSchemes = schemeStats
+      .filter(s => s.category === 'Rimesse')
+      .sort((a, b) => b.points.total - a.points.total);
+
+    let currentY = 65;
+
+    // Add overall player statistics
+    const totalStats = {
+      plays: playerPlays.length,
+      fieldGoals: calculateFieldGoals(playerPlays),
+      points: calculatePoints(playerPlays),
+      fouls: playerPlays.filter(p => ['foulInbound', 'foulShot'].includes(p.type)).length,
+      turnovers: playerPlays.filter(p => p.type === 'turnover').length,
+      efficiency: calculateEfficiency(playerPlays),
+      productivity: calculateProductivity(playerPlays),
+    };
+
+    const overallStats = [
+      ['Azioni Totali', totalStats.plays.toString()],
+      ['Tiri da 2', `${totalStats.fieldGoals.made2}/${totalStats.fieldGoals.total2}`],
+      ['Tiri da 3', `${totalStats.fieldGoals.made3}/${totalStats.fieldGoals.total3}`],
+      ['Falli Subiti', totalStats.fouls.toString()],
+      ['Palle Perse', totalStats.turnovers.toString()],
+      ['Punti Totali', totalStats.points.total.toString()],
+      ['Efficacia', { content: `${totalStats.efficiency}%`, styles: { fontStyle: 'bold' } }],
+      ['Produttività', { content: totalStats.productivity.toFixed(1), styles: { fontStyle: 'bold' } }],
+    ];
+
+    autoTable(doc, {
+      ...TABLE_DEFAULTS,
+      startY: currentY,
+      head: [['Statistica', 'Valore']],
+      body: overallStats,
+    });
+
+    currentY = (doc as any).lastAutoTable.finalY + 20;
+
+    // Function to add scheme category table
+    const addSchemeTable = (schemes: typeof schemeStats, title: string, startY: number) => {
+      if (schemes.length === 0) return startY;
+
+      doc.setFontSize(14);
+      doc.setTextColor(22, 163, 74);
+      doc.text(title, 14, startY - 5);
+
+      autoTable(doc, {
+        ...TABLE_DEFAULTS,
+        startY: startY,
+        head: [['SCHEMA', 'UTILIZZI', 'PUNTI', 'EFFICACIA', 'PRODUTTIVITÀ']],
+        body: schemes.map(s => [
+          s.name,
+          s.total.toString(),
+          s.points.total.toString(),
+          { content: `${s.efficiency}%`, styles: { fontStyle: 'bold' } },
+          { content: s.productivity.toFixed(1), styles: { fontStyle: 'bold' } },
+        ]),
+      });
+
+      return (doc as any).lastAutoTable.finalY + 15;
+    };
+
+    // Add tables for each category
+    if (uomoSchemes.length > 0) {
+      currentY = addSchemeTable(uomoSchemes, 'Schemi Uomo', currentY);
+    }
+
+    if (zonaSchemes.length > 0) {
+      currentY = addSchemeTable(zonaSchemes, 'Schemi Zona', currentY);
+    }
+
+    if (rimesseSchemes.length > 0) {
+      currentY = addSchemeTable(rimesseSchemes, 'Schemi Rimesse', currentY);
+    }
+
+  } catch (error) {
+    console.error('Error adding player stats:', error);
+  }
+}
+
+export function calculateEfficiency(plays: PlayResult[]): number {
+  const relevantPlays = plays.filter(p => 
+    p.type !== 'noImpact' && p.type !== 'foulInbound'
+  );
+
+  if (relevantPlays.length === 0) return 0;
+
+  const madeShots = relevantPlays.filter(p => 
+    p.type === 'made2' || 
+    p.type === 'made3' || 
+    (p.type === 'foulShot' && p.and1Points) ||
+    (p.type === 'foulShot' && (p.freeThrowPoints || 0) > 0)
+  ).length;
+
+  const totalAttempts = relevantPlays.length;
+
+  return Math.round((madeShots / totalAttempts) * 100);
+}
+
+export function calculateProductivity(plays: PlayResult[]): number {
+  return plays.reduce((acc, play) => {
+    switch (play.type) {
+      case 'made2':
+        return acc + 2;
+      case 'made3':
+        return acc + 3;
+      case 'missed2':
+      case 'missed3':
+        return acc - 1;
+      case 'turnover':
+        return acc - 0.5;
+      case 'foulInbound':
+        return acc + 0.5;
+      case 'foulShot':
+        if (play.and1Points) {
+          return acc + play.and1Points + (play.freeThrowPoints || 0);
+        }
+        return acc + (play.freeThrowPoints || 0);
+      default:
+        return acc;
+    }
+  }, 0);
+}
