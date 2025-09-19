@@ -4,7 +4,7 @@ import { Moon, Sun, Trash2, Database, Cog, Eye, Save, RotateCcw } from 'lucide-r
 import { getAllDraftGames, deleteDraftGame, getAllGames } from '../services/gameService';
 import PageContainer from './layout/PageContainer';
 
-const APP_VERSION = 'Dev-2.0';
+const APP_VERSION = 'Release-Beta1-2.0';
 
 export default function Settings() {
   const { 
