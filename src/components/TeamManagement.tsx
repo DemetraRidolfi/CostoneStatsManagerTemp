@@ -40,6 +40,24 @@ export default function TeamManagement() {
   const { players, schemes, addPlayer, updatePlayer, deletePlayer, movePlayer, addScheme, updateScheme, deleteScheme } = useTeamData();
   
   const [activeTab, setActiveTab] = useState<'players' | 'schemes'>('players');
+
+  // Helper function to convert text color classes to background color classes
+  const getColorBackground = (textColorClass: string) => {
+    const colorMap: Record<string, string> = {
+      'text-gray-900 dark:text-white': 'bg-gray-900 dark:bg-white',
+      'text-red-600 dark:text-red-400': 'bg-red-600 dark:bg-red-400',
+      'text-emerald-600 dark:text-emerald-400': 'bg-emerald-600 dark:bg-emerald-400',
+      'text-blue-600 dark:text-blue-400': 'bg-blue-600 dark:bg-blue-400',
+      'text-yellow-600 dark:text-yellow-400': 'bg-yellow-600 dark:bg-yellow-400',
+      'text-purple-600 dark:text-purple-400': 'bg-purple-600 dark:bg-purple-400',
+      'text-pink-600 dark:text-pink-400': 'bg-pink-600 dark:bg-pink-400',
+      'text-orange-600 dark:text-orange-400': 'bg-orange-600 dark:bg-orange-400',
+      'text-sky-600 dark:text-sky-400': 'bg-sky-600 dark:bg-sky-400',
+      'text-gray-600 dark:text-gray-400': 'bg-gray-600 dark:bg-gray-400',
+    };
+    return colorMap[textColorClass] || 'bg-gray-900 dark:bg-white';
+  };
+
   const [showPlayerForm, setShowPlayerForm] = useState(false);
   const [showSchemeForm, setShowSchemeForm] = useState(false);
   const [editingPlayer, setEditingPlayer] = useState<PlayerFormData | null>(null);
@@ -593,19 +611,19 @@ export default function TeamManagement() {
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Colore Testo
                 </label>
-                <div className="grid grid-cols-5 gap-2">
+                <div className="grid grid-cols-5 gap-3">
                   {TEXT_COLORS.map((color) => (
                     <button
                       key={color.value}
                       onClick={() => setSchemeForm(prev => ({ ...prev, textColor: color.value }))}
-                      className={`p-3 rounded-lg border-2 transition-colors ${
+                      className={`p-4 rounded-lg border-2 transition-colors flex items-center justify-center ${
                         schemeForm.textColor === color.value
                           ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
                           : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
                       }`}
                       title={color.name}
                     >
-                      <div className={`w-4 h-4 rounded-full ${color.value.replace('text-', 'bg-').replace(' dark:text-', ' dark:bg-')}`} />
+                      <div className={`w-6 h-6 rounded-full border border-gray-300 dark:border-gray-600 ${getColorBackground(color.value)}`} />
                     </button>
                   ))}
                 </div>

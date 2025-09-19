@@ -1,12 +1,12 @@
 import { useLocation } from 'react-router-dom';
-import { Home, PlusCircle, History, BarChart2, Users, Settings, Tablet, LogOut, ChevronUp, ChevronDown } from 'lucide-react';
+import { Home, PlusCircle, History, BarChart2, Users, Settings, LogOut, ChevronUp, ChevronDown } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigation } from '../contexts/NavigationContext';
 
 export default function Navigation() {
   const location = useLocation();
-  const { tabletMode, toggleTabletMode, menuVisible, toggleMenuVisibility } = useTheme();
+  const { menuVisible, toggleMenuVisibility } = useTheme();
   const { logout } = useAuth();
   const { handleNavigation } = useNavigation();
   
@@ -61,18 +61,6 @@ export default function Navigation() {
               ))}
             </div>
             <div className="flex items-center space-x-4 mr-12">
-              <button
-                onClick={toggleTabletMode}
-                className={`flex items-center h-14 px-4 text-sm font-medium whitespace-nowrap ${
-                  tabletMode
-                    ? 'text-white border-b-2 border-white'
-                    : 'text-primary-100 hover:text-white hover:border-b-2 hover:border-primary-100'
-                }`}
-                title="Modalità Tablet (Beta)"
-              >
-                <Tablet className="w-5 h-5 mr-2" />
-                <span className="hidden sm:inline">Tablet Mode</span>
-              </button>
               <button
                 onClick={handleLogout}
                 className="flex items-center h-14 px-4 text-sm font-medium text-primary-100 hover:text-white hover:border-b-2 hover:border-primary-100 whitespace-nowrap"
