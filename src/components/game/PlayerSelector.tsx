@@ -51,7 +51,7 @@ export default function PlayerSelector({ onSelect }: Props) {
 
   // Desktop layout remains unchanged
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 h-[calc(100vh-11rem)] overflow-y-auto">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 h-[calc(100vh-12rem)] overflow-y-auto">
       <div className="flex flex-col h-full">
         {/* No Impact Button */}
         <div className="mb-6">
