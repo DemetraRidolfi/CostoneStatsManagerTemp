@@ -191,7 +191,7 @@ export default function PlayHistory({
 
   const containerClass = hideDelete
     ? ''
-    : 'bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 h-[calc(100vh-26rem)]';
+    : 'bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 h-[calc(100vh-40rem)]';
   
   return (
     <>
