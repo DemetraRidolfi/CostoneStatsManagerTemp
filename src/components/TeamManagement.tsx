@@ -412,6 +412,8 @@ export default function TeamManagement() {
                             disabled={index === categorySchemes.length - 1}
                             className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:opacity-30 disabled:cursor-not-allowed"
                             title="Sposta giù"
+                          >
+                            <ChevronDown className="w-4 h-4" />
                           </button>
                         </div>
                         {/* Enable/Disable toggle */}
