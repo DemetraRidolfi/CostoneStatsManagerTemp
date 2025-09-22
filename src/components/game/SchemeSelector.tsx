@@ -66,10 +66,10 @@ export default function SchemeSelector({ onSelect }: Props) {
   };
 
   const getFoulColor = (fouls: number) => {
-    if (fouls >= 5) return 'bg-red-500';
-    if (fouls >= 4) return 'bg-orange-500';
-    if (fouls >= 3) return 'bg-yellow-500';
-    return 'bg-primary-600';
+    if (fouls >= 5) return 'text-red-500';
+    if (fouls >= 4) return 'text-orange-500';
+    if (fouls >= 3) return 'text-yellow-500';
+    return 'text-gray-900 dark:text-white';
   };
 
   const updatePlayerFouls = (playerId: number, change: number) => {
@@ -239,14 +239,14 @@ export default function SchemeSelector({ onSelect }: Props) {
                 className="flex items-center justify-between px-3 py-2 bg-gray-50 dark:bg-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
               >
                 <div className="flex flex-col items-center">
-                  <div className={`w-6 h-6 ${getFoulColor(fouls)} rounded-lg flex items-center justify-center text-white text-xs font-bold`}>
+                  <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center text-white text-sm font-bold">
                     {player.number}
                   </div>
                   <span className="text-xs font-medium text-gray-900 dark:text-white text-center mt-1">
                     {player.name.split(' ').slice(-1)[0]}
                   </span>
                 </div>
-                <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                <div className={`text-2xl font-bold ${getFoulColor(fouls)}`}>
                     {fouls}
                 </div>
               </button>
