@@ -150,23 +150,23 @@ export default function SchemeSelector({ onSelect }: Props) {
       </div>
 
         {/* Foul Tracking Bar - Tablet */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 mt-3 h-20">
-          <div className="flex items-center gap-2 overflow-x-auto">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 mt-3 h-32">
+          <div className="grid grid-cols-6 gap-2 h-full">
             {players.map(player => {
               const fouls = playerFouls[player.id] || 0;
               return (
                 <button
                   key={player.id}
                   onClick={() => setShowFoulModal(player.id)}
-                  className="flex items-center gap-2 px-3 py-2 bg-gray-50 dark:bg-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors flex-shrink-0"
+                  className="flex flex-col items-center justify-center gap-1 px-2 py-1 bg-gray-50 dark:bg-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 >
-                  <div className={`w-8 h-8 ${getFoulColor(fouls)} rounded-lg flex items-center justify-center text-white text-sm font-bold`}>
+                  <div className={`w-6 h-6 ${getFoulColor(fouls)} rounded-lg flex items-center justify-center text-white text-xs font-bold`}>
                     {player.number}
                   </div>
-                  <span className="text-sm font-medium text-gray-900 dark:text-white">
+                  <span className="text-xs font-medium text-gray-900 dark:text-white text-center">
                     {player.name.split(' ').slice(-1)[0]}
                   </span>
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                  <span className="text-xs text-gray-600 dark:text-gray-400">
                     {fouls}F
                   </span>
                 </button>
@@ -218,21 +218,21 @@ export default function SchemeSelector({ onSelect }: Props) {
       </div>
 
       {/* Foul Tracking Bar - Desktop */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 mt-4 h-24">
-        <div className="flex items-center justify-center gap-4 h-full overflow-x-auto">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 mt-4 h-32">
+        <div className="grid grid-cols-6 gap-3 h-full">
           {players.map(player => {
             const fouls = playerFouls[player.id] || 0;
             return (
               <button
                 key={player.id}
                 onClick={() => setShowFoulModal(player.id)}
-                className="flex items-center gap-3 px-4 py-3 bg-gray-50 dark:bg-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors flex-shrink-0"
+                className="flex flex-col items-center justify-center gap-2 px-3 py-2 bg-gray-50 dark:bg-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
               >
-                <div className={`w-10 h-10 ${getFoulColor(fouls)} rounded-lg flex items-center justify-center text-white text-lg font-bold`}>
+                <div className={`w-8 h-8 ${getFoulColor(fouls)} rounded-lg flex items-center justify-center text-white text-sm font-bold`}>
                   {player.number}
                 </div>
-                <div className="text-left">
-                  <div className="text-sm font-medium text-gray-900 dark:text-white">
+                <div className="text-center">
+                  <div className="text-xs font-medium text-gray-900 dark:text-white">
                     {player.name.split(' ').slice(-1)[0]}
                   </div>
                   <div className="text-xs text-gray-600 dark:text-gray-400">
