@@ -138,7 +138,7 @@ async function addSchemeStatisticsPage(
       '3P',
       'FS',
       'PP',
-      'PUNTI',
+      'PT',
       'PT.RO',
       'EFF.',
       'PROD.',
