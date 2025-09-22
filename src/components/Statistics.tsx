@@ -9,6 +9,7 @@ import { ArrowLeft, FileDown, Users, BookOpen, History } from 'lucide-react';
 import { exportStatsToPDF } from '../utils/pdfExport';
 import { exportMatchHistoryToPDF } from '../utils/exportMatchHistory';
 import { useTheme } from '../contexts/ThemeContext';
+import { useTeamData } from '../hooks/useTeamData';
 import { calculateEfficiency, calculateProductivity } from '../utils/pdf/statistics';
 import { calculatePoints } from '../utils/calculatePoints';
 import { calculateFieldGoals } from '../utils/calculateFieldGoals';
