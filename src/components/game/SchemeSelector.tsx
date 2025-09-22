@@ -243,6 +243,9 @@ export default function SchemeSelector({ onSelect }: Props) {
                     {player.number}
                   </div>
                   <span className="text-xs font-medium text-gray-900 dark:text-white text-center mt-1">
+                    {player.name.split(' ').slice(-1)[0]}
+                  </span>
+                </div>
                 <div className="flex flex-col items-center">
                   <div className={`w-8 h-8 ${getFoulColor(fouls)} rounded-lg flex items-center justify-center text-white text-sm font-bold`}>
                     {player.number}
