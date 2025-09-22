@@ -1,11 +1,14 @@
 export type PlayResult = {
-  type: 'made2' | 'missed2' | 'made3' | 'missed3' | 'foulInbound' | 'foulShot' | 'turnover' | 'assist' | 'noImpact';
+  type: 'made2' | 'missed2' | 'made3' | 'missed3' | 'foulInbound' | 'foulShot' | 'turnover' | 'assist' | 'noImpact' | 'offensiveRebound';
   playerId: number;
   schemeId: string;
   timestamp: number;
   notes?: string;
   freeThrowPoints?: number;
   and1Points?: number; // Points from the field goal in an and-1 play
+  offensiveRebound?: boolean;
+  reboundPoints?: number;
+  reboundPlayerId?: number;
 };
 
 export type MatchType = 'AMICHEVOLE' | 'CAMPIONATO - 1° FASE';

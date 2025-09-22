@@ -87,6 +87,24 @@ export default function PlayHistory({
       },
     };
 
+    // Handle rebound information
+    if ((play.type === 'missed2' || play.type === 'missed3') && play.offensiveRebound !== undefined) {
+      const baseResult = resultMap[play.type];
+      if (play.offensiveRebound) {
+        if (play.reboundPoints && play.reboundPoints > 0) {
+          const reboundPlayer = players.find(p => p.id === play.reboundPlayerId);
+          const reboundPlayerName = reboundPlayer ? `#${reboundPlayer.number} ${reboundPlayer.name}` : 'Unknown';
+          baseResult.text += ` + Rimbalzo (${play.reboundPoints}pt da ${reboundPlayerName})`;
+          baseResult.color = 'text-amber-600 dark:text-amber-400';
+        } else {
+          baseResult.text += ' + Rimbalzo (0pt)';
+          baseResult.color = 'text-amber-600 dark:text-amber-400';
+        }
+      } else {
+        baseResult.text += ' (No Rimbalzo)';
+      }
+    }
+
     // Match the icon color with the result color
     const schemeColor = resultMap[play.type]?.color || 'text-gray-900 dark:text-white';
 

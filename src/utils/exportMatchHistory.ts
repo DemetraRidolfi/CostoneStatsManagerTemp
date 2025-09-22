@@ -148,6 +148,24 @@ export async function exportMatchHistoryToPDF(
         },
       };
 
+      // Handle rebound information
+      if ((play.type === 'missed2' || play.type === 'missed3') && play.offensiveRebound !== undefined) {
+        const baseResult = resultMap[play.type];
+        if (play.offensiveRebound) {
+          if (play.reboundPoints && play.reboundPoints > 0) {
+            const reboundPlayer = players.find(p => p.id === play.reboundPlayerId);
+            const reboundPlayerName = reboundPlayer ? `#${reboundPlayer.number} ${reboundPlayer.name}` : 'Unknown';
+            baseResult.text += ` + Rimbalzo (${play.reboundPoints}pt da ${reboundPlayerName})`;
+            baseResult.style = { textColor: [217, 119, 6] };
+          } else {
+            baseResult.text += ' + Rimbalzo (0pt)';
+            baseResult.style = { textColor: [217, 119, 6] };
+          }
+        } else {
+          baseResult.text += ' (No Rimbalzo)';
+        }
+      }
+
       return {
         scheme: scheme?.name || 'Unknown',
         player: player ? `#${player.number} ${player.name}` : 'No Player',

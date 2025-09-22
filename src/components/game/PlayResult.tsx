@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import type { PlayResult as PlayResultType } from '../../types';
 import { X, Check, AlertCircle, ArrowLeft } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
+import { useTeamData } from '../../hooks/useTeamData';
 
 type Props = {
   schemeId: string;
@@ -37,17 +38,27 @@ const resultGroups = [
 
 export default function PlayResult({ schemeId, playerId, onSave, onCancel }: Props) {
   const { tabletMode } = useTheme();
+  const { getEnabledPlayers } = useTeamData();
   const [notes, setNotes] = useState('');
   const [showFoulModal, setShowFoulModal] = useState(false);
   const [showFreeThrowModal, setShowFreeThrowModal] = useState(false);
+  const [showReboundModal, setShowReboundModal] = useState(false);
+  const [showReboundPointsModal, setShowReboundPointsModal] = useState(false);
+  const [showReboundPlayerModal, setShowReboundPlayerModal] = useState(false);
   const [selectedType, setSelectedType] = useState<PlayResultType['type'] | null>(null);
   const [madeBasketPoints, setMadeBasketPoints] = useState<number | null>(null);
+  const [reboundPoints, setReboundPoints] = useState<number>(0);
+
+  const players = getEnabledPlayers();
 
   const handleSave = (type: PlayResultType['type']) => {
     if (type === 'made2' || type === 'made3') {
       setSelectedType(type);
       setMadeBasketPoints(type === 'made2' ? 2 : 3);
       setShowFoulModal(true);
+    } else if (type === 'missed2' || type === 'missed3') {
+      setSelectedType(type);
+      setShowReboundModal(true);
     } else if (type === 'foulShot') {
       setSelectedType(type);
       setShowFreeThrowModal(true);
@@ -108,6 +119,65 @@ export default function PlayResult({ schemeId, playerId, onSave, onCancel }: Pro
     setMadeBasketPoints(null);
   };
 
+  const handleReboundResponse = (hasRebound: boolean) => {
+    if (!hasRebound) {
+      // No rebound - save the missed shot and finish
+      onSave({
+        type: selectedType!,
+        playerId,
+        schemeId,
+        timestamp: Date.now(),
+        notes: notes.trim() || undefined,
+        offensiveRebound: false,
+      });
+      setShowReboundModal(false);
+      setSelectedType(null);
+    } else {
+      // Has rebound - ask for points
+      setShowReboundModal(false);
+      setShowReboundPointsModal(true);
+    }
+  };
+
+  const handleReboundPointsResponse = (points: number) => {
+    setReboundPoints(points);
+    setShowReboundPointsModal(false);
+    
+    if (points === 0) {
+      // No points on rebound - save and finish
+      onSave({
+        type: selectedType!,
+        playerId,
+        schemeId,
+        timestamp: Date.now(),
+        notes: notes.trim() || undefined,
+        offensiveRebound: true,
+        reboundPoints: 0,
+      });
+      setSelectedType(null);
+      setReboundPoints(0);
+    } else {
+      // Points scored - select player
+      setShowReboundPlayerModal(true);
+    }
+  };
+
+  const handleReboundPlayerSelect = (reboundPlayerId: number) => {
+    onSave({
+      type: selectedType!,
+      playerId,
+      schemeId,
+      timestamp: Date.now(),
+      notes: notes.trim() || undefined,
+      offensiveRebound: true,
+      reboundPoints,
+      reboundPlayerId,
+    });
+    setShowReboundPlayerModal(false);
+    setSelectedType(null);
+    setReboundPoints(0);
+  };
+
   const handleFoulModalBack = () => {
     setShowFoulModal(false);
     setSelectedType(null);
@@ -122,6 +192,21 @@ export default function PlayResult({ schemeId, playerId, onSave, onCancel }: Pro
       setSelectedType(null);
       setMadeBasketPoints(null);
     }
+  };
+
+  const handleReboundModalBack = () => {
+    setShowReboundModal(false);
+    setSelectedType(null);
+  };
+
+  const handleReboundPointsModalBack = () => {
+    setShowReboundPointsModal(false);
+    setShowReboundModal(true);
+  };
+
+  const handleReboundPlayerModalBack = () => {
+    setShowReboundPlayerModal(false);
+    setShowReboundPointsModal(true);
   };
 
   const containerClass = tabletMode
@@ -211,6 +296,110 @@ export default function PlayResult({ schemeId, playerId, onSave, onCancel }: Pro
         </div>
       )}
 
+      {/* Rebound Modal */}
+      {showReboundModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 max-w-md w-full mx-4">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                Rimbalzo Offensivo?
+              </h3>
+              <button
+                onClick={handleReboundModalBack}
+                className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
+              >
+                <ArrowLeft className="w-5 h-5" />
+                <span>Indietro</span>
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <button
+                onClick={() => handleReboundResponse(true)}
+                className="flex items-center justify-center h-24 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-2xl font-bold transition-colors"
+              >
+                SÌ
+              </button>
+              <button
+                onClick={() => handleReboundResponse(false)}
+                className="flex items-center justify-center h-24 bg-red-500 hover:bg-red-600 text-white rounded-xl text-2xl font-bold transition-colors"
+              >
+                NO
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Rebound Points Modal */}
+      {showReboundPointsModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 max-w-md w-full mx-4">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                Punti Realizzati su Rimbalzo
+              </h3>
+              <button
+                onClick={handleReboundPointsModalBack}
+                className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
+              >
+                <ArrowLeft className="w-5 h-5" />
+                <span>Indietro</span>
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              {[0, 1, 2, 3, 4].map((points) => (
+                <button
+                  key={points}
+                  onClick={() => handleReboundPointsResponse(points)}
+                  className={`flex items-center justify-center h-24 ${
+                    points === 0
+                      ? 'bg-gray-500 hover:bg-gray-600'
+                      : 'bg-blue-500 hover:bg-blue-600'
+                  } text-white rounded-xl text-2xl font-bold transition-colors`}
+                >
+                  {points}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Rebound Player Selection Modal */}
+      {showReboundPlayerModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                Seleziona Giocatore che ha Segnato
+              </h3>
+              <button
+                onClick={handleReboundPlayerModalBack}
+                className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
+              >
+                <ArrowLeft className="w-5 h-5" />
+                <span>Indietro</span>
+              </button>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+              {players.map(player => (
+                <button
+                  key={player.id}
+                  onClick={() => handleReboundPlayerSelect(player.id)}
+                  className="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-900 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all border border-transparent hover:border-primary-400 dark:hover:border-primary-600"
+                >
+                  <div className="w-12 h-12 bg-primary-600 rounded-lg flex items-center justify-center text-white text-lg font-bold mb-2">
+                    #{player.number}
+                  </div>
+                  <span className="text-sm font-medium text-gray-900 dark:text-white text-center">
+                    {player.name}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
       {showFreeThrowModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 max-w-md w-full mx-4">

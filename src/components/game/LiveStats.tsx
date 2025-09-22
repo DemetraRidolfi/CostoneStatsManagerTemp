@@ -22,6 +22,14 @@ export default function LiveStats({ plays }: Props) {
       const productivity = calculateProductivity(schemePlays);
       const points = calculatePoints(schemePlays).total;
       
+      // Calculate rebound statistics
+      const rebounds = schemePlays.filter(p => 
+        (p.type === 'missed2' || p.type === 'missed3') && p.offensiveRebound === true
+      ).length;
+      const reboundPoints = schemePlays.reduce((acc, p) => 
+        acc + (p.reboundPoints || 0), 0
+      );
+      
       return {
         name: scheme.name,
         category: scheme.category,
@@ -29,6 +37,8 @@ export default function LiveStats({ plays }: Props) {
         points,
         efficiency,
         productivity,
+        rebounds,
+        reboundPoints,
       };
     })
     .filter(stat => stat.uses > 0)

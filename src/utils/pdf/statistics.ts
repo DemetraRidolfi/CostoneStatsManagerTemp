@@ -163,6 +163,9 @@ export function calculateProductivity(plays: PlayResult[]): number {
         return acc + 3;
       case 'missed2':
       case 'missed3':
+        if (play.offensiveRebound) {
+          return acc - 1 + 0.5 + (play.reboundPoints || 0);
+        }
         return acc - 1;
       case 'turnover':
         return acc - 0.5;

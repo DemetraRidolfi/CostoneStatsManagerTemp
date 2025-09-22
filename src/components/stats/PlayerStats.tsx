@@ -39,6 +39,13 @@ export default function PlayerStats({ games, selectedPlayerId }: Props) {
     const efficiency = calculateEfficiency(playerPlays);
     const productivity = calculateProductivity(playerPlays);
 
+    // Calculate rebound points scored by this player
+    const reboundPoints = plays.reduce((acc, p) => {
+      if (p.reboundPlayerId === playerId && p.reboundPoints) {
+        return acc + p.reboundPoints;
+      }
+      return acc;
+    }, 0);
     return {
       playerId,
       playerName: playerInfo.name,
@@ -51,6 +58,7 @@ export default function PlayerStats({ games, selectedPlayerId }: Props) {
       efficiency,
       productivity,
       points,
+      reboundPoints,
     };
   };
 
@@ -71,6 +79,18 @@ export default function PlayerStats({ games, selectedPlayerId }: Props) {
             <div className="flex justify-between items-start mb-4">
               <h3 className="text-lg font-medium text-gray-900 dark:text-white">
                 #{stats.playerNumber} {stats.playerName}
+                <div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Punti su rimbalzo</p>
+                  <p className="text-lg font-semibold text-gray-900 dark:text-white">
+                    {stats.reboundPoints}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Palle perse</p>
+                  <p className="text-lg font-semibold text-gray-900 dark:text-white">
+                    {stats.turnover}
+                  </p>
+                </div>
               </h3>
               <div className="flex items-center gap-4">
                 {/* Efficiency Badge */}
@@ -89,12 +109,6 @@ export default function PlayerStats({ games, selectedPlayerId }: Props) {
                   <div className={`text-lg font-bold rounded-lg px-3 py-1 ${
                     stats.productivity >= 2 ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300' :
                     stats.productivity >= 0 ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300' :
-                    'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300'
-                  }`}>
-                    {stats.productivity.toFixed(1)}
-                  </div>
-                  <span className="text-xs text-gray-500 dark:text-gray-400 mt-1">Produttività</span>
-                </div>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">

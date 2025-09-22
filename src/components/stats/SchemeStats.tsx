@@ -18,6 +18,8 @@ type SchemeStats = {
   productivity: number;
   points: number;
   plays: PlayResult[];
+  rebounds?: number;
+  reboundPoints?: number;
 };
 
 type Props = {
@@ -55,6 +57,14 @@ export default function SchemeStats({ stats }: Props) {
         {schemes.map((scheme) => {
           const fieldGoals = calculateFieldGoals(scheme.plays);
           
+          // Calculate rebound statistics
+          const rebounds = scheme.plays.filter(p => 
+            (p.type === 'missed2' || p.type === 'missed3') && p.offensiveRebound === true
+          ).length;
+          const reboundPoints = scheme.plays.reduce((acc, p) => 
+            acc + (p.reboundPoints || 0), 0
+          );
+          
           return (
             <div key={scheme.name} className="border-b border-gray-200 dark:border-gray-700 pb-4 last:border-0">
               <div className="flex justify-between items-start mb-4">
@@ -84,7 +94,7 @@ export default function SchemeStats({ stats }: Props) {
                   </div>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-3 gap-4">
                 <div>
                   <p className="text-sm text-gray-600 dark:text-gray-400">Azioni totali</p>
                   <p className="text-lg font-semibold text-gray-900 dark:text-white">{scheme.total}</p>
@@ -93,6 +103,12 @@ export default function SchemeStats({ stats }: Props) {
                   <p className="text-sm text-gray-600 dark:text-gray-400">Punti totali</p>
                   <p className="text-lg font-semibold text-gray-900 dark:text-white">
                     {scheme.points}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Rimbalzi</p>
+                  <p className="text-lg font-semibold text-gray-900 dark:text-white">
+                    {rebounds} ({reboundPoints}pt)
                   </p>
                 </div>
                 <div>
@@ -107,13 +123,13 @@ export default function SchemeStats({ stats }: Props) {
                     {fieldGoals.made3}/{fieldGoals.total3}
                   </p>
                 </div>
-                <div>
+                <div className="col-span-1">
                   <p className="text-sm text-gray-600 dark:text-gray-400">Falli subiti</p>
                   <p className="text-lg font-semibold text-gray-900 dark:text-white">
                     {scheme.foulInbound + scheme.foulShot}
                   </p>
                 </div>
-                <div>
+                <div className="col-span-1">
                   <p className="text-sm text-gray-600 dark:text-gray-400">Palle perse</p>
                   <p className="text-lg font-semibold text-gray-900 dark:text-white">
                     {scheme.turnover}
