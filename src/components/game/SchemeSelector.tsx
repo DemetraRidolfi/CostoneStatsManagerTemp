@@ -20,6 +20,16 @@ export default function SchemeSelector({ onSelect }: Props) {
   const { getEnabledPlayers } = useTeamData();
   const players = getEnabledPlayers();
 
+  // Calculate dynamic height based on number of players
+  const getGridRows = () => Math.ceil(players.length / 6);
+  const getContainerHeight = () => {
+    const rows = getGridRows();
+    if (tabletMode) {
+      return rows === 1 ? 'h-16' : 'h-32';
+    }
+    return rows === 1 ? 'h-20' : 'h-40';
+  };
+
   // Organize schemes by category
   const uomoSchemes = schemes.filter(s => s.category === 'Uomo' && !s.name.includes('ZONA'));
   const zonaSchemes = schemes.filter(s => s.name.includes('ZONA') || s.category === 'Zona');
@@ -218,7 +228,7 @@ export default function SchemeSelector({ onSelect }: Props) {
       </div>
 
       {/* Foul Tracking Bar - Desktop */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 mt-4 h-32">
+      <div className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 mt-4 ${getContainerHeight()}`}>
         <div className="grid grid-cols-6 gap-3 h-full">
           {players.map(player => {
             const fouls = playerFouls[player.id] || 0;
@@ -226,18 +236,20 @@ export default function SchemeSelector({ onSelect }: Props) {
               <button
                 key={player.id}
                 onClick={() => setShowFoulModal(player.id)}
-                className="flex flex-col items-center justify-center gap-2 px-3 py-2 bg-gray-50 dark:bg-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="flex items-center justify-between px-3 py-2 bg-gray-50 dark:bg-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
               >
-                <div className={`w-8 h-8 ${getFoulColor(fouls)} rounded-lg flex items-center justify-center text-white text-sm font-bold`}>
-                  {player.number}
+                <div className="flex flex-col items-center">
+                  <div className={`w-6 h-6 ${getFoulColor(fouls)} rounded-lg flex items-center justify-center text-white text-xs font-bold`}>
+                    {player.number}
+                  </div>
+                  <span className="text-xs font-medium text-gray-900 dark:text-white text-center mt-1">
+                <div className="flex flex-col items-center">
+                  <div className={`w-8 h-8 ${getFoulColor(fouls)} rounded-lg flex items-center justify-center text-white text-sm font-bold`}>
+                    {player.number}
+                  </div>
                 </div>
-                <div className="text-center">
-                  <div className="text-xs font-medium text-gray-900 dark:text-white">
-                    {player.name.split(' ').slice(-1)[0]}
-                  </div>
-                  <div className="text-xs text-gray-600 dark:text-gray-400">
-                    {fouls} Falli
-                  </div>
+                <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                  {fouls}
                 </div>
               </button>
             );
