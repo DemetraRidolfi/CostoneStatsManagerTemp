@@ -108,8 +108,6 @@ async function addSchemeStatisticsPage(
         }
         return acc;
       }, 0);
-      
-      const playerAssists = playerPlays.filter(p => p.hasAssist === true).length;
 
       return {
         playerNumber: player.number,
@@ -123,7 +121,6 @@ async function addSchemeStatisticsPage(
         productivity: playerProductivity,
         points: playerPoints,
         reboundPoints: playerReboundPoints,
-        assists: playerAssists,
       };
     })
     .filter((stats): stats is NonNullable<typeof stats> => stats !== null)
@@ -143,7 +140,6 @@ async function addSchemeStatisticsPage(
       'PERSE',
       'PUNTI',
       'RIM.PT',
-      'ASSIST',
       'EFF.',
       'PROD.',
     ];
@@ -157,7 +153,6 @@ async function addSchemeStatisticsPage(
       stat.turnover.toString(),
       stat.points.total.toString(),
       stat.reboundPoints.toString(),
-      stat.assists.toString(),
       { content: `${stat.efficiency}%`, styles: { fontStyle: 'bold' } },
       { content: stat.productivity.toFixed(1), styles: { fontStyle: 'bold' } },
     ]);
