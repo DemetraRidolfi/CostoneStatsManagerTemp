@@ -252,6 +252,8 @@ export default function SchemeSelector({ onSelect }: Props) {
                   </div>
                   <span className="text-xs font-medium text-gray-900 dark:text-white text-center mt-1">
                 <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                    {fouls}
+                  </div>
                   </span>
                 </div>
               </button>
