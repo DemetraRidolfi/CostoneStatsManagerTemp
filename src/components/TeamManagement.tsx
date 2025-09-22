@@ -347,7 +347,9 @@ export default function TeamManagement() {
             ))}
             {sortedPlayers.length === 0 && (
               <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-                Nessun giocatore presente. Aggiungi il primo giocatore!
+                    {categorySchemes.map((scheme, index) => {
+                      const categoryIndex = categorySchemes.findIndex(s => s.id === scheme.id);
+                      return (
               </div>
             )}
           </div>
@@ -371,7 +373,7 @@ export default function TeamManagement() {
           </div>
 
           <div className="space-y-6">
-            {Object.entries(groupedSchemes).map(([category, categorySchemes]) => (
+                                disabled={categoryIndex === 0}
               <div key={category}>
                 <h3 className="text-lg font-medium text-primary-600 dark:text-primary-400 mb-4">
                   {category}
@@ -379,7 +381,7 @@ export default function TeamManagement() {
                 <div className="grid gap-3">
                   {categorySchemes.map((scheme, index) => (
                     <div key={scheme.id} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
-                      <div>
+                                disabled={categoryIndex === categorySchemes.length - 1}
                         <h4 className={`font-medium ${
                           scheme.enabled !== false 
                             ? scheme.textColor || 'text-gray-900 dark:text-white'
@@ -440,7 +442,8 @@ export default function TeamManagement() {
                         </button>
                         <button
                           onClick={() => handleDeleteScheme(scheme.id)}
-                          className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                      );
+                    })}
                         >
                           <Trash2 className="w-5 h-5" />
                         </button>
