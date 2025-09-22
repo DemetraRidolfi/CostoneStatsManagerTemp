@@ -76,6 +76,7 @@ export default function Statistics() {
     game,
     selectedPlayerId,
     players: PLAYERS,
+    schemes,
     plays: allPlays,
   };
 

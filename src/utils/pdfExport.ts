@@ -5,7 +5,6 @@ import { TABLE_DEFAULTS } from './pdf/constants';
 import { addDocumentHeader, addPageTitle } from './pdf/header';
 import { addPlayerStats } from './pdf/statistics';
 import { addSchemeDetails } from './pdf/schemeDetails';
-import { schemes } from '../data/schemes';
 
 type ExportOptions = {
   includeOverview?: boolean;
@@ -40,21 +39,21 @@ export async function exportStatsToPDF(
       // Separate schemes by category
       const uomoSchemes = data.stats
         .filter(stat => {
-          const scheme = schemes.find(s => s.name === stat.name);
+          const scheme = data.schemes.find(s => s.name === stat.name);
           return scheme?.category === 'Uomo' && !stat.name.includes('ZONA');
         })
         .sort((a, b) => b.total - a.total);
 
       const zonaSchemes = data.stats
         .filter(stat => {
-          const scheme = schemes.find(s => s.name === stat.name);
+          const scheme = data.schemes.find(s => s.name === stat.name);
           return stat.name.includes('ZONA');
         })
         .sort((a, b) => b.total - a.total);
 
       const rimesseSchemes = data.stats
         .filter(stat => {
-          const scheme = schemes.find(s => s.name === stat.name);
+          const scheme = data.schemes.find(s => s.name === stat.name);
           return scheme?.category === 'Rimesse';
         })
         .sort((a, b) => b.total - a.total);
@@ -129,7 +128,7 @@ export async function exportStatsToPDF(
       if (!isFirstPage) {
         doc.addPage();
       }
-      await addSchemeDetails(doc, data.plays, data.players);
+      await addSchemeDetails(doc, data.plays, data.players, data.schemes);
       isFirstPage = false;
     }
 
