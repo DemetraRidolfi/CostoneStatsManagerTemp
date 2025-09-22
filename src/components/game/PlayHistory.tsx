@@ -64,7 +64,7 @@ export default function PlayHistory({
       missed3: {
         text: 'Tiro da 3 Sbagliato',
         color: 'text-red-600 dark:text-red-400',
-      },
+      },F
       foulInbound: {
         text: 'Fallo (Rimessa)',
         color: 'text-amber-600 dark:text-amber-400',
