@@ -87,6 +87,14 @@ async function addSchemeStatisticsPage(
       const playerProductivity = calculateProductivity(playerPlays);
       const playerFouls = playerPlays.filter(p => ['foulInbound', 'foulShot'].includes(p.type)).length;
       const playerTurnovers = playerPlays.filter(p => p.type === 'turnover').length;
+      
+      // Calculate player rebound points (points scored by this player on rebounds)
+      const playerReboundPoints = plays.reduce((acc, p) => {
+        if (p.reboundPlayerId === player.id && p.reboundPoints) {
+          return acc + p.reboundPoints;
+        }
+        return acc;
+      }, 0);
 
       return {
         playerNumber: player.number,
@@ -99,6 +107,7 @@ async function addSchemeStatisticsPage(
         efficiency: playerEfficiency,
         productivity: playerProductivity,
         points: playerPoints,
+        reboundPoints: playerReboundPoints,
       };
     })
     .filter((stats): stats is NonNullable<typeof stats> => stats !== null)
@@ -117,6 +126,7 @@ async function addSchemeStatisticsPage(
       'FALLI',
       'PERSE',
       'PUNTI',
+      'RIM.PT',
       'EFF.',
       'PROD.',
     ];
@@ -129,6 +139,7 @@ async function addSchemeStatisticsPage(
       (stat.foulInbound + stat.foulShot).toString(),
       stat.turnover.toString(),
       stat.points.total.toString(),
+      stat.reboundPoints.toString(),
       { content: `${stat.efficiency}%`, styles: { fontStyle: 'bold' } },
       { content: stat.productivity.toFixed(1), styles: { fontStyle: 'bold' } },
     ]);
