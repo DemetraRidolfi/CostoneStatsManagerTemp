@@ -19,6 +19,7 @@ type Scheme = {
   category: 'Uomo' | 'Zona' | 'Rimesse';
   textColor?: string;
   enabled?: boolean;
+  order?: number;
 };
 
 const PLAYERS_STORAGE_KEY = 'costone_players';
@@ -41,44 +42,44 @@ const DEFAULT_PLAYERS: Player[] = [
 
 // Default schemes (existing ones)
 const DEFAULT_SCHEMES: Scheme[] = [
-  { id: 'no-call', name: 'NO CALL', category: 'Uomo', textColor: 'text-sky-600 dark:text-sky-400', enabled: true },
-  { id: 'transizione', name: 'TRANSIZIONE', category: 'Uomo', textColor: 'text-emerald-600 dark:text-emerald-400', enabled: true },
-  { id: 'drag', name: 'DRAG', category: 'Uomo', enabled: true },
-  { id: 'shake', name: 'SHAKE', category: 'Uomo', enabled: true },
-  { id: 'shake-lato', name: 'SHAKE LATO', category: 'Uomo', enabled: true },
-  { id: 'pollice-basso', name: 'POLLICE BASSO', category: 'Uomo', enabled: true },
-  { id: 'pollice-lato', name: 'POLLICE LATO', category: 'Uomo', enabled: true },
-  { id: 'pollice-flash', name: 'POLLICE FLASH', category: 'Uomo', enabled: true },
-  { id: 'due', name: 'DUE', category: 'Uomo', enabled: true },
-  { id: 'corna', name: 'CORNA', category: 'Uomo', enabled: true },
-  { id: 'corna-basso', name: 'LATERALE CORNA LATO', category: 'Rimesse', enabled: true },
-  { id: 'corna-lato', name: 'CORNA LATO', category: 'Uomo', enabled: true },
-  { id: 'giro', name: 'GIRO', category: 'Uomo', enabled: true },
-  { id: 'pugno-basso', name: 'PUGNO BASSO', category: 'Uomo', enabled: true },
-  { id: 'testa', name: 'TESTA', category: 'Uomo', enabled: true },
-  { id: 'cinque', name: '52', category: 'Uomo', enabled: true },
-  { id: 'tre', name: 'TRE', category: 'Uomo', enabled: true },
-  { id: 'tre-lato', name: 'TRE LATO', category: 'Uomo', enabled: true },
-  { id: 'fissi', name: 'FISSI ZONA 2-3', category: 'Zona', textColor: 'text-red-600 dark:text-red-400', enabled: true },
-  { id: 'due_zona', name: 'DUE ZONA 2-3', category: 'Zona', textColor: 'text-red-600 dark:text-red-400', enabled: true },
-  { id: 'corna_zona', name: 'CORNA ZONA 2-3', category: 'Zona', textColor: 'text-red-600 dark:text-red-400', enabled: true },
-  { id: 'tre-basso', name: 'TRE BASSO', category: 'Uomo', enabled: true },
-  { id: 'quattro', name: 'QUATTRO', category: 'Uomo', enabled: true },
-  { id: 'due-basso', name: 'DUE BASSO', category: 'Uomo', enabled: true },
-  { id: 'x', name: 'X 2-3', category: 'Zona', textColor: 'text-red-600 dark:text-red-400', enabled: true },
-  { id: 'no-call_zona', name: 'NO CALL ZONA 2-3', category: 'Zona', textColor: 'text-red-600 dark:text-red-400', enabled: true },
-  { id: 'laterale_flash', name: 'LATERALE FLASH', category: 'Rimesse', enabled: true },
-  { id: 'laterale_pollice_basso', name: 'LATERALE POLLICE BASSO', category: 'Rimesse', enabled: true },
-  { id: 'laterale_pugno_basso', name: 'LATERALE PUGNO BASSO', category: 'Rimesse', enabled: true },
-  { id: 'fondo_flash', name: 'FONDO FLASH', category: 'Rimesse', enabled: true },
-  { id: 'fondo_pollice_basso', name: 'FONDO POLLICE BASSO', category: 'Rimesse', enabled: true },
-  { id: 'laterale_zona', name: 'LATERALE ZONA', category: 'Rimesse', textColor: 'text-red-600 dark:text-red-400', enabled: true },
-  { id: 'fondo_zona', name: 'FONDO ZONA', category: 'Rimesse', textColor: 'text-red-600 dark:text-red-400', enabled: true },
-  { id: 'corna_131', name: 'CORNA ZONA 1-3-1', category: 'Zona', textColor: 'text-emerald-600 dark:text-emerald-400', enabled: true },
-  { id: 'drag_131', name: 'DRAG ZONA 1-3-1', category: 'Zona', textColor: 'text-emerald-600 dark:text-emerald-400', enabled: true },
-  { id: 'fissi_131', name: 'FISSI ZONA 1-3-1', category: 'Zona', textColor: 'text-emerald-600 dark:text-emerald-400', enabled: true },
-  { id: 'due_131', name: 'DUE ZONA 1-3-1', category: 'Zona', textColor: 'text-emerald-600 dark:text-emerald-400', enabled: true },
-  { id: 'no_call_131', name: 'NO CALL ZONA 1-3-1', category: 'Zona', textColor: 'text-emerald-600 dark:text-emerald-400', enabled: true },
+  { id: 'no-call', name: 'NO CALL', category: 'Uomo', textColor: 'text-sky-600 dark:text-sky-400', enabled: true, order: 1 },
+  { id: 'transizione', name: 'TRANSIZIONE', category: 'Uomo', textColor: 'text-emerald-600 dark:text-emerald-400', enabled: true, order: 2 },
+  { id: 'drag', name: 'DRAG', category: 'Uomo', enabled: true, order: 3 },
+  { id: 'shake', name: 'SHAKE', category: 'Uomo', enabled: true, order: 4 },
+  { id: 'shake-lato', name: 'SHAKE LATO', category: 'Uomo', enabled: true, order: 5 },
+  { id: 'pollice-basso', name: 'POLLICE BASSO', category: 'Uomo', enabled: true, order: 6 },
+  { id: 'pollice-lato', name: 'POLLICE LATO', category: 'Uomo', enabled: true, order: 7 },
+  { id: 'pollice-flash', name: 'POLLICE FLASH', category: 'Uomo', enabled: true, order: 8 },
+  { id: 'due', name: 'DUE', category: 'Uomo', enabled: true, order: 9 },
+  { id: 'corna', name: 'CORNA', category: 'Uomo', enabled: true, order: 10 },
+  { id: 'corna-lato', name: 'CORNA LATO', category: 'Uomo', enabled: true, order: 11 },
+  { id: 'giro', name: 'GIRO', category: 'Uomo', enabled: true, order: 12 },
+  { id: 'pugno-basso', name: 'PUGNO BASSO', category: 'Uomo', enabled: true, order: 13 },
+  { id: 'testa', name: 'TESTA', category: 'Uomo', enabled: true, order: 14 },
+  { id: 'cinque', name: '52', category: 'Uomo', enabled: true, order: 15 },
+  { id: 'tre', name: 'TRE', category: 'Uomo', enabled: true, order: 16 },
+  { id: 'tre-lato', name: 'TRE LATO', category: 'Uomo', enabled: true, order: 17 },
+  { id: 'tre-basso', name: 'TRE BASSO', category: 'Uomo', enabled: true, order: 18 },
+  { id: 'quattro', name: 'QUATTRO', category: 'Uomo', enabled: true, order: 19 },
+  { id: 'due-basso', name: 'DUE BASSO', category: 'Uomo', enabled: true, order: 20 },
+  { id: 'fissi', name: 'FISSI ZONA 2-3', category: 'Zona', textColor: 'text-red-600 dark:text-red-400', enabled: true, order: 1 },
+  { id: 'due_zona', name: 'DUE ZONA 2-3', category: 'Zona', textColor: 'text-red-600 dark:text-red-400', enabled: true, order: 2 },
+  { id: 'corna_zona', name: 'CORNA ZONA 2-3', category: 'Zona', textColor: 'text-red-600 dark:text-red-400', enabled: true, order: 3 },
+  { id: 'x', name: 'X 2-3', category: 'Zona', textColor: 'text-red-600 dark:text-red-400', enabled: true, order: 4 },
+  { id: 'no-call_zona', name: 'NO CALL ZONA 2-3', category: 'Zona', textColor: 'text-red-600 dark:text-red-400', enabled: true, order: 5 },
+  { id: 'corna_131', name: 'CORNA ZONA 1-3-1', category: 'Zona', textColor: 'text-emerald-600 dark:text-emerald-400', enabled: true, order: 6 },
+  { id: 'drag_131', name: 'DRAG ZONA 1-3-1', category: 'Zona', textColor: 'text-emerald-600 dark:text-emerald-400', enabled: true, order: 7 },
+  { id: 'fissi_131', name: 'FISSI ZONA 1-3-1', category: 'Zona', textColor: 'text-emerald-600 dark:text-emerald-400', enabled: true, order: 8 },
+  { id: 'due_131', name: 'DUE ZONA 1-3-1', category: 'Zona', textColor: 'text-emerald-600 dark:text-emerald-400', enabled: true, order: 9 },
+  { id: 'no_call_131', name: 'NO CALL ZONA 1-3-1', category: 'Zona', textColor: 'text-emerald-600 dark:text-emerald-400', enabled: true, order: 10 },
+  { id: 'corna-basso', name: 'LATERALE CORNA LATO', category: 'Rimesse', enabled: true, order: 1 },
+  { id: 'laterale_flash', name: 'LATERALE FLASH', category: 'Rimesse', enabled: true, order: 2 },
+  { id: 'laterale_pollice_basso', name: 'LATERALE POLLICE BASSO', category: 'Rimesse', enabled: true, order: 3 },
+  { id: 'laterale_pugno_basso', name: 'LATERALE PUGNO BASSO', category: 'Rimesse', enabled: true, order: 4 },
+  { id: 'laterale_zona', name: 'LATERALE ZONA', category: 'Rimesse', textColor: 'text-red-600 dark:text-red-400', enabled: true, order: 5 },
+  { id: 'fondo_flash', name: 'FONDO FLASH', category: 'Rimesse', enabled: true, order: 6 },
+  { id: 'fondo_pollice_basso', name: 'FONDO POLLICE BASSO', category: 'Rimesse', enabled: true, order: 7 },
+  { id: 'fondo_zona', name: 'FONDO ZONA', category: 'Rimesse', textColor: 'text-red-600 dark:text-red-400', enabled: true, order: 8 },
 ];
 
 function safeJSONParse<T>(json: string | null, fallback: T): T {
@@ -170,7 +171,14 @@ export function useTeamData() {
     });
   };
   const addScheme = (scheme: Scheme) => {
-    const schemeWithEnabled = { ...scheme, enabled: scheme.enabled ?? true };
+    // Get the max order for the same category
+    const categorySchemes = schemes.filter(s => s.category === scheme.category);
+    const maxOrder = Math.max(...categorySchemes.map(s => s.order || 0), 0);
+    const schemeWithEnabled = { 
+      ...scheme, 
+      enabled: scheme.enabled ?? true,
+      order: maxOrder + 1
+    };
     setSchemes(prev => [...prev, schemeWithEnabled]);
   };
 
@@ -182,6 +190,43 @@ export function useTeamData() {
     setSchemes(prev => prev.filter(s => s.id !== schemeId));
   };
 
+  const moveScheme = (schemeId: string, direction: 'up' | 'down') => {
+    setSchemes(prev => {
+      const scheme = prev.find(s => s.id === schemeId);
+      if (!scheme) return prev;
+
+      // Get schemes in the same category, sorted by order
+      const categorySchemes = prev
+        .filter(s => s.category === scheme.category)
+        .sort((a, b) => (a.order || 0) - (b.order || 0));
+      
+      const currentIndex = categorySchemes.findIndex(s => s.id === schemeId);
+      if (currentIndex === -1) return prev;
+      
+      const newIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
+      if (newIndex < 0 || newIndex >= categorySchemes.length) return prev;
+      
+      // Get the two schemes to swap
+      const currentScheme = categorySchemes[currentIndex];
+      const targetScheme = categorySchemes[newIndex];
+      
+      // Swap their order values
+      const currentOrder = currentScheme.order || 0;
+      const targetOrder = targetScheme.order || 0;
+      
+      // Update the schemes array with swapped orders
+      return prev.map(s => {
+        if (s.id === currentScheme.id) {
+          return { ...s, order: targetOrder };
+        }
+        if (s.id === targetScheme.id) {
+          return { ...s, order: currentOrder };
+        }
+        return s;
+      });
+    });
+  };
+
   // Get enabled players sorted by order
   const getEnabledPlayers = () => {
     return players
@@ -189,9 +234,11 @@ export function useTeamData() {
       .sort((a, b) => (a.order || 0) - (b.order || 0));
   };
 
-  // Get enabled schemes
+  // Get enabled schemes sorted by order within category
   const getEnabledSchemes = () => {
-    return schemes.filter(s => s.enabled !== false);
+    return schemes
+      .filter(s => s.enabled !== false)
+      .sort((a, b) => (a.order || 0) - (b.order || 0));
   };
   return {
     players,
@@ -203,6 +250,7 @@ export function useTeamData() {
     addScheme,
     updateScheme,
     deleteScheme,
+    moveScheme,
     getEnabledPlayers,
     getEnabledSchemes,
   };

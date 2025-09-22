@@ -37,7 +37,7 @@ const TEXT_COLORS = [
 ];
 
 export default function TeamManagement() {
-  const { players, schemes, addPlayer, updatePlayer, deletePlayer, movePlayer, addScheme, updateScheme, deleteScheme } = useTeamData();
+  const { players, schemes, addPlayer, updatePlayer, deletePlayer, movePlayer, addScheme, updateScheme, deleteScheme, moveScheme } = useTeamData();
   
   const [activeTab, setActiveTab] = useState<'players' | 'schemes'>('players');
 
@@ -203,9 +203,9 @@ export default function TeamManagement() {
   };
 
   const groupedSchemes = {
-    Uomo: schemes.filter(s => s.category === 'Uomo'),
-    Zona: schemes.filter(s => s.category === 'Zona'),
-    Rimesse: schemes.filter(s => s.category === 'Rimesse'),
+    Uomo: schemes.filter(s => s.category === 'Uomo').sort((a, b) => (a.order || 0) - (b.order || 0)),
+    Zona: schemes.filter(s => s.category === 'Zona').sort((a, b) => (a.order || 0) - (b.order || 0)),
+    Rimesse: schemes.filter(s => s.category === 'Rimesse').sort((a, b) => (a.order || 0) - (b.order || 0)),
   };
 
   // Sort players by order for display
@@ -377,7 +377,7 @@ export default function TeamManagement() {
                   {category}
                 </h3>
                 <div className="grid gap-3">
-                  {categorySchemes.map((scheme) => (
+                  {categorySchemes.map((scheme, index) => (
                     <div key={scheme.id} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
                       <div>
                         <h4 className={`font-medium ${
@@ -397,6 +397,23 @@ export default function TeamManagement() {
                         </p>
                       </div>
                       <div className="flex gap-2">
+                        {/* Move Up/Down buttons */}
+                        <div className="flex flex-col">
+                          <button
+                            onClick={() => moveScheme(scheme.id, 'up')}
+                            disabled={index === 0}
+                            className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:opacity-30 disabled:cursor-not-allowed"
+                            title="Sposta su"
+                          >
+                            <ChevronUp className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => moveScheme(scheme.id, 'down')}
+                            disabled={index === categorySchemes.length - 1}
+                            className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:opacity-30 disabled:cursor-not-allowed"
+                            title="Sposta giù"
+                          </button>
+                        </div>
                         {/* Enable/Disable toggle */}
                         <button
                           onClick={() => updateScheme({ ...scheme, enabled: !scheme.enabled })}
