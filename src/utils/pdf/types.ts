@@ -16,5 +16,6 @@ export type ExportData = {
   game: Game | null;
   selectedPlayerId: number | null;
   players: Array<{ id: number; name: string; number: string }>;
+  schemes: Array<{ id: string; name: string; category: string }>;
   plays: PlayResult[];
 };

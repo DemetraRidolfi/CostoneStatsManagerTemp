@@ -147,7 +147,7 @@ export async function exportStatsToPDF(
           if (!isFirstPage) {
             doc.addPage();
           }
-          await addPlayerStats(doc, player, data.plays);
+          await addPlayerStats(doc, player, data.plays, data.schemes);
         }
       } else {
         // Add statistics for all active players
@@ -156,7 +156,7 @@ export async function exportStatsToPDF(
           if (!isFirstPage || i > 0) {
             doc.addPage();
           }
-          await addPlayerStats(doc, player, data.plays);
+          await addPlayerStats(doc, player, data.plays, data.schemes);
           isFirstPage = false;
         }
       }

@@ -1,7 +1,6 @@
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import type { PlayResult } from '../../types';
-import { schemes } from '../../data/schemes';
 import { TABLE_DEFAULTS } from './constants';
 import { addDocumentHeader, addPageTitle } from './header';
 import { calculateFieldGoals } from '../calculateFieldGoals';
@@ -10,7 +9,8 @@ import { calculatePoints } from '../calculatePoints';
 export async function addPlayerStats(
   doc: jsPDF, 
   player: { id: number; name: string; number: string }, 
-  plays: PlayResult[]
+  plays: PlayResult[],
+  schemes: Array<{ id: string; name: string; category: string }>
 ): Promise<void> {
   try {
     // Filter plays for this specific player only

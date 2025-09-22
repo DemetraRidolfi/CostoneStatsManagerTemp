@@ -9,7 +9,6 @@ import { ArrowLeft, FileDown, Users, BookOpen, History } from 'lucide-react';
 import { exportStatsToPDF } from '../utils/pdfExport';
 import { exportMatchHistoryToPDF } from '../utils/exportMatchHistory';
 import { useTheme } from '../contexts/ThemeContext';
-import { useTeamData } from '../hooks/useTeamData';
 import { calculateEfficiency, calculateProductivity } from '../utils/pdf/statistics';
 import { calculatePoints } from '../utils/calculatePoints';
 import { calculateFieldGoals } from '../utils/calculateFieldGoals';
@@ -23,7 +22,9 @@ export default function Statistics() {
   const allGames = getAllGames();
   const [selectedPlayerId, setSelectedPlayerId] = useState<number | null>(null);
   const { theme } = useTheme();
-  const { players: PLAYERS, schemes } = useTeamData();
+  const { getEnabledPlayers, getEnabledSchemes } = useTeamData();
+  const PLAYERS = getEnabledPlayers();
+  const schemes = getEnabledSchemes();
 
   // Get all plays based on whether we're viewing a single game or all games
   const allPlays = useMemo(() => {

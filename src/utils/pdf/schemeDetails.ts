@@ -1,7 +1,6 @@
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import type { PlayResult } from '../../types';
-import { schemes } from '../../data/schemes';
 import { TABLE_DEFAULTS } from './constants';
 import { addDocumentHeader, addPageTitle } from './header';
 import { calculateEfficiency, calculateProductivity } from './statistics';
@@ -16,7 +15,7 @@ type Player = {
 
 async function addSchemeStatisticsPage(
   doc: jsPDF,
-  scheme: typeof schemes[0],
+  scheme: { id: string; name: string; category: string },
   plays: PlayResult[],
   players: Player[],
   isFirstPage: boolean
@@ -150,7 +149,7 @@ async function addSchemeStatisticsPage(
   return true;
 }
 
-export async function addSchemeDetails(doc: jsPDF, plays: PlayResult[], players: Player[]): Promise<void> {
+export async function addSchemeDetails(doc: jsPDF, plays: PlayResult[], players: Player[], schemes: Array<{ id: string; name: string; category: string }>): Promise<void> {
   try {
     if (plays.length === 0) return;
 

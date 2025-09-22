@@ -1,10 +1,14 @@
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import type { Game, PlayResult, Player, Scheme } from '../types';
+import type { Game, PlayResult } from '../types';
 import { addDocumentHeader, addPageTitle } from './pdf/header';
 import { TABLE_DEFAULTS } from './pdf/constants';
 
-export async function exportMatchHistoryToPDF(game: Game, players: Player[], schemes: Scheme[]) {
+export async function exportMatchHistoryToPDF(
+  game: Game, 
+  players: Array<{ id: number; name: string; number: string }>, 
+  schemes: Array<{ id: string; name: string; category: string }>
+) {
   try {
     const doc = new jsPDF();
     await addDocumentHeader(doc);
