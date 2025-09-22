@@ -47,6 +47,15 @@ async function addSchemeStatisticsPage(
   const fouls = schemePlays.filter(p => ['foulInbound', 'foulShot'].includes(p.type)).length;
   const turnovers = schemePlays.filter(p => p.type === 'turnover').length;
   const noImpact = schemePlays.filter(p => p.type === 'noImpact').length;
+  
+  // Calculate rebound statistics for this scheme
+  const rebounds = schemePlays.filter(p => 
+    (p.type === 'missed2' || p.type === 'missed3') && p.offensiveRebound === true
+  ).length;
+  const reboundPoints = schemePlays.reduce((acc, p) => 
+    acc + (p.reboundPoints || 0), 0
+  );
+  
   const efficiency = calculateEfficiency(schemePlays);
   const productivity = calculateProductivity(schemePlays);
   const points = calculatePoints(schemePlays);
@@ -58,6 +67,8 @@ async function addSchemeStatisticsPage(
     ['Falli Subiti', fouls.toString()],
     ['Palle Perse', turnovers.toString()],
     ['Nessun Impatto', noImpact.toString()],
+    ['Rimbalzi Offensivi', rebounds.toString()],
+    ['Punti su Rimbalzo', reboundPoints.toString()],
     ['Punti Totali', points.total.toString()],
     ['Efficacia', { content: `${efficiency}%`, styles: { fontStyle: 'bold' } }],
     ['Produttività', { content: productivity.toFixed(1), styles: { fontStyle: 'bold' } }],

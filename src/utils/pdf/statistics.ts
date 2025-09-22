@@ -75,6 +75,9 @@ export async function addPlayerStats(
       points: calculatePoints(playerPlays),
       fouls: playerPlays.filter(p => ['foulInbound', 'foulShot'].includes(p.type)).length,
       turnovers: playerPlays.filter(p => p.type === 'turnover').length,
+      rebounds: playerPlays.filter(p => 
+        (p.type === 'missed2' || p.type === 'missed3') && p.offensiveRebound === true
+      ).length,
       efficiency: calculateEfficiency(playerPlays),
       productivity: calculateProductivity(playerPlays),
     };
@@ -85,6 +88,7 @@ export async function addPlayerStats(
       ['Tiri da 3', `${totalStats.fieldGoals.made3}/${totalStats.fieldGoals.total3}`],
       ['Falli Subiti', totalStats.fouls.toString()],
       ['Palle Perse', totalStats.turnovers.toString()],
+      ['Rimbalzi Offensivi', totalStats.rebounds.toString()],
       ['Punti Totali', totalStats.points.total.toString()],
       ['Efficacia', { content: `${totalStats.efficiency}%`, styles: { fontStyle: 'bold' } }],
       ['Produttività', { content: totalStats.productivity.toFixed(1), styles: { fontStyle: 'bold' } }],
