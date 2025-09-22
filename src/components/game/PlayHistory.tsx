@@ -189,11 +189,11 @@ export default function PlayHistory({
 
   const containerClass = hideDelete
     ? ''
-    : 'bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3';
+    : 'bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 w-full';
   
   return (
     <>
-      <div className={`${containerClass} h-full flex flex-col overflow-hidden`}>
+      <div className={`${containerClass} h-full flex flex-col overflow-hidden min-w-0`}>
         <div className="flex items-center justify-between mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center gap-2">
             <History className="w-4 h-4 text-primary-600 dark:text-primary-400" />
@@ -206,7 +206,7 @@ export default function PlayHistory({
           </span>
         </div>
 
-        <div className="flex-1 overflow-hidden flex flex-col min-h-0">
+        <div className="flex-1 overflow-hidden flex flex-col min-h-0 min-w-0">
           <div className="flex-1 overflow-y-auto space-y-2 mb-2 px-0.5">
             {totalPlays === 0 ? (
               <div className="h-full flex items-center justify-center">
@@ -221,13 +221,15 @@ export default function PlayHistory({
             )}
           </div>
 
-          <button
+          <div className="mt-auto">
+            <button
             onClick={() => setShowFullHistory(true)}
-            className="w-full flex items-center justify-center gap-2 py-2 text-xs px-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors mt-auto"
-          >
+            className="w-full flex items-center justify-center gap-2 py-2 text-xs px-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
+            >
             <Maximize2 className="w-4 h-4" />
             <span>Cronologia Completa</span>
-          </button>
+            </button>
+          </div>
         </div>
       </div>
 
