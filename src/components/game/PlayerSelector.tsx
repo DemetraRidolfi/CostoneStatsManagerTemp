@@ -16,7 +16,7 @@ export default function PlayerSelector({ onSelect }: Props) {
 
   if (tabletMode) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 h-[calc(100vh-22rem)] flex flex-col">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 h-[calc(100vh-16rem)] flex flex-col">
         {/* No Impact Button */}
         <div className="mb-3">
           <button
@@ -51,7 +51,7 @@ export default function PlayerSelector({ onSelect }: Props) {
 
   // Desktop layout remains unchanged
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 h-[calc(100vh-16rem)] overflow-y-auto">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 h-[calc(100vh-20rem)] overflow-y-auto">
       <div className="flex flex-col h-full">
         {/* No Impact Button */}
         <div className="mb-6">
