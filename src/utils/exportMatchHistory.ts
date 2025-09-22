@@ -148,6 +148,13 @@ export async function exportMatchHistoryToPDF(
         },
       };
 
+      // Add assist information to successful plays
+      if (play.hasAssist && (play.type === 'made2' || play.type === 'made3' || 
+          (play.type === 'foulShot' && ((play.freeThrowPoints || 0) > 0 || play.and1Points)))) {
+        const baseResult = resultMap[play.type];
+        baseResult.text += ' (Assist)';
+      }
+
       // Handle rebound information
       if ((play.type === 'missed2' || play.type === 'missed3') && play.offensiveRebound !== undefined) {
         const baseResult = resultMap[play.type];

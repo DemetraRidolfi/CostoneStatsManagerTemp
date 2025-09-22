@@ -59,7 +59,7 @@ export async function exportStatsToPDF(
         .sort((a, b) => b.total - a.total);
 
       const schemeHeaders = [
-        'SCHEMA', 'TOTALE', '2P', '3P', 'FALLI', 'PERSE', 'RIMB.', 'PT.RIM', 'PUNTI', 'EFF.', 'PROD.'
+        'SCHEMA', 'TOTALE', '2P', '3P', 'FALLI', 'PERSE', 'RIMB.', 'PT.RIM', 'ASSIST', 'PUNTI', 'EFF.', 'PROD.'
       ];
 
       const formatTableRow = (stat: typeof data.stats[0]) => [
@@ -71,6 +71,7 @@ export async function exportStatsToPDF(
         { content: stat.turnover.toString() },
         { content: (stat.rebounds || 0).toString() },
         { content: (stat.reboundPoints || 0).toString() },
+        { content: (stat.assists || 0).toString() },
         { content: stat.points.toString() },
         { content: `${stat.efficiency}%`, styles: { fontStyle: 'bold' } },
         { content: stat.productivity.toFixed(1), styles: { fontStyle: 'bold' } },

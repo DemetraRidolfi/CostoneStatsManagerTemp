@@ -105,6 +105,13 @@ export default function PlayHistory({
       }
     }
 
+    // Add assist information to successful plays
+    if (play.hasAssist && (play.type === 'made2' || play.type === 'made3' || 
+        (play.type === 'foulShot' && ((play.freeThrowPoints || 0) > 0 || play.and1Points)))) {
+      const baseResult = resultMap[play.type];
+      baseResult.text += ' (Assist)';
+    }
+
     // Match the icon color with the result color
     const schemeColor = resultMap[play.type]?.color || 'text-gray-900 dark:text-white';
 

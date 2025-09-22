@@ -55,6 +55,7 @@ async function addSchemeStatisticsPage(
   const reboundPoints = schemePlays.reduce((acc, p) => 
     acc + (p.reboundPoints || 0), 0
   );
+  const assists = schemePlays.filter(p => p.hasAssist === true).length;
   
   const efficiency = calculateEfficiency(schemePlays);
   const productivity = calculateProductivity(schemePlays);
@@ -69,6 +70,7 @@ async function addSchemeStatisticsPage(
     ['Nessun Impatto', noImpact.toString()],
     ['Rimbalzi Offensivi', rebounds.toString()],
     ['Punti su Rimbalzo', reboundPoints.toString()],
+    ['Assist', assists.toString()],
     ['Punti Totali', points.total.toString()],
     ['Efficacia', { content: `${efficiency}%`, styles: { fontStyle: 'bold' } }],
     ['Produttività', { content: productivity.toFixed(1), styles: { fontStyle: 'bold' } }],
@@ -106,6 +108,8 @@ async function addSchemeStatisticsPage(
         }
         return acc;
       }, 0);
+      
+      const playerAssists = playerPlays.filter(p => p.hasAssist === true).length;
 
       return {
         playerNumber: player.number,
@@ -119,6 +123,7 @@ async function addSchemeStatisticsPage(
         productivity: playerProductivity,
         points: playerPoints,
         reboundPoints: playerReboundPoints,
+        assists: playerAssists,
       };
     })
     .filter((stats): stats is NonNullable<typeof stats> => stats !== null)
@@ -138,6 +143,7 @@ async function addSchemeStatisticsPage(
       'PERSE',
       'PUNTI',
       'RIM.PT',
+      'ASSIST',
       'EFF.',
       'PROD.',
     ];
@@ -151,6 +157,7 @@ async function addSchemeStatisticsPage(
       stat.turnover.toString(),
       stat.points.total.toString(),
       stat.reboundPoints.toString(),
+      stat.assists.toString(),
       { content: `${stat.efficiency}%`, styles: { fontStyle: 'bold' } },
       { content: stat.productivity.toFixed(1), styles: { fontStyle: 'bold' } },
     ]);

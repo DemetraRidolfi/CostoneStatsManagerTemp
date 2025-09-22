@@ -51,6 +51,7 @@ export default function Statistics() {
       const foulInbound = schemePlays.filter(p => p.type === 'foulInbound').length;
       const foulShot = schemePlays.filter(p => p.type === 'foulShot').length;
       const turnover = schemePlays.filter(p => p.type === 'turnover').length;
+      const assists = schemePlays.filter(p => p.hasAssist === true).length;
       
       const efficiency = calculateEfficiency(schemePlays);
       const productivity = calculateProductivity(schemePlays);
@@ -63,6 +64,7 @@ export default function Statistics() {
         foulInbound,
         foulShot,
         turnover,
+        assists,
         efficiency,
         productivity,
         points,

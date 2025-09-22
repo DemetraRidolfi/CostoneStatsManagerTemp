@@ -9,6 +9,7 @@ export type PlayResult = {
   offensiveRebound?: boolean;
   reboundPoints?: number;
   reboundPlayerId?: number;
+  hasAssist?: boolean;
 };
 
 export type MatchType = 'AMICHEVOLE' | 'CAMPIONATO - 1° FASE';

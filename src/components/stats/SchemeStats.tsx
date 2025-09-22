@@ -65,6 +65,9 @@ export default function SchemeStats({ stats }: Props) {
             acc + (p.reboundPoints || 0), 0
           );
           
+          // Calculate assists for this scheme
+          const assists = scheme.plays.filter(p => p.hasAssist === true).length;
+          
           return (
             <div key={scheme.name} className="border-b border-gray-200 dark:border-gray-700 pb-4 last:border-0">
               <div className="flex justify-between items-start mb-4">
@@ -112,6 +115,12 @@ export default function SchemeStats({ stats }: Props) {
                   </p>
                 </div>
                 <div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Assist</p>
+                  <p className="text-lg font-semibold text-gray-900 dark:text-white">
+                    {assists}
+                  </p>
+                </div>
+                <div>
                   <p className="text-sm text-gray-600 dark:text-gray-400">Canestri da 2</p>
                   <p className="text-lg font-semibold text-gray-900 dark:text-white">
                     {fieldGoals.made2}/{fieldGoals.total2}
@@ -129,7 +138,7 @@ export default function SchemeStats({ stats }: Props) {
                     {scheme.foulInbound + scheme.foulShot}
                   </p>
                 </div>
-                <div className="col-span-1">
+                <div>
                   <p className="text-sm text-gray-600 dark:text-gray-400">Palle perse</p>
                   <p className="text-lg font-semibold text-gray-900 dark:text-white">
                     {scheme.turnover}

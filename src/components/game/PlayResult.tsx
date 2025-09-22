@@ -45,9 +45,11 @@ export default function PlayResult({ schemeId, playerId, onSave, onCancel }: Pro
   const [showReboundModal, setShowReboundModal] = useState(false);
   const [showReboundPointsModal, setShowReboundPointsModal] = useState(false);
   const [showReboundPlayerModal, setShowReboundPlayerModal] = useState(false);
+  const [showAssistModal, setShowAssistModal] = useState(false);
   const [selectedType, setSelectedType] = useState<PlayResultType['type'] | null>(null);
   const [madeBasketPoints, setMadeBasketPoints] = useState<number | null>(null);
   const [reboundPoints, setReboundPoints] = useState<number>(0);
+  const [pendingPlayResult, setPendingPlayResult] = useState<PlayResultType | null>(null);
 
   const players = getEnabledPlayers();
 
@@ -77,16 +79,18 @@ export default function PlayResult({ schemeId, playerId, onSave, onCancel }: Pro
     if (!selectedType || !madeBasketPoints) return;
 
     if (!hasFoul) {
-      onSave({
+      const result = {
         type: selectedType,
         playerId,
         schemeId,
         timestamp: Date.now(),
         notes: notes.trim() || undefined,
-      });
+      };
+      
+      // Show assist modal for successful shots
+      setPendingPlayResult(result);
+      setShowAssistModal(true);
       setShowFoulModal(false);
-      setSelectedType(null);
-      setMadeBasketPoints(null);
     } else {
       setShowFoulModal(false);
       setShowFreeThrowModal(true);
@@ -95,7 +99,7 @@ export default function PlayResult({ schemeId, playerId, onSave, onCancel }: Pro
 
   const handleFreeThrowSave = (points: number) => {
     if (madeBasketPoints) {
-      onSave({
+      const result = {
         type: 'foulShot',
         playerId,
         schemeId,
@@ -103,20 +107,41 @@ export default function PlayResult({ schemeId, playerId, onSave, onCancel }: Pro
         notes: notes.trim() || undefined,
         and1Points: madeBasketPoints,
         freeThrowPoints: points,
-      });
+      };
+      
+      if (points > 0) {
+        // Show assist modal for successful free throws
+        setPendingPlayResult(result);
+        setShowAssistModal(true);
+        setShowFreeThrowModal(false);
+      } else {
+        onSave(result);
+        setShowFreeThrowModal(false);
+        setSelectedType(null);
+        setMadeBasketPoints(null);
+      }
     } else {
-      onSave({
+      const result = {
         type: 'foulShot',
         playerId,
         schemeId,
         timestamp: Date.now(),
         notes: notes.trim() || undefined,
         freeThrowPoints: points,
-      });
+      };
+      
+      if (points > 0) {
+        // Show assist modal for successful free throws
+        setPendingPlayResult(result);
+        setShowAssistModal(true);
+        setShowFreeThrowModal(false);
+      } else {
+        onSave(result);
+        setShowFreeThrowModal(false);
+        setSelectedType(null);
+        setMadeBasketPoints(null);
+      }
     }
-    setShowFreeThrowModal(false);
-    setSelectedType(null);
-    setMadeBasketPoints(null);
   };
 
   const handleReboundResponse = (hasRebound: boolean) => {
@@ -209,6 +234,30 @@ export default function PlayResult({ schemeId, playerId, onSave, onCancel }: Pro
     setShowReboundPointsModal(true);
   };
 
+  const handleAssistResponse = (hasAssist: boolean) => {
+    if (pendingPlayResult) {
+      onSave({
+        ...pendingPlayResult,
+        hasAssist,
+      });
+    }
+    setShowAssistModal(false);
+    setPendingPlayResult(null);
+    setSelectedType(null);
+    setMadeBasketPoints(null);
+  };
+
+  const handleAssistModalBack = () => {
+    setShowAssistModal(false);
+    if (madeBasketPoints && selectedType) {
+      // Go back to foul modal for made shots
+      setShowFoulModal(true);
+    } else if (pendingPlayResult?.type === 'foulShot') {
+      // Go back to free throw modal
+      setShowFreeThrowModal(true);
+    }
+    setPendingPlayResult(null);
+  };
   const containerClass = tabletMode
     ? "bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 h-[calc(100vh-16rem)] flex flex-col"
     : "bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 h-[calc(100vh-16rem)] flex flex-col";
@@ -446,6 +495,40 @@ export default function PlayResult({ schemeId, playerId, onSave, onCancel }: Pro
                   </button>
                 ))
               )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Assist Modal */}
+      {showAssistModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 max-w-md w-full mx-4">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                Assist?
+              </h3>
+              <button
+                onClick={handleAssistModalBack}
+                className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
+              >
+                <ArrowLeft className="w-5 h-5" />
+                <span>Indietro</span>
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <button
+                onClick={() => handleAssistResponse(true)}
+                className="flex items-center justify-center h-24 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-2xl font-bold transition-colors"
+              >
+                SÌ
+              </button>
+              <button
+                onClick={() => handleAssistResponse(false)}
+                className="flex items-center justify-center h-24 bg-red-500 hover:bg-red-600 text-white rounded-xl text-2xl font-bold transition-colors"
+              >
+                NO
+              </button>
             </div>
           </div>
         </div>
