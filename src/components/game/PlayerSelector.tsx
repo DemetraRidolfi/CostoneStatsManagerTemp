@@ -40,7 +40,7 @@ export default function PlayerSelector({ onSelect }: Props) {
                 {player.number}
               </div>
               <span className="text-[0.7rem] font-medium text-gray-900 dark:text-white text-center leading-tight">
-                {player.name}
+                {player.name.split(' ').slice(-1)[0]}
               </span>
             </button>
           ))}
@@ -86,7 +86,7 @@ export default function PlayerSelector({ onSelect }: Props) {
                     </div>
                     <div className="mt-3 text-center">
                       <div className="text-sm sm:text-base font-bold text-gray-900 dark:text-white">
-                        {player.name}
+                        {player.name.split(' ').slice(-1)[0]}
                       </div>
                     </div>
                   </div>

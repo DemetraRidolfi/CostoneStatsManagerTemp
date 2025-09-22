@@ -95,11 +95,14 @@ export default function TeamManagement() {
   };
 
   const handleEditPlayer = (player: any) => {
-    const [firstName, ...lastNameParts] = player.name.split(' ');
+    const nameParts = player.name.split(' ');
+    const firstName = nameParts.length > 1 ? nameParts[0] : '';
+    const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : nameParts[0];
+    
     setPlayerForm({
       id: player.id,
-      firstName: firstName || '',
-      lastName: lastNameParts.join(' ') || '',
+      firstName: firstName,
+      lastName: lastName,
       nickname: player.nickname || '',
       birthDate: player.birthDate || '',
       email: player.email || '',
@@ -112,14 +115,14 @@ export default function TeamManagement() {
   };
 
   const handleSavePlayer = () => {
-    if (!playerForm.firstName || !playerForm.lastName || !playerForm.number) {
-      alert('Nome, Cognome e Numero di maglia sono obbligatori');
+    if (!playerForm.lastName || !playerForm.number) {
+      alert('Cognome e Numero di maglia sono obbligatori');
       return;
     }
 
     const playerData = {
       id: editingPlayer?.id || Date.now(),
-      name: `${playerForm.firstName} ${playerForm.lastName}`,
+      name: playerForm.firstName ? `${playerForm.firstName} ${playerForm.lastName}` : playerForm.lastName,
       nickname: playerForm.nickname,
       birthDate: playerForm.birthDate,
       email: playerForm.email,
@@ -455,14 +458,13 @@ export default function TeamManagement() {
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  Nome *
+                  Nome
                 </label>
                 <input
                   type="text"
                   value={playerForm.firstName}
                   onChange={(e) => setPlayerForm(prev => ({ ...prev, firstName: e.target.value }))}
                   className="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  required
                 />
               </div>
               <div>
