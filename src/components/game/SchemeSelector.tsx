@@ -25,9 +25,21 @@ export default function SchemeSelector({ onSelect }: Props) {
   const getContainerHeight = () => {
     const rows = getGridRows();
     if (tabletMode) {
-      return rows === 1 ? 'h-16' : 'h-32';
+      // Tablet: base height + additional height per row
+      const baseHeight = 12; // 3rem
+      const additionalHeight = rows > 1 ? (rows - 1) * 8 : 0; // 2rem per additional row
+      return `h-[${baseHeight + additionalHeight}rem]`;
+    } else {
+      // Desktop: base height + additional height per row
+      const baseHeight = 16; // 4rem
+      const additionalHeight = rows > 1 ? (rows - 1) * 10 : 0; // 2.5rem per additional row
+      return `h-[${baseHeight + additionalHeight}rem]`;
     }
-    return rows === 1 ? 'h-20' : 'h-40';
+  };
+
+  // Get minimum height for single row
+  const getMinHeight = () => {
+    return tabletMode ? 'min-h-[3rem]' : 'min-h-[4rem]';
   };
 
   // Organize schemes by category
@@ -160,23 +172,23 @@ export default function SchemeSelector({ onSelect }: Props) {
       </div>
 
         {/* Foul Tracking Bar - Tablet */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 mt-3 h-32">
-          <div className="grid grid-cols-6 gap-2 h-full">
+        <div className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 mt-3 ${getContainerHeight()}`}>
+          <div className={`grid grid-cols-6 gap-2 h-full ${getMinHeight()}`}>
             {players.map(player => {
               const fouls = playerFouls[player.id] || 0;
               return (
                 <button
                   key={player.id}
                   onClick={() => setShowFoulModal(player.id)}
-                  className="flex flex-col items-center justify-center gap-1 px-2 py-1 bg-gray-50 dark:bg-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                  className="flex flex-col items-center justify-center gap-1 px-2 py-1 bg-gray-50 dark:bg-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors min-h-[2.5rem]"
                 >
-                  <div className={`w-6 h-6 ${getFoulColor(fouls)} rounded-lg flex items-center justify-center text-white text-xs font-bold`}>
+                  <div className={`w-6 h-6 ${getFoulColor(fouls) === 'text-gray-900 dark:text-white' ? 'bg-primary-600' : 'bg-current'} rounded-lg flex items-center justify-center text-white text-xs font-bold`}>
                     {player.number}
                   </div>
                   <span className="text-xs font-medium text-gray-900 dark:text-white text-center">
                     {player.name.split(' ').slice(-1)[0]}
                   </span>
-                  <span className="text-xs text-gray-600 dark:text-gray-400">
+                  <span className={`text-xs font-bold ${getFoulColor(fouls)}`}>
                     {fouls}F
                   </span>
                 </button>
@@ -229,14 +241,14 @@ export default function SchemeSelector({ onSelect }: Props) {
 
       {/* Foul Tracking Bar - Desktop */}
       <div className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 mt-4 ${getContainerHeight()}`}>
-        <div className="grid grid-cols-6 gap-3 h-full">
+        <div className={`grid grid-cols-6 gap-3 h-full ${getMinHeight()}`}>
           {players.map(player => {
             const fouls = playerFouls[player.id] || 0;
             return (
               <button
                 key={player.id}
                 onClick={() => setShowFoulModal(player.id)}
-                className="flex items-center justify-between px-3 py-2 bg-gray-50 dark:bg-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="flex items-center justify-between px-3 py-2 bg-gray-50 dark:bg-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors min-h-[3.5rem]"
               >
                 <div className="flex flex-col items-center">
                   <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center text-white text-sm font-bold">
@@ -246,7 +258,7 @@ export default function SchemeSelector({ onSelect }: Props) {
                     {player.name.split(' ').slice(-1)[0]}
                   </span>
                 </div>
-                <div className={`text-2xl font-bold ${getFoulColor(fouls)}`}>
+                <div className={`text-3xl font-bold ${getFoulColor(fouls)}`}>
                     {fouls}
                 </div>
               </button>
@@ -277,7 +289,7 @@ export default function SchemeSelector({ onSelect }: Props) {
                   </div>
                   
                   <div className="text-center mb-6">
-                    <div className={`w-20 h-20 ${getFoulColor(fouls)} rounded-xl flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4`}>
+                    <div className={`w-24 h-24 ${getFoulColor(fouls) === 'text-gray-900 dark:text-white' ? 'bg-primary-600' : 'bg-current'} rounded-xl flex items-center justify-center text-white text-3xl font-bold mx-auto mb-4`}>
                       {fouls}
                     </div>
                     <p className="text-lg font-medium text-gray-900 dark:text-white">
@@ -289,14 +301,14 @@ export default function SchemeSelector({ onSelect }: Props) {
                     <button
                       onClick={() => updatePlayerFouls(showFoulModal, -1)}
                       disabled={fouls === 0}
-                      className="flex items-center justify-center w-16 h-16 bg-red-500 hover:bg-red-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-xl text-2xl font-bold transition-colors"
+                      className="flex items-center justify-center w-20 h-20 bg-red-500 hover:bg-red-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-xl text-2xl font-bold transition-colors"
                     >
                       <Minus className="w-8 h-8" />
                     </button>
                     <button
                       onClick={() => updatePlayerFouls(showFoulModal, 1)}
                       disabled={fouls === 5}
-                      className="flex items-center justify-center w-16 h-16 bg-emerald-500 hover:bg-emerald-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-xl text-2xl font-bold transition-colors"
+                      className="flex items-center justify-center w-20 h-20 bg-emerald-500 hover:bg-emerald-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-xl text-2xl font-bold transition-colors"
                     >
                       <Plus className="w-8 h-8" />
                     </button>
