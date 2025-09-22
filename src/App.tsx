@@ -13,7 +13,6 @@ import PastGames from './components/PastGames';
 import Statistics from './components/Statistics';
 import TeamManagement from './components/TeamManagement';
 import Settings from './components/Settings';
-import PWAInstallPrompt from './components/PWAInstallPrompt';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuth();
@@ -50,7 +49,6 @@ function AppContent() {
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </main>
-          <PWAInstallPrompt />
         </NavigationProvider>
       ) : (
         <Routes>
