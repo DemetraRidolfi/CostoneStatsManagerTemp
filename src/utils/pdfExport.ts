@@ -59,7 +59,7 @@ export async function exportStatsToPDF(
         .sort((a, b) => b.total - a.total);
 
       const schemeHeaders = [
-        'SCHEMA', 'TOTALE', '2P', '3P', 'FALLI', 'PERSE', 'RIMB.', 'PT.RIM', 'ASSIST', 'PUNTI', 'EFF.', 'PROD.'
+        'SCHEMA', 'TOT', '2P', '3P', 'FS', 'PP', 'RO', 'PT.RO', 'AS', 'PUNTI', 'EFF.', 'PROD.'
       ];
 
       const formatTableRow = (stat: typeof data.stats[0]) => [

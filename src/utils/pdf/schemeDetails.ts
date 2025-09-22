@@ -133,13 +133,13 @@ async function addSchemeStatisticsPage(
 
     const headers = [
       'GIOCATORE',
-      'UTILIZZI',
+      'TOT',
       '2P',
       '3P',
-      'FALLI',
-      'PERSE',
+      'FS',
+      'PP',
       'PUNTI',
-      'RIM.PT',
+      'PT.RO',
       'EFF.',
       'PROD.',
     ];
