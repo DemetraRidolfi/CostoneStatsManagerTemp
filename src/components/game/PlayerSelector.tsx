@@ -16,7 +16,7 @@ export default function PlayerSelector({ onSelect }: Props) {
 
   if (tabletMode) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 h-[calc(100vh-16rem)] flex flex-col">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 h-[calc(100vh-18rem)] flex flex-col">
         {/* No Impact Button */}
         <div className="mb-3">
           <button
