@@ -184,9 +184,9 @@ export default function NewGame() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-6 gap-6 p-4 min-h-0">
+      <div className="flex-1 flex gap-6 p-4 min-h-0">
         {/* Left Side - Play History */}
-        <div className="lg:col-span-1 flex flex-col min-h-0">
+        <div className="w-80 flex-shrink-0 flex flex-col min-h-0">
           <PlayHistory 
             plays={gameData.plays || []} 
             players={PLAYERS}
@@ -196,7 +196,7 @@ export default function NewGame() {
         </div>
 
         {/* Right Side - Main Content */}
-        <div className="lg:col-span-5 flex flex-col min-h-0">
+        <div className="flex-1 flex flex-col min-h-0">
           {currentStep === 'scheme' && (
             <SchemeSelector onSelect={handleSchemeSelect} />
           )}
