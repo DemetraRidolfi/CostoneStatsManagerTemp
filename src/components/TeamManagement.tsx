@@ -347,9 +347,7 @@ export default function TeamManagement() {
             ))}
             {sortedPlayers.length === 0 && (
               <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-                    {categorySchemes.map((scheme, index) => {
-                      const categoryIndex = categorySchemes.findIndex(s => s.id === scheme.id);
-                      return (
+                Nessun giocatore presente
               </div>
             )}
           </div>
@@ -373,83 +371,85 @@ export default function TeamManagement() {
           </div>
 
           <div className="space-y-6">
-                                disabled={categoryIndex === 0}
+            {Object.entries(groupedSchemes).map(([category, categorySchemes]) => (
               <div key={category}>
                 <h3 className="text-lg font-medium text-primary-600 dark:text-primary-400 mb-4">
                   {category}
                 </h3>
                 <div className="grid gap-3">
-                  {categorySchemes.map((scheme, index) => (
-                    <div key={scheme.id} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
-                                disabled={categoryIndex === categorySchemes.length - 1}
-                        <h4 className={`font-medium ${
-                          scheme.enabled !== false 
-                            ? scheme.textColor || 'text-gray-900 dark:text-white'
-                            : 'text-gray-500 dark:text-gray-400'
-                        }`}>
-                          {scheme.name}
-                          {scheme.enabled === false && (
-                            <span className="ml-2 text-xs bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">
-                              DISABILITATO
-                            </span>
-                          )}
-                        </h4>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                          Categoria: {scheme.category}
-                        </p>
-                      </div>
-                      <div className="flex gap-2">
-                        {/* Move Up/Down buttons */}
-                        <div className="flex flex-col">
+                  {categorySchemes.map((scheme, index) => {
+                    const categoryIndex = categorySchemes.findIndex(s => s.id === scheme.id);
+                    return (
+                      <div key={scheme.id} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                        <div>
+                          <h4 className={`font-medium ${
+                            scheme.enabled !== false 
+                              ? scheme.textColor || 'text-gray-900 dark:text-white'
+                              : 'text-gray-500 dark:text-gray-400'
+                          }`}>
+                            {scheme.name}
+                            {scheme.enabled === false && (
+                              <span className="ml-2 text-xs bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">
+                                DISABILITATO
+                              </span>
+                            )}
+                          </h4>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">
+                            Categoria: {scheme.category}
+                          </p>
+                        </div>
+                        <div className="flex gap-2">
+                          {/* Move Up/Down buttons */}
+                          <div className="flex flex-col">
+                            <button
+                              onClick={() => moveScheme(scheme.id, 'up')}
+                              disabled={categoryIndex === 0}
+                              className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:opacity-30 disabled:cursor-not-allowed"
+                              title="Sposta su"
+                            >
+                              <ChevronUp className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => moveScheme(scheme.id, 'down')}
+                              disabled={categoryIndex === categorySchemes.length - 1}
+                              className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:opacity-30 disabled:cursor-not-allowed"
+                              title="Sposta giù"
+                            >
+                              <ChevronDown className="w-4 h-4" />
+                            </button>
+                          </div>
+                          {/* Enable/Disable toggle */}
                           <button
-                            onClick={() => moveScheme(scheme.id, 'up')}
-                            disabled={index === 0}
-                            className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:opacity-30 disabled:cursor-not-allowed"
-                            title="Sposta su"
+                            onClick={() => updateScheme({ ...scheme, enabled: !scheme.enabled })}
+                            className={`p-2 rounded-lg transition-colors ${
+                              scheme.enabled !== false
+                                ? 'text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20'
+                                : 'text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
+                            }`}
+                            title={scheme.enabled !== false ? 'Disabilita schema' : 'Abilita schema'}
                           >
-                            <ChevronUp className="w-4 h-4" />
+                            {scheme.enabled !== false ? (
+                              <Eye className="w-5 h-5" />
+                            ) : (
+                              <EyeOff className="w-5 h-5" />
+                            )}
                           </button>
                           <button
-                            onClick={() => moveScheme(scheme.id, 'down')}
-                            disabled={index === categorySchemes.length - 1}
-                            className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:opacity-30 disabled:cursor-not-allowed"
-                            title="Sposta giù"
+                            onClick={() => handleEditScheme(scheme)}
+                            className="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
                           >
-                            <ChevronDown className="w-4 h-4" />
+                            <Edit2 className="w-5 h-5" />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteScheme(scheme.id)}
+                            className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                          >
+                            <Trash2 className="w-5 h-5" />
                           </button>
                         </div>
-                        {/* Enable/Disable toggle */}
-                        <button
-                          onClick={() => updateScheme({ ...scheme, enabled: !scheme.enabled })}
-                          className={`p-2 rounded-lg transition-colors ${
-                            scheme.enabled !== false
-                              ? 'text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20'
-                              : 'text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
-                          }`}
-                          title={scheme.enabled !== false ? 'Disabilita schema' : 'Abilita schema'}
-                        >
-                          {scheme.enabled !== false ? (
-                            <Eye className="w-5 h-5" />
-                          ) : (
-                            <EyeOff className="w-5 h-5" />
-                          )}
-                        </button>
-                        <button
-                          onClick={() => handleEditScheme(scheme)}
-                          className="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
-                        >
-                          <Edit2 className="w-5 h-5" />
-                        </button>
-                        <button
-                          onClick={() => handleDeleteScheme(scheme.id)}
-                      );
-                    })}
-                        >
-                          <Trash2 className="w-5 h-5" />
-                        </button>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                   {categorySchemes.length === 0 && (
                     <div className="text-center py-4 text-gray-500 dark:text-gray-400">
                       Nessuno schema presente in questa categoria
