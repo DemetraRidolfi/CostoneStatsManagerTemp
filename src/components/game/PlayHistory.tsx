@@ -184,7 +184,7 @@ export default function PlayHistory({
   };
 
   // Show last 4 plays in desktop mode, last 2 in tablet mode
-  const recentPlays = [...plays].reverse().slice(0, tabletMode ? 2 : 4);
+  const recentPlays = [...plays].reverse().slice(0, 5);
   const totalPlays = plays.length;
 
   const containerClass = hideDelete
