@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Plus, Minus, X } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useTeamData } from '../../hooks/useTeamData';
 
@@ -12,8 +13,12 @@ export default function SchemeSelector({ onSelect }: Props) {
   const { tabletMode } = useTheme();
   const { getEnabledSchemes } = useTeamData();
   const [selectedCategory, setSelectedCategory] = useState<Category>('Uomo');
+  const [playerFouls, setPlayerFouls] = useState<Record<number, number>>({});
+  const [showFoulModal, setShowFoulModal] = useState<number | null>(null);
 
   const schemes = getEnabledSchemes();
+  const { getEnabledPlayers } = useTeamData();
+  const players = getEnabledPlayers();
 
   // Organize schemes by category
   const uomoSchemes = schemes.filter(s => s.category === 'Uomo' && !s.name.includes('ZONA'));
@@ -50,9 +55,25 @@ export default function SchemeSelector({ onSelect }: Props) {
     return scheme.textColor || 'text-gray-800 dark:text-gray-100 group-hover:text-primary-700 dark:group-hover:text-primary-400';
   };
 
+  const getFoulColor = (fouls: number) => {
+    if (fouls >= 5) return 'bg-red-500';
+    if (fouls >= 4) return 'bg-orange-500';
+    if (fouls >= 3) return 'bg-yellow-500';
+    return 'bg-primary-600';
+  };
+
+  const updatePlayerFouls = (playerId: number, change: number) => {
+    setPlayerFouls(prev => {
+      const currentFouls = prev[playerId] || 0;
+      const newFouls = Math.max(0, Math.min(5, currentFouls + change));
+      return { ...prev, [playerId]: newFouls };
+    });
+  };
+
   if (tabletMode) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 h-[calc(100vh-16rem)] flex flex-col">
+      <div className="flex flex-col h-[calc(100vh-12rem)]">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 flex-1 flex flex-col">
         {/* Category Selector */}
         <div className="flex gap-2 mb-3">
           {Object.keys(categoryMap).map(category => (
@@ -127,6 +148,33 @@ export default function SchemeSelector({ onSelect }: Props) {
           )}
         </div>
       </div>
+
+        {/* Foul Tracking Bar - Tablet */}
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 mt-3 h-20">
+          <div className="flex items-center gap-2 overflow-x-auto">
+            {players.map(player => {
+              const fouls = playerFouls[player.id] || 0;
+              return (
+                <button
+                  key={player.id}
+                  onClick={() => setShowFoulModal(player.id)}
+                  className="flex items-center gap-2 px-3 py-2 bg-gray-50 dark:bg-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors flex-shrink-0"
+                >
+                  <div className={`w-8 h-8 ${getFoulColor(fouls)} rounded-lg flex items-center justify-center text-white text-sm font-bold`}>
+                    {player.number}
+                  </div>
+                  <span className="text-sm font-medium text-gray-900 dark:text-white">
+                    {player.name.split(' ').slice(-1)[0]}
+                  </span>
+                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                    {fouls}F
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
     );
   }
 
@@ -154,7 +202,8 @@ export default function SchemeSelector({ onSelect }: Props) {
   );
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 h-[calc(100vh-16rem)] overflow-y-auto">
+    <div className="flex flex-col h-[calc(100vh-12rem)]">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 flex-1 overflow-y-auto">
       <div className="space-y-6">
         {uomoSchemes.length > 0 && (
           <SchemeSection title="Uomo" schemes={uomoSchemes} />
@@ -166,6 +215,87 @@ export default function SchemeSelector({ onSelect }: Props) {
           <SchemeSection title="Rimesse" schemes={rimesseSchemes} />
         )}
       </div>
+
+      {/* Foul Tracking Bar - Desktop */}
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 mt-4 h-24">
+        <div className="flex items-center justify-center gap-4 h-full overflow-x-auto">
+          {players.map(player => {
+            const fouls = playerFouls[player.id] || 0;
+            return (
+              <button
+                key={player.id}
+                onClick={() => setShowFoulModal(player.id)}
+                className="flex items-center gap-3 px-4 py-3 bg-gray-50 dark:bg-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors flex-shrink-0"
+              >
+                <div className={`w-10 h-10 ${getFoulColor(fouls)} rounded-lg flex items-center justify-center text-white text-lg font-bold`}>
+                  {player.number}
+                </div>
+                <div className="text-left">
+                  <div className="text-sm font-medium text-gray-900 dark:text-white">
+                    {player.name.split(' ').slice(-1)[0]}
+                  </div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400">
+                    {fouls} Falli
+                  </div>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Foul Modal */}
+      {showFoulModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 max-w-md w-full mx-4">
+            {(() => {
+              const player = players.find(p => p.id === showFoulModal);
+              const fouls = playerFouls[showFoulModal] || 0;
+              return (
+                <>
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                      #{player?.number} {player?.name}
+                    </h3>
+                    <button
+                      onClick={() => setShowFoulModal(null)}
+                      className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                    >
+                      <X className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                    </button>
+                  </div>
+                  
+                  <div className="text-center mb-6">
+                    <div className={`w-20 h-20 ${getFoulColor(fouls)} rounded-xl flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4`}>
+                      {fouls}
+                    </div>
+                    <p className="text-lg font-medium text-gray-900 dark:text-white">
+                      {fouls === 1 ? '1 Fallo' : `${fouls} Falli`}
+                    </p>
+                  </div>
+    </div>
+                  <div className="flex justify-center gap-4">
+                    <button
+                      onClick={() => updatePlayerFouls(showFoulModal, -1)}
+                      disabled={fouls === 0}
+                      className="flex items-center justify-center w-16 h-16 bg-red-500 hover:bg-red-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-xl text-2xl font-bold transition-colors"
+                    >
+                      <Minus className="w-8 h-8" />
+                    </button>
+                    <button
+                      onClick={() => updatePlayerFouls(showFoulModal, 1)}
+                      disabled={fouls === 5}
+                      className="flex items-center justify-center w-16 h-16 bg-emerald-500 hover:bg-emerald-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-xl text-2xl font-bold transition-colors"
+                    >
+                      <Plus className="w-8 h-8" />
+                    </button>
+                  </div>
+                </>
+              );
+            })()}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
