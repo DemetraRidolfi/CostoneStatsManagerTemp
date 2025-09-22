@@ -189,11 +189,11 @@ export default function PlayHistory({
 
   const containerClass = hideDelete
     ? ''
-    : 'bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3';
+    : 'bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 h-[calc(100vh-16rem)]';
   
   return (
     <>
-      <div className={`${containerClass} h-full flex flex-col overflow-hidden`}>
+      <div className={`${containerClass} flex flex-col overflow-hidden`}>
         <div className="flex items-center justify-between mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center gap-2">
             <History className="w-4 h-4 text-primary-600 dark:text-primary-400" />
