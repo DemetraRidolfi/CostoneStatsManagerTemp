@@ -215,6 +215,7 @@ export default function SchemeSelector({ onSelect }: Props) {
           <SchemeSection title="Rimesse" schemes={rimesseSchemes} />
         )}
       </div>
+      </div>
 
       {/* Foul Tracking Bar - Desktop */}
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 mt-4 h-24">
@@ -273,7 +274,7 @@ export default function SchemeSelector({ onSelect }: Props) {
                       {fouls === 1 ? '1 Fallo' : `${fouls} Falli`}
                     </p>
                   </div>
-    </div>
+                  
                   <div className="flex justify-center gap-4">
                     <button
                       onClick={() => updatePlayerFouls(showFoulModal, -1)}
