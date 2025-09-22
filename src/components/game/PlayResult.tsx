@@ -259,8 +259,8 @@ export default function PlayResult({ schemeId, playerId, onSave, onCancel }: Pro
     setPendingPlayResult(null);
   };
   const containerClass = tabletMode
-    ? "bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 h-[calc(100vh-16rem)] flex flex-col"
-    : "bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 h-[calc(100vh-16rem)] flex flex-col";
+    ? "bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 h-[calc(100vh-12rem)] flex flex-col"
+    : "bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 h-[calc(100vh-12rem)] flex flex-col";
 
   const buttonClass = tabletMode
     ? "h-16 text-sm"
