@@ -132,17 +132,19 @@ export default function SchemeSelector({ onSelect }: Props) {
 
   // Desktop layout
   const SchemeSection = ({ title, schemes }: { title: string; schemes: Scheme[] }) => (
-    <div>
+    <div className="mb-6 last:mb-0">
       <div className="flex items-center gap-3 mb-3">
         <h3 className="text-base font-semibold text-gray-900 dark:text-white">{title}</h3>
         <div className="h-px flex-1 bg-gray-200 dark:bg-gray-700"></div>
       </div>
-      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-6 p-2">
+      <div className="grid gap-3" style={{
+        gridTemplateColumns: `repeat(${Math.min(schemes.length, 6)}, minmax(120px, 1fr))`
+      }}>
         {schemes.map(scheme => (
           <button
             key={scheme.id}
             onClick={() => onSelect(scheme.id)}
-            className={`group h-16 px-3 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary-400 dark:hover:border-primary-600 transition-all hover:scale-105 shadow-sm hover:shadow flex items-center justify-center transform-gpu`}
+            className="group h-14 px-3 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary-400 dark:hover:border-primary-600 transition-all hover:scale-105 shadow-sm hover:shadow flex items-center justify-center transform-gpu"
           >
             <span className={`text-center font-medium text-sm tracking-wide ${title === 'Rimesse' ? getSchemeTextColor(scheme, 'Rimesse') : getSchemeTextColor(scheme)} transition-colors`}>
               {scheme.name}
@@ -154,8 +156,8 @@ export default function SchemeSelector({ onSelect }: Props) {
   );
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 h-[calc(100vh-16rem)] overflow-y-auto">
-      <div className="space-y-6">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 h-[calc(100vh-12rem)] flex flex-col">
+      <div className="flex-1 flex flex-col justify-center space-y-4 overflow-y-auto">
         {uomoSchemes.length > 0 && (
           <SchemeSection title="Uomo" schemes={uomoSchemes} />
         )}
