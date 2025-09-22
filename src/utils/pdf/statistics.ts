@@ -96,7 +96,6 @@ export async function addPlayerStats(
       head: [['Statistica', 'Valore']],
       body: overallStats,
     });
-            <div className="grid grid-cols-3 gap-4">
     currentY = (doc as any).lastAutoTable.finalY + 20;
 
     // Function to add scheme category table
