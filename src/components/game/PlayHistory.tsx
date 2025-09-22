@@ -19,6 +19,7 @@ type Props = {
   schemes: Scheme[];
   onDelete: ((timestamp: number) => void) | null;
   hideDelete?: boolean;
+  fillHeight?: boolean;
 };
 
 export default function PlayHistory({
@@ -27,6 +28,7 @@ export default function PlayHistory({
   schemes,
   onDelete,
   hideDelete,
+  fillHeight = false,
 }: Props) {
   const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null);
   const [showFullHistory, setShowFullHistory] = useState(false);
@@ -189,7 +191,9 @@ export default function PlayHistory({
 
   const containerClass = hideDelete
     ? ''
-    : 'bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 h-[calc(100vh-16rem)]';
+    : fillHeight 
+      ? 'bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 h-full'
+      : 'bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 h-[calc(100vh-16rem)]';
   
   return (
     <>

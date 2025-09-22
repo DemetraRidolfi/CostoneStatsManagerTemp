@@ -192,6 +192,7 @@ export default function NewGame() {
             players={PLAYERS}
             schemes={schemes}
             onDelete={deletePlay}
+            fillHeight={currentStep === 'scheme'}
           />
         </div>
 
