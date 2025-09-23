@@ -94,7 +94,7 @@ export default function SchemeSelector({ onSelect }: Props) {
 
   if (tabletMode) {
     return (
-      <div className="flex flex-col min-h-[calc(100vh-8rem)] scheme-selector-portrait">
+      <div className="flex flex-col h-[calc(100vh-12rem)]">
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 flex-1 flex flex-col">
         {/* Category Selector */}
         <div className="flex gap-2 mb-3">
@@ -114,7 +114,7 @@ export default function SchemeSelector({ onSelect }: Props) {
         </div>
 
         {/* Schemes Grid */}
-        <div className="flex-1 overflow-y-auto p-1 scheme-selector-container">
+        <div className="flex-1 overflow-y-auto p-1">
           {selectedCategory === 'Rimesse' ? (
             <div className="space-y-3">
               {/* Laterale schemes section */}
@@ -171,8 +171,8 @@ export default function SchemeSelector({ onSelect }: Props) {
         </div>
       </div>
 
-        {/* Foul Tracking Bar - Tablet - Extended */}
-        <div className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 mt-3 pb-8 foul-tracking-portrait ${getContainerHeight()}`}>
+        {/* Foul Tracking Bar - Tablet */}
+        <div className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 mt-3 ${getContainerHeight()}`}>
           <div className={`grid grid-cols-6 gap-2 h-full ${getMinHeight()}`}>
             {players.map(player => {
               const fouls = playerFouls[player.id] || 0;

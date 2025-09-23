@@ -31,11 +31,11 @@ function AppContent() {
   }
 
   return (
-    <div className="min-h-screen h-screen bg-green-50/50 dark:bg-gray-900 transition-colors flex flex-col portrait-container">
+    <div className="min-h-screen h-full bg-green-50/50 dark:bg-gray-900 transition-colors flex flex-col portrait-container">
       {isAuthenticated ? (
         <NavigationProvider>
           <Navigation />
-          <main className="flex-1 bg-green-50/50 dark:bg-gray-900 min-h-0">
+          <main className="flex-1 bg-green-50/50 dark:bg-gray-900">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/new-game" element={<NewGame />} />
