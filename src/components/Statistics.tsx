@@ -53,6 +53,14 @@ export default function Statistics() {
       const turnover = schemePlays.filter(p => p.type === 'turnover').length;
       const assists = schemePlays.filter(p => p.hasAssist === true).length;
       
+      // Calculate rebounds and rebound points for this scheme
+      const rebounds = schemePlays.filter(p => 
+        (p.type === 'missed2' || p.type === 'missed3') && p.offensiveRebound === true
+      ).length;
+      const reboundPoints = schemePlays.reduce((acc, p) => 
+        acc + (p.reboundPoints || 0), 0
+      );
+      
       const efficiency = calculateEfficiency(schemePlays);
       const productivity = calculateProductivity(schemePlays);
       const points = calculatePoints(schemePlays).total;
@@ -65,6 +73,8 @@ export default function Statistics() {
         foulShot,
         turnover,
         assists,
+        rebounds,
+        reboundPoints,
         efficiency,
         productivity,
         points,
