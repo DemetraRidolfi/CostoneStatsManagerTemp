@@ -138,6 +138,17 @@
       margin-top: auto !important;
       flex-shrink: 0 !important;
     }
+    
+    /* Extend scheme selector background in portrait */
+    .scheme-selector-portrait {
+      min-height: calc(100vh - 6rem) !important;
+      padding-bottom: 2rem !important;
+    }
+    
+    .foul-tracking-portrait {
+      padding-bottom: 2rem !important;
+      margin-bottom: 2rem !important;
+    }
   }
 }
 /* Font Size Classes */
