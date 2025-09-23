@@ -53,6 +53,16 @@
     background-color: #111827 !important;
   }
 
+  /* Game control bar adjustments for portrait */
+  .game-control-bar {
+    top: 0 !important;
+    margin: 0.5rem !important;
+  }
+
+  .game-content-with-bar {
+    margin-top: 5rem !important;
+  }
+
   /* Fix any white containers that might appear */
   body {
     overflow-x: hidden;
