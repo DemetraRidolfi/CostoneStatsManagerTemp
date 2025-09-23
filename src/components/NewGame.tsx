@@ -125,9 +125,9 @@ export default function NewGame() {
   // Calculate dynamic top spacing based on menu visibility and orientation
   const getTopSpacing = () => {
     if (isPortrait) {
-      return 'pt-24'; // Fixed spacing in portrait
+      return menuVisible ? 'pt-24' : 'pt-12'; // Reduced space in portrait for better layout
     }
-    return 'pt-20'; // Fixed spacing on desktop
+    return menuVisible ? 'pt-20' : 'pt-8'; // Desktop spacing
   };
 
   return (
@@ -162,7 +162,11 @@ export default function NewGame() {
       )}
 
       {/* Top Navigation Bar */}
-      <div className="sticky top-16 z-30 bg-white dark:bg-gray-800 shadow-md p-4 mx-4 rounded-xl mb-6">
+      <div className={`fixed left-0 right-0 z-30 bg-white dark:bg-gray-800 shadow-md p-4 mx-4 rounded-xl transition-all duration-300 ${
+        menuVisible 
+          ? isPortrait ? 'top-16' : 'top-16' 
+          : isPortrait ? 'top-2' : 'top-2'
+      }`}>
         <div className="flex justify-between items-center">
           <button
             onClick={handleBack}
@@ -212,7 +216,9 @@ export default function NewGame() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-6 gap-6 p-4 min-h-0">
+      <div className={`flex-1 grid grid-cols-1 lg:grid-cols-6 gap-6 p-4 min-h-0 transition-all duration-300 ${
+        isPortrait ? 'mt-20' : 'mt-16'
+      }`}>
         {/* Left Side - Play History */}
         <div className="lg:col-span-1 flex flex-col min-h-0">
           <PlayHistory 
