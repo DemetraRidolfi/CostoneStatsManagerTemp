@@ -213,13 +213,18 @@ export default function PlayHistory({
   const getContainerClass = () => {
     if (hideDelete) return '';
     
-    // Default: use full available height, portrait will be handled by CSS
-    return 'bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 h-[calc(100vh-12em)] play-history-container';
+    if (isPortrait) {
+      // Portrait: fixed height with proper flex layout
+      return 'bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 play-history-container flex flex-col';
+    }
+    
+    // Desktop: use full available height
+    return 'bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 h-[calc(100vh-12em)] flex flex-col';
   };
   
   return (
     <>
-      <div className={`${getContainerClass()} flex flex-col overflow-hidden`}>
+      <div className={`${getContainerClass()} overflow-hidden`}>
         <div className="flex items-center justify-between mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center gap-2">
             <History className="w-4 h-4 text-primary-600 dark:text-primary-400" />
@@ -232,10 +237,10 @@ export default function PlayHistory({
           </span>
         </div>
 
-        <div className="flex-1 overflow-hidden flex flex-col min-h-0 play-history-content">
-          <div className="flex-1 overflow-y-auto space-y-2 mb-2 px-0.5 play-history-list">
+        <div className={`flex-1 overflow-hidden flex flex-col min-h-0 play-history-content ${isPortrait ? 'min-h-[120px]' : ''}`}>
+          <div className={`flex-1 overflow-y-auto space-y-2 mb-2 px-0.5 play-history-list ${isPortrait ? 'max-h-[140px]' : ''}`}>
             {totalPlays === 0 ? (
-              <div className="h-full flex items-center justify-center play-history-empty">
+              <div className={`h-full flex items-center justify-center play-history-empty ${isPortrait ? 'min-h-[80px]' : ''}`}>
                 <p className="text-xs text-gray-500 dark:text-gray-400">
                   Nessuna azione registrata
                 </p>
@@ -249,7 +254,9 @@ export default function PlayHistory({
 
           <button
             onClick={() => setShowFullHistory(true)}
-            className="w-full flex items-center justify-center gap-2 text-xs px-3 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors mt-auto play-history-button"
+            className={`w-full flex items-center justify-center gap-2 text-xs px-3 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors mt-auto play-history-button flex-shrink-0 ${
+              isPortrait ? 'min-h-[40px]' : ''
+            }`}
           >
             <Maximize2 className="w-4 h-4" />
             <span>Cronologia Completa</span>

@@ -61,7 +61,8 @@
   /* Portrait-specific PlayHistory styling */
   .play-history-container {
     height: auto !important;
-    max-height: 200px !important;
+    max-height: 250px !important;
+    min-height: 180px !important;
   }
   
   .play-history-content {
@@ -72,18 +73,19 @@
   .play-history-list {
     flex: none !important;
     overflow: visible !important;
-    max-height: 120px;
+    max-height: 140px;
     overflow-y: auto;
   }
   
   .play-history-empty {
-    height: 60px !important;
+    height: 80px !important;
   }
   
   .play-history-button {
     margin-top: 0.5rem !important;
-    padding-top: 0.375rem !important;
-    padding-bottom: 0.375rem !important;
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+    flex-shrink: 0 !important;
   }
   
   .portrait-container {
@@ -112,6 +114,30 @@
   
   .game-content-portrait.menu-visible {
     margin-top: 7rem !important;
+  }
+
+  /* Ensure PlayHistory has proper flex layout in portrait */
+  @media (orientation: portrait) {
+    .play-history-container {
+      display: flex !important;
+      flex-direction: column !important;
+    }
+    
+    .play-history-content {
+      display: flex !important;
+      flex-direction: column !important;
+      min-height: 0 !important;
+    }
+    
+    .play-history-list {
+      flex: 1 !important;
+      min-height: 0 !important;
+    }
+    
+    .play-history-button {
+      margin-top: auto !important;
+      flex-shrink: 0 !important;
+    }
   }
 }
 /* Font Size Classes */
