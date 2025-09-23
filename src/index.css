@@ -94,7 +94,7 @@
   /* Game control bar adjustments for portrait */
   .game-control-bar-portrait {
     position: fixed !important;
-    top: 4rem !important;
+    top: 3.5rem !important;
     left: 0.5rem !important;
     right: 0.5rem !important;
     z-index: 30 !important;
@@ -102,16 +102,16 @@
   }
   
   .game-control-bar-portrait.menu-visible {
-    top: 7rem !important;
+    top: 6rem !important;
   }
   
   .game-content-portrait {
-    margin-top: 6rem !important;
+    margin-top: 5rem !important;
     padding-top: 0 !important;
   }
   
   .game-content-portrait.menu-visible {
-    margin-top: 9rem !important;
+    margin-top: 7.5rem !important;
   }
 }
 /* Font Size Classes */

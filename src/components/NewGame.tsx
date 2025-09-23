@@ -125,7 +125,7 @@ export default function NewGame() {
   // Calculate dynamic top spacing based on menu visibility and orientation
   const getTopSpacing = () => {
     if (isPortrait) {
-      return menuVisible ? 'pt-28' : 'pt-16'; // More space in portrait when menu is visible
+      return menuVisible ? 'pt-24' : 'pt-12'; // Reduced space in portrait for better layout
     }
     return menuVisible ? 'pt-20' : 'pt-8'; // Desktop spacing
   };
