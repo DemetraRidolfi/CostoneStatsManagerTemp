@@ -409,7 +409,7 @@ export default function TeamManagement() {
                           <div className="flex flex-col">
                             <button
                               onClick={() => moveScheme(scheme.id, 'up')}
-                              disabled={categoryIndex === 0}
+                              disabled={index === 0}
                               className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:opacity-30 disabled:cursor-not-allowed"
                               title="Sposta su"
                             >
@@ -417,7 +417,7 @@ export default function TeamManagement() {
                             </button>
                             <button
                               onClick={() => moveScheme(scheme.id, 'down')}
-                              disabled={categoryIndex === categorySchemes.length - 1}
+                              disabled={index === categorySchemes.length - 1}
                               className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:opacity-30 disabled:cursor-not-allowed"
                               title="Sposta giù"
                             >
