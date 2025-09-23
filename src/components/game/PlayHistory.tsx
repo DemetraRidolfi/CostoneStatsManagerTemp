@@ -189,13 +189,22 @@ export default function PlayHistory({
   const recentPlays = [...plays].reverse().slice(0, tabletMode ? 2 : 5);
   const totalPlays = plays.length;
 
-  const containerClass = hideDelete
-    ? ''
-    : 'bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 h-[calc(100vh-12em)]';
+  // Dynamic height based on orientation and content
+  const getContainerClass = () => {
+    if (hideDelete) return '';
+    
+    // In portrait mode (tabletMode), height should fit exactly 2 actions + header + button
+    if (tabletMode) {
+      return 'bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 h-auto max-h-48';
+    }
+    
+    // In landscape mode, use full available height
+    return 'bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 h-[calc(100vh-12em)]';
+  };
   
   return (
     <>
-      <div className={`${containerClass} flex flex-col overflow-hidden ${tabletMode ? 'play-history-portrait' : ''}`}>
+      <div className={`${getContainerClass()} flex flex-col overflow-hidden`}>
         <div className="flex items-center justify-between mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center gap-2">
             <History className="w-4 h-4 text-primary-600 dark:text-primary-400" />
@@ -208,10 +217,10 @@ export default function PlayHistory({
           </span>
         </div>
 
-        <div className={`flex-1 overflow-hidden flex flex-col min-h-0 ${tabletMode ? 'max-h-32' : ''}`}>
-          <div className="flex-1 overflow-y-auto space-y-2 mb-2 px-0.5">
+        <div className={`${tabletMode ? 'flex flex-col' : 'flex-1 overflow-hidden flex flex-col min-h-0'}`}>
+          <div className={`${tabletMode ? 'space-y-2 mb-2 px-0.5' : 'flex-1 overflow-y-auto space-y-2 mb-2 px-0.5'}`}>
             {totalPlays === 0 ? (
-              <div className={`${tabletMode ? 'h-16' : 'h-full'} flex items-center justify-center`}>
+              <div className={`${tabletMode ? 'h-12 py-2' : 'h-full'} flex items-center justify-center`}>
                 <p className="text-xs text-gray-500 dark:text-gray-400">
                   Nessuna azione registrata
                 </p>
@@ -225,7 +234,9 @@ export default function PlayHistory({
 
           <button
             onClick={() => setShowFullHistory(true)}
-            className="w-full flex items-center justify-center gap-2 py-2 text-xs px-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors mt-auto"
+            className={`w-full flex items-center justify-center gap-2 text-xs px-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors ${
+              tabletMode ? 'py-1.5 mt-2' : 'py-2 mt-auto'
+            }`}
           >
             <Maximize2 className="w-4 h-4" />
             <span>Cronologia Completa</span>

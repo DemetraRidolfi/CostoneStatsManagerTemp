@@ -38,10 +38,6 @@
   }
   
   /* Reduce play history to show only 2 recent plays */
-  .play-history-portrait {
-    max-height: 200px;
-  }
-  
   /* Ensure proper spacing and sizing for portrait */
   .portrait-container {
     min-height: 100vh;
