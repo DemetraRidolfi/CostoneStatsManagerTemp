@@ -48,6 +48,28 @@
   animation: none !important;
 }
 
+/* Custom animations for scheme movement */
+@keyframes bounce-up {
+  0%, 100% { transform: translateY(0); }
+  25% { transform: translateY(-8px); }
+  50% { transform: translateY(-4px); }
+  75% { transform: translateY(-2px); }
+}
+
+@keyframes bounce-down {
+  0%, 100% { transform: translateY(0); }
+  25% { transform: translateY(8px); }
+  50% { transform: translateY(4px); }
+  75% { transform: translateY(2px); }
+}
+
+.animate-bounce-up {
+  animation: bounce-up 0.3s ease-out;
+}
+
+.animate-bounce-down {
+  animation: bounce-down 0.3s ease-out;
+}
 /* Tablet Mode Optimizations */
 .tablet-mode {
   /* Enhanced touch targets */

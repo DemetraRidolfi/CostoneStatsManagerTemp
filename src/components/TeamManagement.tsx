@@ -40,6 +40,8 @@ export default function TeamManagement() {
   const { players, schemes, addPlayer, updatePlayer, deletePlayer, movePlayer, addScheme, updateScheme, deleteScheme, moveScheme } = useTeamData();
   
   const [activeTab, setActiveTab] = useState<'players' | 'schemes'>('players');
+  const [movingScheme, setMovingScheme] = useState<string | null>(null);
+  const [moveDirection, setMoveDirection] = useState<'up' | 'down' | null>(null);
 
   // Helper function to convert text color classes to background color classes
   const getColorBackground = (textColorClass: string) => {
@@ -202,6 +204,20 @@ export default function TeamManagement() {
     }
   };
 
+  const handleMoveScheme = (schemeId: string, direction: 'up' | 'down') => {
+    // Set visual animation state
+    setMovingScheme(schemeId);
+    setMoveDirection(direction);
+    
+    // Perform the actual move
+    moveScheme(schemeId, direction);
+    
+    // Clear animation state after animation completes
+    setTimeout(() => {
+      setMovingScheme(null);
+      setMoveDirection(null);
+    }, 300);
+  };
   const groupedSchemes = {
     Uomo: schemes.filter(s => s.category === 'Uomo').sort((a, b) => (a.order || 0) - (b.order || 0)),
     Zona: schemes.filter(s => s.category === 'Zona').sort((a, b) => (a.order || 0) - (b.order || 0)),
@@ -379,8 +395,19 @@ export default function TeamManagement() {
                 <div className="grid gap-3">
                   {categorySchemes.map((scheme, index) => {
                     const categoryIndex = categorySchemes.findIndex(s => s.id === scheme.id);
+                    const isMoving = movingScheme === scheme.id;
+                    const animationClass = isMoving 
+                      ? moveDirection === 'up' 
+                        ? 'animate-bounce-up' 
+                        : 'animate-bounce-down'
+                      : '';
                     return (
-                      <div key={scheme.id} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                      <div 
+                        key={scheme.id} 
+                        className={`flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900 rounded-lg transition-all duration-300 ${animationClass} ${
+                          isMoving ? 'shadow-lg scale-105 bg-primary-50 dark:bg-primary-900/20 border-2 border-primary-300 dark:border-primary-600' : ''
+                        }`}
+                      >
                         <div>
                           <h4 className={`font-medium ${
                             scheme.enabled !== false 
@@ -402,7 +429,7 @@ export default function TeamManagement() {
                           {/* Move Up/Down buttons */}
                           <div className="flex flex-col">
                             <button
-                              onClick={() => moveScheme(scheme.id, 'up')}
+                              onClick={() => handleMoveScheme(scheme.id, 'up')}
                               disabled={categoryIndex === 0}
                               className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:opacity-30 disabled:cursor-not-allowed"
                               title="Sposta su"
@@ -410,7 +437,7 @@ export default function TeamManagement() {
                               <ChevronUp className="w-4 h-4" />
                             </button>
                             <button
-                              onClick={() => moveScheme(scheme.id, 'down')}
+                              onClick={() => handleMoveScheme(scheme.id, 'down')}
                               disabled={categoryIndex === categorySchemes.length - 1}
                               className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:opacity-30 disabled:cursor-not-allowed"
                               title="Sposta giù"
