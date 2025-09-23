@@ -13,12 +13,32 @@ import { useNavigation } from '../contexts/NavigationContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { useTeamData } from '../hooks/useTeamData';
 
+// Custom hook to detect portrait orientation
+const useIsPortrait = () => {
+  const [isPortrait, setIsPortrait] = React.useState(
+    typeof window !== 'undefined' ? window.matchMedia('(orientation: portrait)').matches : false
+  );
+
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    const mediaQuery = window.matchMedia('(orientation: portrait)');
+    const handleChange = (e: MediaQueryListEvent) => setIsPortrait(e.matches);
+    
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
+  return isPortrait;
+};
+
 export default function NewGame() {
   const navigate = useNavigate();
   const { draftId } = useParams();
   const { handleNavigation } = useNavigation();
-  const { menuVisible } = useTheme();
+  const { menuVisible, tabletMode } = useTheme();
   const { getEnabledPlayers, getEnabledSchemes } = useTeamData();
+  const isPortrait = useIsPortrait();
   const {
     gameData,
     currentStep,
@@ -102,8 +122,16 @@ export default function NewGame() {
     return <GameHeader onStart={handleGameStart} initialData={gameData} />;
   }
 
+  // Calculate dynamic top spacing based on menu visibility and orientation
+  const getTopSpacing = () => {
+    if (isPortrait) {
+      return menuVisible ? 'pt-28' : 'pt-16'; // More space in portrait when menu is visible
+    }
+    return menuVisible ? 'pt-20' : 'pt-8'; // Desktop spacing
+  };
+
   return (
-    <div className="flex flex-col h-screen">
+    <div className={`flex flex-col h-screen transition-all duration-300 ${getTopSpacing()}`}>
       {/* Confirmation Dialog */}
       {showEndConfirm && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -134,7 +162,11 @@ export default function NewGame() {
       )}
 
       {/* Top Navigation Bar */}
-      <div className="sticky top-0 z-10 bg-white dark:bg-gray-800 shadow-md p-4 rounded-xl">
+      <div className={`fixed left-0 right-0 z-30 bg-white dark:bg-gray-800 shadow-md p-4 mx-4 rounded-xl transition-all duration-300 ${
+        menuVisible 
+          ? isPortrait ? 'top-16' : 'top-16' 
+          : isPortrait ? 'top-2' : 'top-2'
+      }`}>
         <div className="flex justify-between items-center">
           <button
             onClick={handleBack}
@@ -184,7 +216,9 @@ export default function NewGame() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-6 gap-6 p-4 min-h-0">
+      <div className={`flex-1 grid grid-cols-1 lg:grid-cols-6 gap-6 p-4 min-h-0 transition-all duration-300 ${
+        isPortrait ? 'mt-20' : 'mt-16'
+      }`}>
         {/* Left Side - Play History */}
         <div className="lg:col-span-1 flex flex-col min-h-0">
           <PlayHistory 

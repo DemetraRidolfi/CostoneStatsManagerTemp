@@ -4,6 +4,7 @@ import { getAllDraftGames } from '../../services/gameService';
 import { useNavigate } from 'react-router-dom';
 import { FileEdit, AlertTriangle } from 'lucide-react';
 import PageContainer from '../layout/PageContainer';
+import { useTheme } from '../../contexts/ThemeContext';
 
 type Props = {
   onStart: (data: Partial<Game>) => void;
@@ -12,6 +13,7 @@ type Props = {
 
 export default function GameHeader({ onStart, initialData }: Props) {
   const navigate = useNavigate();
+  const { menuVisible } = useTheme();
   const [gameData, setGameData] = useState<Partial<Game>>(initialData || {
     date: new Date().toISOString().split('T')[0],
     opponent: '',
@@ -39,7 +41,14 @@ export default function GameHeader({ onStart, initialData }: Props) {
   };
 
   return (
-    <PageContainer title="NUOVA PARTITA">
+    <div className={`max-w-6xl mx-auto px-4 transition-all duration-300 ${
+      menuVisible ? 'pt-20' : 'pt-8'
+    }`}>
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          NUOVA PARTITA
+        </h1>
+      </div>
       {/* Confirmation Dialog */}
       {showConfirm && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -156,6 +165,6 @@ export default function GameHeader({ onStart, initialData }: Props) {
           </button>
         </form>
       </div>
-    </PageContainer>
+    </div>
   );
 }

@@ -90,6 +90,29 @@
     min-height: 100vh;
     padding-bottom: 2rem;
   }
+  
+  /* Game control bar adjustments for portrait */
+  .game-control-bar-portrait {
+    position: fixed !important;
+    top: 4rem !important;
+    left: 0.5rem !important;
+    right: 0.5rem !important;
+    z-index: 30 !important;
+    margin: 0 !important;
+  }
+  
+  .game-control-bar-portrait.menu-visible {
+    top: 7rem !important;
+  }
+  
+  .game-content-portrait {
+    margin-top: 6rem !important;
+    padding-top: 0 !important;
+  }
+  
+  .game-content-portrait.menu-visible {
+    margin-top: 9rem !important;
+  }
 }
 /* Font Size Classes */
 .text-normal {
