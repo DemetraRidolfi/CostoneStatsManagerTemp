@@ -53,16 +53,6 @@
     background-color: #111827 !important;
   }
 
-  /* Game control bar adjustments for portrait */
-  .game-control-bar {
-    top: 0 !important;
-    margin: 0.5rem !important;
-  }
-
-  .game-content-with-bar {
-    margin-top: 5rem !important;
-  }
-
   /* Fix any white containers that might appear */
   body {
     overflow-x: hidden;
@@ -99,12 +89,6 @@
   .portrait-container {
     min-height: 100vh;
     padding-bottom: 2rem;
-  }
-
-  /* Game control bar adjustments for portrait */
-  /* Adjust content spacing for fixed control bar in portrait */
-  .portrait-container .flex-1 {
-    padding-top: 8rem !important; /* Space for menu (3.5rem) + control bar (4.5rem) */
   }
 }
 /* Font Size Classes */

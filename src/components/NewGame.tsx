@@ -134,7 +134,7 @@ export default function NewGame() {
       )}
 
       {/* Top Navigation Bar */}
-      <div className="fixed top-14 left-0 right-0 z-30 bg-white dark:bg-gray-800 shadow-md p-4 mx-4 rounded-xl">
+      <div className="sticky top-0 z-10 bg-white dark:bg-gray-800 shadow-md p-4 rounded-xl">
         <div className="flex justify-between items-center">
           <button
             onClick={handleBack}
@@ -184,7 +184,7 @@ export default function NewGame() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-6 gap-6 p-4 min-h-0 pt-24">
+      <div className="flex-1 grid grid-cols-1 lg:grid-cols-6 gap-6 p-4 min-h-0">
         {/* Left Side - Play History */}
         <div className="lg:col-span-1 flex flex-col min-h-0">
           <PlayHistory 

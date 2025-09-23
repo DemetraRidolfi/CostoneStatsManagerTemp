@@ -41,7 +41,7 @@ export default function Navigation() {
       {/* Navigation Bar */}
       <nav className={`bg-primary-600 dark:bg-primary-900 shadow-lg transition-all duration-300 ${
         menuVisible ? 'translate-y-0' : '-translate-y-full'
-      } fixed top-0 z-40 w-full overflow-x-auto`}>
+      } sticky top-0 z-40 w-full overflow-x-auto`}>
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex justify-between min-w-max w-full">
             <div className="flex space-x-4">
@@ -74,8 +74,8 @@ export default function Navigation() {
         </div>
       </nav>
 
-      {/* Spacer for fixed navigation */}
-      <div className={`transition-all duration-300 ${menuVisible ? 'h-14' : 'h-0'}`} />
+      {/* Spacer for content adjustment */}
+      <div className={`transition-all duration-300 ${!menuVisible ? '-mt-16' : ''}`} />
     </>
   );
 }

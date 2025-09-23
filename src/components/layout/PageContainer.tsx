@@ -11,7 +11,7 @@ export default function PageContainer({ children, title, actions }: PageContaine
   const { menuVisible } = useTheme();
 
   return (
-    <div className={`max-w-6xl mx-auto px-4 transition-all duration-300 pt-8`}>
+    <div className={`max-w-6xl mx-auto px-4 transition-all duration-300 ${menuVisible ? 'pt-8' : 'pt-4'}`}>
       {(title || actions) && (
         <div className="flex items-center justify-between mb-8">
           {title && (
