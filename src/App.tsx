@@ -31,7 +31,7 @@ function AppContent() {
   }
 
   return (
-    <div className="min-h-screen bg-green-50/50 dark:bg-gray-900 transition-colors flex flex-col">
+    <div className="min-h-screen bg-green-50/50 dark:bg-gray-900 transition-colors flex flex-col portrait-container">
       {isAuthenticated ? (
         <NavigationProvider>
           <Navigation />

@@ -23,6 +23,31 @@
   background-color: #f0fdf4;
 }
 
+/* Portrait orientation specific styles */
+@media (orientation: portrait) {
+  /* Fix white background at bottom in portrait mode */
+  html, body, #root {
+    min-height: 100vh;
+    background-color: #f0fdf4;
+  }
+  
+  .dark html, 
+  .dark body, 
+  .dark #root {
+    background-color: #111827;
+  }
+  
+  /* Reduce play history to show only 2 recent plays */
+  .play-history-portrait {
+    max-height: 200px;
+  }
+  
+  /* Ensure proper spacing and sizing for portrait */
+  .portrait-container {
+    min-height: 100vh;
+    padding-bottom: 2rem;
+  }
+}
 /* Font Size Classes */
 .text-normal {
   font-size: 1rem;

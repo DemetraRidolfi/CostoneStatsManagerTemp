@@ -186,7 +186,7 @@ export default function PlayHistory({
   };
 
   // Show last 4 plays in desktop mode, last 2 in tablet mode
-  const recentPlays = [...plays].reverse().slice(0, 5);
+  const recentPlays = [...plays].reverse().slice(0, tabletMode ? 2 : 5);
   const totalPlays = plays.length;
 
   const containerClass = hideDelete
@@ -195,7 +195,7 @@ export default function PlayHistory({
   
   return (
     <>
-      <div className={`${containerClass} flex flex-col overflow-hidden`}>
+      <div className={`${containerClass} flex flex-col overflow-hidden ${tabletMode ? 'play-history-portrait' : ''}`}>
         <div className="flex items-center justify-between mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center gap-2">
             <History className="w-4 h-4 text-primary-600 dark:text-primary-400" />
@@ -208,10 +208,10 @@ export default function PlayHistory({
           </span>
         </div>
 
-        <div className="flex-1 overflow-hidden flex flex-col min-h-0">
+        <div className={`flex-1 overflow-hidden flex flex-col min-h-0 ${tabletMode ? 'max-h-32' : ''}`}>
           <div className="flex-1 overflow-y-auto space-y-2 mb-2 px-0.5">
             {totalPlays === 0 ? (
-              <div className="h-full flex items-center justify-center">
+              <div className={`${tabletMode ? 'h-16' : 'h-full'} flex items-center justify-center`}>
                 <p className="text-xs text-gray-500 dark:text-gray-400">
                   Nessuna azione registrata
                 </p>
