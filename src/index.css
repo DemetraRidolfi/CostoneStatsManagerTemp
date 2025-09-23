@@ -100,6 +100,26 @@
     min-height: 100vh;
     padding-bottom: 2rem;
   }
+
+  /* Game control bar adjustments for portrait */
+  .game-control-bar {
+    position: fixed !important;
+    top: 3.5rem !important; /* 14 * 0.25rem = 3.5rem (altezza menù) */
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 30 !important;
+    margin: 0.5rem !important;
+    background: white !important;
+  }
+
+  .dark .game-control-bar {
+    background: #1f2937 !important; /* dark:bg-gray-800 */
+  }
+
+  .game-content-with-bar {
+    margin-top: 8rem !important; /* Spazio per menù + barra controllo */
+    padding-top: 0 !important;
+  }
 }
 /* Font Size Classes */
 .text-normal {
