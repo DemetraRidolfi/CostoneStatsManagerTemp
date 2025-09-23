@@ -125,7 +125,7 @@ export default function NewGame() {
   // Calculate dynamic top spacing based on menu visibility and orientation
   const getTopSpacing = () => {
     if (isPortrait) {
-      return menuVisible ? 'pt-24' : 'pt-12'; // Reduced space in portrait for better layout
+      return menuVisible ? 'pt-20' : 'pt-10'; // Further reduced space in portrait for better layout
     }
     return menuVisible ? 'pt-20' : 'pt-8'; // Desktop spacing
   };
@@ -164,8 +164,8 @@ export default function NewGame() {
       {/* Top Navigation Bar */}
       <div className={`fixed left-0 right-0 z-30 bg-white dark:bg-gray-800 shadow-md p-4 mx-4 rounded-xl transition-all duration-300 ${
         menuVisible 
-          ? isPortrait ? 'top-16' : 'top-16' 
-          : isPortrait ? 'top-2' : 'top-2'
+          ? isPortrait ? 'top-14' : 'top-16' 
+          : isPortrait ? 'top-1' : 'top-2'
       }`}>
         <div className="flex justify-between items-center">
           <button
@@ -217,7 +217,7 @@ export default function NewGame() {
 
       {/* Main Content */}
       <div className={`flex-1 grid grid-cols-1 lg:grid-cols-6 gap-6 p-4 min-h-0 transition-all duration-300 ${
-        isPortrait ? 'mt-20' : 'mt-16'
+        isPortrait ? 'mt-16' : 'mt-16'
       }`}>
         {/* Left Side - Play History */}
         <div className="lg:col-span-1 flex flex-col min-h-0">
