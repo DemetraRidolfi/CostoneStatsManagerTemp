@@ -172,7 +172,7 @@ export default function SchemeSelector({ onSelect }: Props) {
       </div>
 
         {/* Foul Tracking Bar - Tablet */}
-        <div className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 mt-3 ${getContainerHeight()}`}>
+        <div className={`bg-green-50/50 dark:bg-gray-900 rounded-xl shadow-lg p-3 mt-3 ${getContainerHeight()}`}>
           <div className={`grid grid-cols-6 gap-2 h-full ${getMinHeight()}`}>
             {players.map(player => {
               const fouls = playerFouls[player.id] || 0;
@@ -180,7 +180,7 @@ export default function SchemeSelector({ onSelect }: Props) {
                 <button
                   key={player.id}
                   onClick={() => setShowFoulModal(player.id)}
-                  className="flex flex-col items-center justify-center gap-1 px-2 py-1 bg-gray-50 dark:bg-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors min-h-[2.5rem]"
+                  className="flex flex-col items-center justify-center gap-1 px-2 py-1 bg-white dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors min-h-[2.5rem]"
                 >
                   <div className={`w-6 h-6 ${getFoulColor(fouls) === 'text-gray-900 dark:text-white' ? 'bg-primary-600' : 'bg-current'} rounded-lg flex items-center justify-center text-white text-xs font-bold`}>
                     {player.number}
@@ -240,7 +240,7 @@ export default function SchemeSelector({ onSelect }: Props) {
       </div>
 
       {/* Foul Tracking Bar - Desktop */}
-      <div className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 mt-4 ${getContainerHeight()}`}>
+      <div className={`bg-green-50/50 dark:bg-gray-900 rounded-xl shadow-lg p-4 mt-4 ${getContainerHeight()}`}>
         <div className={`grid grid-cols-6 gap-3 h-full ${getMinHeight()}`}>
           {players.map(player => {
             const fouls = playerFouls[player.id] || 0;
@@ -248,7 +248,7 @@ export default function SchemeSelector({ onSelect }: Props) {
               <button
                 key={player.id}
                 onClick={() => setShowFoulModal(player.id)}
-                className="flex items-center justify-between px-3 py-2 bg-gray-50 dark:bg-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors min-h-[3.5rem]"
+                className="flex items-center justify-between px-3 py-2 bg-white dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors min-h-[3.5rem]"
               >
                 <div className="flex flex-col items-center">
                   <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center text-white text-sm font-bold">
@@ -270,7 +270,7 @@ export default function SchemeSelector({ onSelect }: Props) {
       {/* Foul Modal */}
       {showFoulModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 max-w-md w-full mx-4">
+          <div className="bg-green-50/50 dark:bg-gray-900 rounded-xl shadow-xl p-6 max-w-md w-full mx-4 border border-gray-200 dark:border-gray-700">
             {(() => {
               const player = players.find(p => p.id === showFoulModal);
               const fouls = playerFouls[showFoulModal] || 0;

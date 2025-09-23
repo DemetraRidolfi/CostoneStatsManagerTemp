@@ -53,6 +53,15 @@
     background-color: #111827 !important;
   }
 
+  /* Ensure all containers have proper background */
+  .bg-white {
+    background-color: #f0fdf4 !important;
+  }
+
+  .dark .bg-white {
+    background-color: #111827 !important;
+  }
+
   /* Fix any white containers that might appear */
   body {
     overflow-x: hidden;
