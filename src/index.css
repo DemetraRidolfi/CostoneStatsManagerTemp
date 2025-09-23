@@ -32,14 +32,30 @@
 
   /* Fix white background at bottom in portrait mode */
   html, body, #root {
-    min-height: 100vh;
-    background-color: #f0fdf4;
+    min-height: 100vh !important;
+    height: 100% !important;
+    background-color: #f0fdf4 !important;
   }
   
   .dark html, 
   .dark body, 
   .dark #root {
-    background-color: #111827;
+    background-color: #111827 !important;
+  }
+
+  /* Ensure main container fills full height */
+  .portrait-container {
+    min-height: 100vh !important;
+    background-color: #f0fdf4 !important;
+  }
+
+  .dark .portrait-container {
+    background-color: #111827 !important;
+  }
+
+  /* Fix any white containers that might appear */
+  body {
+    overflow-x: hidden;
   }
   
   /* Portrait-specific PlayHistory styling */
