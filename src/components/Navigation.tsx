@@ -56,7 +56,7 @@ export default function Navigation() {
                   }`}
                 >
                   <Icon className="w-5 h-5 mr-2" />
-                  <span className="hidden sm:inline">{label}</span>
+                  <span className="hidden sm:inline portrait:hidden">{label}</span>
                 </button>
               ))}
             </div>
@@ -67,7 +67,7 @@ export default function Navigation() {
                 title="Logout"
               >
                 <LogOut className="w-5 h-5 mr-2" />
-                <span className="hidden sm:inline">Logout</span>
+                <span className="hidden sm:inline portrait:hidden">Logout</span>
               </button>
             </div>
           </div>

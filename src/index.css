@@ -25,6 +25,11 @@
 
 /* Portrait orientation specific styles */
 @media (orientation: portrait) {
+  /* Hide navigation text in portrait mode */
+  .portrait\:hidden {
+    display: none !important;
+  }
+
   /* Fix white background at bottom in portrait mode */
   html, body, #root {
     min-height: 100vh;
