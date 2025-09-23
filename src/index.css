@@ -33,7 +33,7 @@
   /* Fix white background at bottom in portrait mode */
   html, body, #root {
     min-height: 100vh !important;
-    height: 100% !important;
+    height: 100vh !important;
     background-color: #f0fdf4 !important;
   }
   
@@ -45,11 +45,22 @@
 
   /* Ensure main container fills full height */
   .portrait-container {
-    min-height: 100vh !important;
+    min-height: 100vh;
+    height: 100vh;
     background-color: #f0fdf4 !important;
   }
 
   .dark .portrait-container {
+    background-color: #111827 !important;
+  }
+
+  /* Extend scheme selector background in portrait */
+  .scheme-selector-portrait {
+    min-height: 100vh !important;
+    background-color: #f0fdf4 !important;
+  }
+  
+  .dark .scheme-selector-portrait {
     background-color: #111827 !important;
   }
 
