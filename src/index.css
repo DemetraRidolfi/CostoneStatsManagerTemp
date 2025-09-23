@@ -37,8 +37,34 @@
     background-color: #111827;
   }
   
-  /* Reduce play history to show only 2 recent plays */
-  /* Ensure proper spacing and sizing for portrait */
+  /* Portrait-specific PlayHistory styling */
+  .play-history-container {
+    height: auto !important;
+    max-height: 200px !important;
+  }
+  
+  .play-history-content {
+    flex: none !important;
+    overflow: visible !important;
+  }
+  
+  .play-history-list {
+    flex: none !important;
+    overflow: visible !important;
+    max-height: 120px;
+    overflow-y: auto;
+  }
+  
+  .play-history-empty {
+    height: 60px !important;
+  }
+  
+  .play-history-button {
+    margin-top: 0.5rem !important;
+    padding-top: 0.375rem !important;
+    padding-bottom: 0.375rem !important;
+  }
+  
   .portrait-container {
     min-height: 100vh;
     padding-bottom: 2rem;

@@ -13,6 +13,25 @@ import {
 import FullHistoryModal from './FullHistoryModal';
 import { useTheme } from '../../contexts/ThemeContext';
 
+// Custom hook to detect portrait orientation
+const useIsPortrait = () => {
+  const [isPortrait, setIsPortrait] = React.useState(
+    typeof window !== 'undefined' ? window.matchMedia('(orientation: portrait)').matches : false
+  );
+
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    const mediaQuery = window.matchMedia('(orientation: portrait)');
+    const handleChange = (e: MediaQueryListEvent) => setIsPortrait(e.matches);
+    
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
+  return isPortrait;
+};
+
 type Props = {
   plays: PlayResult[];
   players: Player[];
@@ -33,6 +52,7 @@ export default function PlayHistory({
   const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null);
   const [showFullHistory, setShowFullHistory] = useState(false);
   const { tabletMode } = useTheme();
+  const isPortrait = useIsPortrait();
 
   const getPlayIcon = (type: string) => {
     if (['made2', 'made3'].includes(type)) {
@@ -185,21 +205,16 @@ export default function PlayHistory({
     );
   };
 
-  // Show last 4 plays in desktop mode, last 2 in tablet mode
-  const recentPlays = [...plays].reverse().slice(0, tabletMode ? 2 : 5);
+  // Show last 5 plays normally, last 2 in portrait orientation
+  const recentPlays = [...plays].reverse().slice(0, isPortrait ? 2 : 5);
   const totalPlays = plays.length;
 
-  // Dynamic height based on orientation and content
+  // Dynamic height based on content
   const getContainerClass = () => {
     if (hideDelete) return '';
     
-    // In portrait mode (tabletMode), height should fit exactly 2 actions + header + button
-    if (tabletMode) {
-      return 'bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 h-auto max-h-48';
-    }
-    
-    // In landscape mode, use full available height
-    return 'bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 h-[calc(100vh-12em)]';
+    // Default: use full available height, portrait will be handled by CSS
+    return 'bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 h-[calc(100vh-12em)] play-history-container';
   };
   
   return (
@@ -217,10 +232,10 @@ export default function PlayHistory({
           </span>
         </div>
 
-        <div className={`${tabletMode ? 'flex flex-col' : 'flex-1 overflow-hidden flex flex-col min-h-0'}`}>
-          <div className={`${tabletMode ? 'space-y-2 mb-2 px-0.5' : 'flex-1 overflow-y-auto space-y-2 mb-2 px-0.5'}`}>
+        <div className="flex-1 overflow-hidden flex flex-col min-h-0 play-history-content">
+          <div className="flex-1 overflow-y-auto space-y-2 mb-2 px-0.5 play-history-list">
             {totalPlays === 0 ? (
-              <div className={`${tabletMode ? 'h-12 py-2' : 'h-full'} flex items-center justify-center`}>
+              <div className="h-full flex items-center justify-center play-history-empty">
                 <p className="text-xs text-gray-500 dark:text-gray-400">
                   Nessuna azione registrata
                 </p>
@@ -234,9 +249,7 @@ export default function PlayHistory({
 
           <button
             onClick={() => setShowFullHistory(true)}
-            className={`w-full flex items-center justify-center gap-2 text-xs px-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors ${
-              tabletMode ? 'py-1.5 mt-2' : 'py-2 mt-auto'
-            }`}
+            className="w-full flex items-center justify-center gap-2 text-xs px-3 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors mt-auto play-history-button"
           >
             <Maximize2 className="w-4 h-4" />
             <span>Cronologia Completa</span>
