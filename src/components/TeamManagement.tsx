@@ -381,7 +381,6 @@ export default function TeamManagement() {
                 </h3>
                 <div className="grid gap-3">
                   {categorySchemes.map((scheme, index) => {
-                    const categoryIndex = categorySchemes.findIndex(s => s.id === scheme.id);
                     return (
                       <div 
                         key={scheme.id} 

@@ -195,8 +195,9 @@ export function useTeamData() {
       const scheme = prev.find(s => s.id === schemeId);
       if (!scheme) return prev;
 
-      // Get schemes in the same category, sorted by order
-      const categorySchemes = prev
+      // Create a copy and sort by order within the same category
+      const allSchemes = [...prev];
+      const categorySchemes = allSchemes
         .filter(s => s.category === scheme.category)
         .sort((a, b) => (a.order || 0) - (b.order || 0));
       
@@ -215,7 +216,7 @@ export function useTeamData() {
       const targetOrder = targetScheme.order || 0;
       
       // Update the schemes array with swapped orders
-      return prev.map(s => {
+      return allSchemes.map(s => {
         if (s.id === currentScheme.id) {
           return { ...s, order: targetOrder };
         }
