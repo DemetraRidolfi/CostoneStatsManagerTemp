@@ -383,6 +383,7 @@ export default function TeamManagement() {
                 </h3>
                 <div className="grid gap-3">
                   {categorySchemes.map((scheme, index) => {
+                    const categoryIndex = categorySchemes.findIndex(s => s.id === scheme.id);
                     return (
                       <div 
                         key={scheme.id} 
@@ -410,7 +411,7 @@ export default function TeamManagement() {
                           <div className="flex flex-col">
                             <button
                               onClick={() => moveScheme(scheme.id, 'up')}
-                              disabled={index === 0}
+                              disabled={categoryIndex === 0}
                               className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:opacity-30 disabled:cursor-not-allowed"
                               title="Sposta su"
                             >
@@ -418,7 +419,7 @@ export default function TeamManagement() {
                             </button>
                             <button
                               onClick={() => moveScheme(scheme.id, 'down')}
-                              disabled={index === categorySchemes.length - 1}
+                              disabled={categoryIndex === categorySchemes.length - 1}
                               className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:opacity-30 disabled:cursor-not-allowed"
                               title="Sposta giù"
                             >
