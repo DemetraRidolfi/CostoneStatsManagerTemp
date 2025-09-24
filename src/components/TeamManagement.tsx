@@ -40,6 +40,8 @@ export default function TeamManagement() {
   const { players, schemes, addPlayer, updatePlayer, deletePlayer, movePlayer, addScheme, updateScheme, deleteScheme, moveScheme } = useTeamData();
   
   const [activeTab, setActiveTab] = useState<'players' | 'schemes'>('players');
+  const [editingPlayer, setEditingPlayer] = useState<any>(null);
+  const [editingScheme, setEditingScheme] = useState<any>(null);
   const [movingScheme, setMovingScheme] = useState<string | null>(null);
   const [moveDirection, setMoveDirection] = useState<'up' | 'down' | null>(null);
 
