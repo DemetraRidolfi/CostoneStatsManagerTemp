@@ -27,9 +27,9 @@ export function useGameState(draftId?: string) {
   const [showStats, setShowStats] = useState(false);
   const [showEndConfirm, setShowEndConfirm] = useState(false);
   const [timeouts, setTimeouts] = useState({
-    firstHalf: 0,    // 1° e 2° quarto insieme (max 2)
-    secondHalf: 0,   // 3° e 4° quarto insieme (max 3)
-    overtime: 0,
+    firstHalf: [false, false],    // 1° e 2° quarto insieme (max 2)
+    secondHalf: [false, false, false],   // 3° e 4° quarto insieme (max 3)
+    overtime: [false],
     currentQuarter: 1 as 1 | 2 | 3 | 4 | 5
   });
 
@@ -148,42 +148,12 @@ export function useGameState(draftId?: string) {
     setSelectedPlayer(null);
   };
 
-  const addTimeout = () => {
+  const toggleTimeout = (group: 'firstHalf' | 'secondHalf' | 'overtime', index: number) => {
     setTimeouts(prev => {
       const newTimeouts = { ...prev };
-      switch (prev.currentQuarter) {
-        case 1:
-        case 2:
-          if (newTimeouts.firstHalf < 2) newTimeouts.firstHalf++;
-          break;
-        case 3:
-        case 4:
-          if (newTimeouts.secondHalf < 3) newTimeouts.secondHalf++;
-          break;
-        case 5:
-          if (newTimeouts.overtime < 1) newTimeouts.overtime++;
-          break;
-      }
-      return newTimeouts;
-    });
-  };
-
-  const removeTimeout = () => {
-    setTimeouts(prev => {
-      const newTimeouts = { ...prev };
-      switch (prev.currentQuarter) {
-        case 1:
-        case 2:
-          if (newTimeouts.firstHalf > 0) newTimeouts.firstHalf--;
-          break;
-        case 3:
-        case 4:
-          if (newTimeouts.secondHalf > 0) newTimeouts.secondHalf--;
-          break;
-        case 5:
-          if (newTimeouts.overtime > 0) newTimeouts.overtime--;
-          break;
-      }
+      const newGroup = [...newTimeouts[group]];
+      newGroup[index] = !newGroup[index];
+      newTimeouts[group] = newGroup;
       return newTimeouts;
     });
   };
@@ -212,8 +182,7 @@ export function useGameState(draftId?: string) {
     endGame,
     resetGame,
     timeouts,
-    addTimeout,
-    removeTimeout,
+    toggleTimeout,
     changeQuarter,
   };
 }
