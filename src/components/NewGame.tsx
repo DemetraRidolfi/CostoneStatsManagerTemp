@@ -182,11 +182,10 @@ export default function NewGame() {
           
           {/* Compact Timeout Tracker */}
           <div className="flex items-center gap-4 px-4 py-2 bg-gray-50 dark:bg-gray-900 rounded-lg">
-            <span className="text-sm font-medium text-gray-600 dark:text-gray-400">TIMEOUT:</span>
             
             {/* 1-2 Quarter Group */}
             <div className="flex items-center gap-3">
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">1°-2° Q:</span>
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">1°-2°</span>
               <div className="flex gap-1">
                 {timeouts.firstHalf.map((used, index) => (
                   <button
@@ -207,7 +206,7 @@ export default function NewGame() {
             
             {/* 3-4 Quarter Group */}
             <div className="flex items-center gap-3">
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">3°-4° Q:</span>
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">3°-4°</span>
               <div className="flex gap-1">
                 {timeouts.secondHalf.map((used, index) => (
                   <button
@@ -228,7 +227,7 @@ export default function NewGame() {
             
             {/* Supplementare */}
             <div className="flex items-center gap-3">
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">SUP:</span>
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">OT</span>
               <div className="flex gap-1">
                 {timeouts.overtime.map((used, index) => (
                   <button
