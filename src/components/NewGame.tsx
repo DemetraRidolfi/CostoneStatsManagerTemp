@@ -270,13 +270,14 @@ export default function NewGame() {
               className="flex items-center gap-2 px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors"
             >
               <Save className="w-4 h-4" />
-              Salva Partita
+              <span className="hidden portrait:hidden sm:inline">Salva Partita</span>
             </button>
             <button
               onClick={() => setShowEndConfirm(true)}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
-              Concludi Partita
+              <CheckCircle className="w-4 h-4" />
+              <span className="hidden portrait:hidden sm:inline">Concludi Partita</span>
             </button>
           </div>
         </div>
