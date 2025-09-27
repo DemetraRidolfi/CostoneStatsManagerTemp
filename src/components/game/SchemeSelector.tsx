@@ -84,6 +84,13 @@ export default function SchemeSelector({ onSelect }: Props) {
     return 'text-gray-900 dark:text-white';
   };
 
+  const getPlayerBoxColor = (fouls: number) => {
+    if (fouls >= 5) return 'bg-red-500 hover:bg-red-600';
+    if (fouls >= 4) return 'bg-yellow-500 hover:bg-yellow-600';
+    if (fouls >= 3) return 'bg-yellow-500 hover:bg-yellow-600';
+    return 'bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800';
+  };
+
   const updatePlayerFouls = (playerId: number, change: number) => {
     setPlayerFouls(prev => {
       const currentFouls = prev[playerId] || 0;
@@ -180,12 +187,12 @@ export default function SchemeSelector({ onSelect }: Props) {
                 <button
                   key={player.id}
                   onClick={() => setShowFoulModal(player.id)}
-                  className="flex flex-col items-center justify-center gap-1 px-2 py-1 bg-gray-50 dark:bg-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors min-h-[2.5rem]"
+                  className={`flex flex-col items-center justify-center gap-1 px-2 py-1 rounded-lg transition-colors min-h-[2.5rem] ${getPlayerBoxColor(fouls)}`}
                 >
                   <div className={`w-6 h-6 ${getFoulColor(fouls) === 'text-gray-900 dark:text-white' ? 'bg-primary-600' : 'bg-current'} rounded-lg flex items-center justify-center text-white text-xs font-bold`}>
                     {player.number}
                   </div>
-                  <span className="text-xs font-medium text-gray-900 dark:text-white text-center">
+                  <span className={`text-xs font-medium text-center ${fouls >= 3 ? 'text-white' : 'text-gray-900 dark:text-white'}`}>
                     {player.name.split(' ').slice(-1)[0]}
                   </span>
                   <span className={`text-xs font-bold ${getFoulColor(fouls)}`}>
@@ -248,17 +255,17 @@ export default function SchemeSelector({ onSelect }: Props) {
               <button
                 key={player.id}
                 onClick={() => setShowFoulModal(player.id)}
-                className="flex items-center justify-between px-3 py-2 bg-gray-50 dark:bg-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors min-h-[3.5rem]"
+                className={`flex items-center justify-between px-3 py-2 rounded-lg transition-colors min-h-[3.5rem] ${getPlayerBoxColor(fouls)}`}
               >
                 <div className="flex flex-col items-center">
                   <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center text-white text-sm font-bold">
                     {player.number}
                   </div>
-                  <span className="text-xs font-medium text-gray-900 dark:text-white text-center mt-1">
+                  <span className={`text-xs font-medium text-center mt-1 ${fouls >= 3 ? 'text-white' : 'text-gray-900 dark:text-white'}`}>
                     {player.name.split(' ').slice(-1)[0]}
                   </span>
                 </div>
-                <div className={`text-3xl font-bold ${getFoulColor(fouls)}`}>
+                <div className={`text-3xl font-bold ${fouls >= 3 ? 'text-white' : getFoulColor(fouls)}`}>
                     {fouls}
                 </div>
               </button>
