@@ -206,7 +206,7 @@ export default function PlayHistory({
   };
 
   // Show last 5 plays normally, last 2 in portrait orientation
-  const recentPlays = [...plays].reverse().slice(0, isPortrait ? 2 : 5);
+  const recentPlays = [...plays].reverse().slice(0, isPortrait ? 1 : 5);
   const totalPlays = plays.length;
 
   // Dynamic height based on content
