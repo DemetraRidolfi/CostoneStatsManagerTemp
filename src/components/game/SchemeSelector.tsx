@@ -310,7 +310,7 @@ export default function SchemeSelector({ onSelect }: Props) {
                   </div>
                   
                   <div className="text-center mb-6">
-                    <div className={`w-24 h-24 ${getFoulColor(fouls) === 'text-gray-900 dark:text-white' ? 'bg-primary-600' : 'bg-current'} rounded-xl flex items-center justify-center text-white text-3xl font-bold mx-auto mb-4`}>
+                    <div className="w-24 h-24 bg-primary-600 rounded-xl flex items-center justify-center text-white text-3xl font-bold mx-auto mb-4">
                       {fouls}
                     </div>
                     <p className="text-lg font-medium text-gray-900 dark:text-white">
