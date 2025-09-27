@@ -216,16 +216,17 @@ export default function NewGame() {
         {showStats && (
           <div className="mt-4">
             <LiveStats plays={gameData.plays || []} />
-            <div className="mt-4">
-              <TimeoutTracker
-                timeouts={timeouts}
-                onAddTimeout={addTimeout}
-                onRemoveTimeout={removeTimeout}
-                onChangeQuarter={changeQuarter}
-              />
-            </div>
           </div>
         )}
+        {/* Timeout Tracker - Always visible */}
+        <div className="mt-4">
+          <TimeoutTracker
+            timeouts={timeouts}
+            onAddTimeout={addTimeout}
+            onRemoveTimeout={removeTimeout}
+            onChangeQuarter={changeQuarter}
+          />
+        </div>
       </div>
 
       {/* Main Content */}
