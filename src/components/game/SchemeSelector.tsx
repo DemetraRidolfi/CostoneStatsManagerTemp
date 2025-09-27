@@ -313,9 +313,6 @@ export default function SchemeSelector({ onSelect }: Props) {
                     <div className="w-24 h-24 bg-primary-600 rounded-xl flex items-center justify-center text-white text-3xl font-bold mx-auto mb-4">
                       {fouls}
                     </div>
-                    <p className="text-lg font-medium text-gray-900 dark:text-white">
-                      {fouls === 1 ? '1 Fallo' : `${fouls} Falli`}
-                    </p>
                   </div>
                   
                   <div className="flex justify-center gap-4">
