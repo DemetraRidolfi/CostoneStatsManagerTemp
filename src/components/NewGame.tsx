@@ -182,72 +182,152 @@ export default function NewGame() {
           </button>
           
           {/* Compact Timeout Tracker */}
-          <div className="flex items-center gap-2 px-3 py-1 bg-gray-50 dark:bg-gray-900 rounded-lg">
-            <span className="text-xs font-medium text-gray-600 dark:text-gray-400">TO:</span>
-            <div className="flex gap-1">
-              {[1, 2, 3, 4, 5].map((quarter) => (
+          <div className="flex items-center gap-3 px-4 py-2 bg-gray-50 dark:bg-gray-900 rounded-lg">
+            <span className="text-sm font-medium text-gray-600 dark:text-gray-400">TIMEOUT:</span>
+            
+            {/* 1-2 Quarter Group */}
+            <div className="flex items-center gap-2">
+              <div className="flex gap-1">
+                {[1, 2].map((quarter) => (
+                  <button
+                    key={quarter}
+                    onClick={() => changeQuarter(quarter as 1 | 2 | 3 | 4 | 5)}
+                    className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
+                      timeouts.currentQuarter === quarter
+                        ? 'bg-primary-600 text-white'
+                        : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                    }`}
+                  >
+                    {quarter}Q
+                  </button>
+                ))}
+              </div>
+              <div className="flex items-center gap-1">
                 <button
-                  key={quarter}
-                  onClick={() => changeQuarter(quarter as 1 | 2 | 3 | 4 | 5)}
-                  className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
-                    timeouts.currentQuarter === quarter
-                      ? 'bg-primary-600 text-white'
-                      : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
-                  }`}
-                >
-                  {quarter <= 4 ? `${quarter}Q` : 'S'}
-                </button>
-              ))}
-            </div>
-            <div className="flex items-center gap-1 ml-2">
-              <button
-                onClick={removeTimeout}
-                disabled={(() => {
-                  switch (timeouts.currentQuarter) {
-                    case 1: return timeouts.firstQuarter === 0;
-                    case 2: return timeouts.secondQuarter === 0;
-                    case 3: return timeouts.thirdQuarter === 0;
-                    case 4: return timeouts.fourthQuarter === 0;
-                    case 5: return timeouts.overtime === 0;
-                    default: return true;
-                  }
-                })()}
-                className="w-6 h-6 rounded bg-red-500 hover:bg-red-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white flex items-center justify-center text-xs"
-              >
-                -
-              </button>
-              <span className="text-sm font-bold text-gray-900 dark:text-white min-w-[2rem] text-center">
-                {(() => {
-                  const current = (() => {
+                  onClick={removeTimeout}
+                  disabled={(() => {
                     switch (timeouts.currentQuarter) {
-                      case 1: return timeouts.firstQuarter;
-                      case 2: return timeouts.secondQuarter;
-                      case 3: return timeouts.thirdQuarter;
-                      case 4: return timeouts.fourthQuarter;
-                      case 5: return timeouts.overtime;
-                      default: return 0;
+                      case 1: return timeouts.firstQuarter === 0;
+                      case 2: return timeouts.secondQuarter === 0;
+                      default: return true;
                     }
-                  })();
-                  const max = timeouts.currentQuarter <= 2 ? 2 : timeouts.currentQuarter <= 4 ? 3 : 1;
-                  return `${current}/${max}`;
-                })()}
-              </span>
+                  })()}
+                  className="w-7 h-7 rounded bg-red-500 hover:bg-red-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white flex items-center justify-center text-sm font-bold"
+                >
+                  -
+                </button>
+                <span className="text-sm font-bold text-gray-900 dark:text-white min-w-[3rem] text-center">
+                  {(() => {
+                    if (timeouts.currentQuarter <= 2) {
+                      const current = timeouts.currentQuarter === 1 ? timeouts.firstQuarter : timeouts.secondQuarter;
+                      return `${current}/2`;
+                    }
+                    return '0/2';
+                  })()}
+                </span>
+                <button
+                  onClick={addTimeout}
+                  disabled={(() => {
+                    switch (timeouts.currentQuarter) {
+                      case 1: return timeouts.firstQuarter >= 2;
+                      case 2: return timeouts.secondQuarter >= 2;
+                      default: return true;
+                    }
+                  })()}
+                  className="w-7 h-7 rounded bg-emerald-500 hover:bg-emerald-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white flex items-center justify-center text-sm font-bold"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+            
+            {/* 3-4 Quarter Group */}
+            <div className="flex items-center gap-2">
+              <div className="flex gap-1">
+                {[3, 4].map((quarter) => (
+                  <button
+                    key={quarter}
+                    onClick={() => changeQuarter(quarter as 1 | 2 | 3 | 4 | 5)}
+                    className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
+                      timeouts.currentQuarter === quarter
+                        ? 'bg-primary-600 text-white'
+                        : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                    }`}
+                  >
+                    {quarter}Q
+                  </button>
+                ))}
+              </div>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={removeTimeout}
+                  disabled={(() => {
+                    switch (timeouts.currentQuarter) {
+                      case 3: return timeouts.thirdQuarter === 0;
+                      case 4: return timeouts.fourthQuarter === 0;
+                      default: return true;
+                    }
+                  })()}
+                  className="w-7 h-7 rounded bg-red-500 hover:bg-red-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white flex items-center justify-center text-sm font-bold"
+                >
+                  -
+                </button>
+                <span className="text-sm font-bold text-gray-900 dark:text-white min-w-[3rem] text-center">
+                  {(() => {
+                    if (timeouts.currentQuarter >= 3 && timeouts.currentQuarter <= 4) {
+                      const current = timeouts.currentQuarter === 3 ? timeouts.thirdQuarter : timeouts.fourthQuarter;
+                      return `${current}/3`;
+                    }
+                    return '0/3';
+                  })()}
+                </span>
+                <button
+                  onClick={addTimeout}
+                  disabled={(() => {
+                    switch (timeouts.currentQuarter) {
+                      case 3: return timeouts.thirdQuarter >= 3;
+                      case 4: return timeouts.fourthQuarter >= 3;
+                      default: return true;
+                    }
+                  })()}
+                  className="w-7 h-7 rounded bg-emerald-500 hover:bg-emerald-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white flex items-center justify-center text-sm font-bold"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+            
+            {/* Supplementare Group */}
+            <div className="flex items-center gap-2">
               <button
-                onClick={addTimeout}
-                disabled={(() => {
-                  switch (timeouts.currentQuarter) {
-                    case 1: return timeouts.firstQuarter >= 2;
-                    case 2: return timeouts.secondQuarter >= 2;
-                    case 3: return timeouts.thirdQuarter >= 3;
-                    case 4: return timeouts.fourthQuarter >= 3;
-                    case 5: return timeouts.overtime >= 1;
-                    default: return true;
-                  }
-                })()}
-                className="w-6 h-6 rounded bg-emerald-500 hover:bg-emerald-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white flex items-center justify-center text-xs"
+                onClick={() => changeQuarter(5)}
+                className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
+                  timeouts.currentQuarter === 5
+                    ? 'bg-primary-600 text-white'
+                    : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                }`}
               >
-                +
+                SUP
               </button>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={removeTimeout}
+                  disabled={timeouts.currentQuarter !== 5 || timeouts.overtime === 0}
+                  className="w-7 h-7 rounded bg-red-500 hover:bg-red-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white flex items-center justify-center text-sm font-bold"
+                >
+                  -
+                </button>
+                <span className="text-sm font-bold text-gray-900 dark:text-white min-w-[3rem] text-center">
+                  {timeouts.currentQuarter === 5 ? `${timeouts.overtime}/1` : '0/1'}
+                </span>
+                <button
+                  onClick={addTimeout}
+                  disabled={timeouts.currentQuarter !== 5 || timeouts.overtime >= 1}
+                  className="w-7 h-7 rounded bg-emerald-500 hover:bg-emerald-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white flex items-center justify-center text-sm font-bold"
+                >
+                  +
+                </button>
+              </div>
             </div>
           </div>
 
