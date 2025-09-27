@@ -310,7 +310,11 @@ export default function SchemeSelector({ onSelect }: Props) {
                   </div>
                   
                   <div className="text-center mb-6">
-                    <div className="w-24 h-24 bg-primary-600 rounded-xl flex items-center justify-center text-white text-3xl font-bold mx-auto mb-4">
+                    <div className={`w-24 h-24 rounded-xl flex items-center justify-center text-white text-3xl font-bold mx-auto mb-4 ${
+                      fouls >= 5 ? 'bg-red-500' :
+                      fouls >= 3 ? 'bg-yellow-500' :
+                      'bg-primary-600'
+                    }`}>
                       {fouls}
                     </div>
                   </div>
