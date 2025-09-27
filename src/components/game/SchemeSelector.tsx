@@ -20,6 +20,20 @@ export default function SchemeSelector({ onSelect }: Props) {
   const { getEnabledPlayers } = useTeamData();
   const players = getEnabledPlayers();
 
+  // Sort players by foul count (descending), then by jersey number (ascending)
+  const sortedPlayers = [...players].sort((a, b) => {
+    const foulsA = playerFouls[a.id] || 0;
+    const foulsB = playerFouls[b.id] || 0;
+    
+    // First sort by fouls (descending - most fouls first)
+    if (foulsA !== foulsB) {
+      return foulsB - foulsA;
+    }
+    
+    // If same fouls, sort by jersey number (ascending)
+    return Number(a.number) - Number(b.number);
+  });
+
   // Calculate dynamic height based on number of players
   const getGridRows = () => Math.ceil(players.length / 6);
   const getContainerHeight = () => {
@@ -181,7 +195,7 @@ export default function SchemeSelector({ onSelect }: Props) {
         {/* Foul Tracking Bar - Tablet */}
         <div className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 mt-3 ${getContainerHeight()}`}>
           <div className={`grid grid-cols-6 gap-2 h-full ${getMinHeight()}`}>
-            {players.map(player => {
+            {sortedPlayers.map(player => {
               const fouls = playerFouls[player.id] || 0;
               return (
                 <button
@@ -249,7 +263,7 @@ export default function SchemeSelector({ onSelect }: Props) {
       {/* Foul Tracking Bar - Desktop */}
       <div className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 mt-4 ${getContainerHeight()}`}>
         <div className={`grid grid-cols-6 gap-3 h-full ${getMinHeight()}`}>
-          {players.map(player => {
+          {sortedPlayers.map(player => {
             const fouls = playerFouls[player.id] || 0;
             return (
               <button
