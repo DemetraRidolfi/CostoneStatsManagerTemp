@@ -9,6 +9,7 @@ import LiveStats from './game/LiveStats';
 import { schemes } from '../data/schemes';
 import { useGameState } from '../hooks/useGameState';
 import { ArrowLeft, Save, BarChart2, CheckCircle, AlertTriangle } from 'lucide-react';
+import TimeoutTracker from './game/TimeoutTracker';
 import { useNavigation } from '../contexts/NavigationContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { useTeamData } from '../hooks/useTeamData';
@@ -47,6 +48,10 @@ export default function NewGame() {
     saveMessage,
     showStats,
     showEndConfirm,
+    timeouts,
+    addTimeout,
+    removeTimeout,
+    changeQuarter,
     setCurrentStep,
     setSelectedScheme,
     setSelectedPlayer,
@@ -211,6 +216,14 @@ export default function NewGame() {
         {showStats && (
           <div className="mt-4">
             <LiveStats plays={gameData.plays || []} />
+            <div className="mt-4">
+              <TimeoutTracker
+                timeouts={timeouts}
+                onAddTimeout={addTimeout}
+                onRemoveTimeout={removeTimeout}
+                onChangeQuarter={changeQuarter}
+              />
+            </div>
           </div>
         )}
       </div>

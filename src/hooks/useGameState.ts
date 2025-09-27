@@ -26,6 +26,14 @@ export function useGameState(draftId?: string) {
   const [saveMessage, setSaveMessage] = useState<string>('');
   const [showStats, setShowStats] = useState(false);
   const [showEndConfirm, setShowEndConfirm] = useState(false);
+  const [timeouts, setTimeouts] = useState({
+    firstQuarter: 0,
+    secondQuarter: 0,
+    thirdQuarter: 0,
+    fourthQuarter: 0,
+    overtime: 0,
+    currentQuarter: 1 as 1 | 2 | 3 | 4 | 5
+  });
 
   // Load initial state and clean up old drafts
   useEffect(() => {
@@ -161,5 +169,61 @@ export function useGameState(draftId?: string) {
     saveDraft,
     endGame,
     resetGame,
+    timeouts,
+    addTimeout,
+    removeTimeout,
+    changeQuarter,
+  };
+
+  const addTimeout = () => {
+    setTimeouts(prev => {
+      const newTimeouts = { ...prev };
+      switch (prev.currentQuarter) {
+        case 1:
+          if (newTimeouts.firstQuarter < 2) newTimeouts.firstQuarter++;
+          break;
+        case 2:
+          if (newTimeouts.secondQuarter < 2) newTimeouts.secondQuarter++;
+          break;
+        case 3:
+          if (newTimeouts.thirdQuarter < 3) newTimeouts.thirdQuarter++;
+          break;
+        case 4:
+          if (newTimeouts.fourthQuarter < 3) newTimeouts.fourthQuarter++;
+          break;
+        case 5:
+          if (newTimeouts.overtime < 1) newTimeouts.overtime++;
+          break;
+      }
+      return newTimeouts;
+    });
+  };
+
+  const removeTimeout = () => {
+    setTimeouts(prev => {
+      const newTimeouts = { ...prev };
+      switch (prev.currentQuarter) {
+        case 1:
+          if (newTimeouts.firstQuarter > 0) newTimeouts.firstQuarter--;
+          break;
+        case 2:
+          if (newTimeouts.secondQuarter > 0) newTimeouts.secondQuarter--;
+          break;
+        case 3:
+          if (newTimeouts.thirdQuarter > 0) newTimeouts.thirdQuarter--;
+          break;
+        case 4:
+          if (newTimeouts.fourthQuarter > 0) newTimeouts.fourthQuarter--;
+          break;
+        case 5:
+          if (newTimeouts.overtime > 0) newTimeouts.overtime--;
+          break;
+      }
+      return newTimeouts;
+    });
+  };
+
+  const changeQuarter = (quarter: 1 | 2 | 3 | 4 | 5) => {
+    setTimeouts(prev => ({ ...prev, currentQuarter: quarter }));
   };
 }
