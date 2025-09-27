@@ -172,7 +172,7 @@ export default function NewGame() {
           ? isPortrait ? 'top-14' : 'top-16' 
           : isPortrait ? 'top-1' : 'top-2'
       }`}>
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center gap-4">
           <button
             onClick={handleBack}
             className="flex items-center gap-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
@@ -180,6 +180,77 @@ export default function NewGame() {
             <ArrowLeft className="w-5 h-5" />
             Indietro
           </button>
+          
+          {/* Compact Timeout Tracker */}
+          <div className="flex items-center gap-2 px-3 py-1 bg-gray-50 dark:bg-gray-900 rounded-lg">
+            <span className="text-xs font-medium text-gray-600 dark:text-gray-400">TO:</span>
+            <div className="flex gap-1">
+              {[1, 2, 3, 4, 5].map((quarter) => (
+                <button
+                  key={quarter}
+                  onClick={() => changeQuarter(quarter as 1 | 2 | 3 | 4 | 5)}
+                  className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
+                    timeouts.currentQuarter === quarter
+                      ? 'bg-primary-600 text-white'
+                      : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                  }`}
+                >
+                  {quarter <= 4 ? `${quarter}Q` : 'S'}
+                </button>
+              ))}
+            </div>
+            <div className="flex items-center gap-1 ml-2">
+              <button
+                onClick={removeTimeout}
+                disabled={(() => {
+                  switch (timeouts.currentQuarter) {
+                    case 1: return timeouts.firstQuarter === 0;
+                    case 2: return timeouts.secondQuarter === 0;
+                    case 3: return timeouts.thirdQuarter === 0;
+                    case 4: return timeouts.fourthQuarter === 0;
+                    case 5: return timeouts.overtime === 0;
+                    default: return true;
+                  }
+                })()}
+                className="w-6 h-6 rounded bg-red-500 hover:bg-red-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white flex items-center justify-center text-xs"
+              >
+                -
+              </button>
+              <span className="text-sm font-bold text-gray-900 dark:text-white min-w-[2rem] text-center">
+                {(() => {
+                  const current = (() => {
+                    switch (timeouts.currentQuarter) {
+                      case 1: return timeouts.firstQuarter;
+                      case 2: return timeouts.secondQuarter;
+                      case 3: return timeouts.thirdQuarter;
+                      case 4: return timeouts.fourthQuarter;
+                      case 5: return timeouts.overtime;
+                      default: return 0;
+                    }
+                  })();
+                  const max = timeouts.currentQuarter <= 2 ? 2 : timeouts.currentQuarter <= 4 ? 3 : 1;
+                  return `${current}/${max}`;
+                })()}
+              </span>
+              <button
+                onClick={addTimeout}
+                disabled={(() => {
+                  switch (timeouts.currentQuarter) {
+                    case 1: return timeouts.firstQuarter >= 2;
+                    case 2: return timeouts.secondQuarter >= 2;
+                    case 3: return timeouts.thirdQuarter >= 3;
+                    case 4: return timeouts.fourthQuarter >= 3;
+                    case 5: return timeouts.overtime >= 1;
+                    default: return true;
+                  }
+                })()}
+                className="w-6 h-6 rounded bg-emerald-500 hover:bg-emerald-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white flex items-center justify-center text-xs"
+              >
+                +
+              </button>
+            </div>
+          </div>
+
           <div className="flex items-center gap-3">
             {saveMessage && (
               <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-3 py-1.5 rounded-lg">
@@ -218,15 +289,6 @@ export default function NewGame() {
             <LiveStats plays={gameData.plays || []} />
           </div>
         )}
-        {/* Timeout Tracker - Always visible */}
-        <div className="mt-4">
-          <TimeoutTracker
-            timeouts={timeouts}
-            onAddTimeout={addTimeout}
-            onRemoveTimeout={removeTimeout}
-            onChangeQuarter={changeQuarter}
-          />
-        </div>
       </div>
 
       {/* Main Content */}
