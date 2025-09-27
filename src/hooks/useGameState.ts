@@ -150,31 +150,6 @@ export function useGameState(draftId?: string) {
     setSelectedPlayer(null);
   };
 
-  return {
-    gameData,
-    currentStep,
-    selectedScheme,
-    selectedPlayer,
-    saveMessage,
-    showStats,
-    showEndConfirm,
-    setCurrentStep,
-    setSelectedScheme,
-    setSelectedPlayer,
-    setShowStats,
-    setShowEndConfirm,
-    updateGameData,
-    addPlay,
-    deletePlay,
-    saveDraft,
-    endGame,
-    resetGame,
-    timeouts,
-    addTimeout,
-    removeTimeout,
-    changeQuarter,
-  };
-
   const addTimeout = () => {
     setTimeouts(prev => {
       const newTimeouts = { ...prev };
@@ -225,5 +200,30 @@ export function useGameState(draftId?: string) {
 
   const changeQuarter = (quarter: 1 | 2 | 3 | 4 | 5) => {
     setTimeouts(prev => ({ ...prev, currentQuarter: quarter }));
+  };
+
+  return {
+    gameData,
+    currentStep,
+    selectedScheme,
+    selectedPlayer,
+    saveMessage,
+    showStats,
+    showEndConfirm,
+    setCurrentStep,
+    setSelectedScheme,
+    setSelectedPlayer,
+    setShowStats,
+    setShowEndConfirm,
+    updateGameData,
+    addPlay,
+    deletePlay,
+    saveDraft,
+    endGame,
+    resetGame,
+    timeouts,
+    addTimeout,
+    removeTimeout,
+    changeQuarter,
   };
 }
