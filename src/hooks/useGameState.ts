@@ -27,10 +27,8 @@ export function useGameState(draftId?: string) {
   const [showStats, setShowStats] = useState(false);
   const [showEndConfirm, setShowEndConfirm] = useState(false);
   const [timeouts, setTimeouts] = useState({
-    firstQuarter: 0,
-    secondQuarter: 0,
-    thirdQuarter: 0,
-    fourthQuarter: 0,
+    firstHalf: 0,    // 1° e 2° quarto insieme (max 2)
+    secondHalf: 0,   // 3° e 4° quarto insieme (max 3)
     overtime: 0,
     currentQuarter: 1 as 1 | 2 | 3 | 4 | 5
   });
@@ -155,16 +153,12 @@ export function useGameState(draftId?: string) {
       const newTimeouts = { ...prev };
       switch (prev.currentQuarter) {
         case 1:
-          if (newTimeouts.firstQuarter < 2) newTimeouts.firstQuarter++;
-          break;
         case 2:
-          if (newTimeouts.secondQuarter < 2) newTimeouts.secondQuarter++;
+          if (newTimeouts.firstHalf < 2) newTimeouts.firstHalf++;
           break;
         case 3:
-          if (newTimeouts.thirdQuarter < 3) newTimeouts.thirdQuarter++;
-          break;
         case 4:
-          if (newTimeouts.fourthQuarter < 3) newTimeouts.fourthQuarter++;
+          if (newTimeouts.secondHalf < 3) newTimeouts.secondHalf++;
           break;
         case 5:
           if (newTimeouts.overtime < 1) newTimeouts.overtime++;
@@ -179,16 +173,12 @@ export function useGameState(draftId?: string) {
       const newTimeouts = { ...prev };
       switch (prev.currentQuarter) {
         case 1:
-          if (newTimeouts.firstQuarter > 0) newTimeouts.firstQuarter--;
-          break;
         case 2:
-          if (newTimeouts.secondQuarter > 0) newTimeouts.secondQuarter--;
+          if (newTimeouts.firstHalf > 0) newTimeouts.firstHalf--;
           break;
         case 3:
-          if (newTimeouts.thirdQuarter > 0) newTimeouts.thirdQuarter--;
-          break;
         case 4:
-          if (newTimeouts.fourthQuarter > 0) newTimeouts.fourthQuarter--;
+          if (newTimeouts.secondHalf > 0) newTimeouts.secondHalf--;
           break;
         case 5:
           if (newTimeouts.overtime > 0) newTimeouts.overtime--;

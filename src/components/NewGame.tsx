@@ -185,7 +185,7 @@ export default function NewGame() {
           <div className="flex items-center gap-3 px-4 py-2 bg-gray-50 dark:bg-gray-900 rounded-lg">
             <span className="text-sm font-medium text-gray-600 dark:text-gray-400">TIMEOUT:</span>
             
-            {/* 1-2 Quarter Group */}
+            {/* 1-2 Quarter Group (max 2 total) */}
             <div className="flex items-center gap-2">
               <div className="flex gap-1">
                 {[1, 2].map((quarter) => (
@@ -206,33 +206,19 @@ export default function NewGame() {
                 <button
                   onClick={removeTimeout}
                   disabled={(() => {
-                    switch (timeouts.currentQuarter) {
-                      case 1: return timeouts.firstQuarter === 0;
-                      case 2: return timeouts.secondQuarter === 0;
-                      default: return true;
-                    }
+                    return timeouts.currentQuarter > 2 || timeouts.firstHalf === 0;
                   })()}
                   className="w-7 h-7 rounded bg-red-500 hover:bg-red-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white flex items-center justify-center text-sm font-bold"
                 >
                   -
                 </button>
                 <span className="text-sm font-bold text-gray-900 dark:text-white min-w-[3rem] text-center">
-                  {(() => {
-                    if (timeouts.currentQuarter <= 2) {
-                      const current = timeouts.currentQuarter === 1 ? timeouts.firstQuarter : timeouts.secondQuarter;
-                      return `${current}/2`;
-                    }
-                    return '0/2';
-                  })()}
+                  {timeouts.firstHalf}/2
                 </span>
                 <button
                   onClick={addTimeout}
                   disabled={(() => {
-                    switch (timeouts.currentQuarter) {
-                      case 1: return timeouts.firstQuarter >= 2;
-                      case 2: return timeouts.secondQuarter >= 2;
-                      default: return true;
-                    }
+                    return timeouts.currentQuarter > 2 || timeouts.firstHalf >= 2;
                   })()}
                   className="w-7 h-7 rounded bg-emerald-500 hover:bg-emerald-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white flex items-center justify-center text-sm font-bold"
                 >
@@ -241,7 +227,7 @@ export default function NewGame() {
               </div>
             </div>
             
-            {/* 3-4 Quarter Group */}
+            {/* 3-4 Quarter Group (max 3 total) */}
             <div className="flex items-center gap-2">
               <div className="flex gap-1">
                 {[3, 4].map((quarter) => (
@@ -262,33 +248,19 @@ export default function NewGame() {
                 <button
                   onClick={removeTimeout}
                   disabled={(() => {
-                    switch (timeouts.currentQuarter) {
-                      case 3: return timeouts.thirdQuarter === 0;
-                      case 4: return timeouts.fourthQuarter === 0;
-                      default: return true;
-                    }
+                    return (timeouts.currentQuarter < 3 || timeouts.currentQuarter > 4) || timeouts.secondHalf === 0;
                   })()}
                   className="w-7 h-7 rounded bg-red-500 hover:bg-red-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white flex items-center justify-center text-sm font-bold"
                 >
                   -
                 </button>
                 <span className="text-sm font-bold text-gray-900 dark:text-white min-w-[3rem] text-center">
-                  {(() => {
-                    if (timeouts.currentQuarter >= 3 && timeouts.currentQuarter <= 4) {
-                      const current = timeouts.currentQuarter === 3 ? timeouts.thirdQuarter : timeouts.fourthQuarter;
-                      return `${current}/3`;
-                    }
-                    return '0/3';
-                  })()}
+                  {timeouts.secondHalf}/3
                 </span>
                 <button
                   onClick={addTimeout}
                   disabled={(() => {
-                    switch (timeouts.currentQuarter) {
-                      case 3: return timeouts.thirdQuarter >= 3;
-                      case 4: return timeouts.fourthQuarter >= 3;
-                      default: return true;
-                    }
+                    return (timeouts.currentQuarter < 3 || timeouts.currentQuarter > 4) || timeouts.secondHalf >= 3;
                   })()}
                   className="w-7 h-7 rounded bg-emerald-500 hover:bg-emerald-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white flex items-center justify-center text-sm font-bold"
                 >
@@ -328,6 +300,27 @@ export default function NewGame() {
                   +
                 </button>
               </div>
+            </div>
+            
+            {/* Remaining Timeouts Box */}
+            <div className="flex items-center gap-2 px-3 py-2 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+              <span className="text-xs font-medium text-blue-600 dark:text-blue-400">RIMANENTI:</span>
+              <span className="text-lg font-bold text-blue-700 dark:text-blue-300">
+                {(() => {
+                  switch (timeouts.currentQuarter) {
+                    case 1:
+                    case 2:
+                      return 2 - timeouts.firstHalf;
+                    case 3:
+                    case 4:
+                      return 3 - timeouts.secondHalf;
+                    case 5:
+                      return 1 - timeouts.overtime;
+                    default:
+                      return 0;
+                  }
+                })()}
+              </span>
             </div>
           </div>
 
