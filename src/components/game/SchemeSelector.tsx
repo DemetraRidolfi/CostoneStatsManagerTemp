@@ -5,16 +5,21 @@ import { useTeamData } from '../../hooks/useTeamData';
 
 type Props = {
   onSelect: (schemeId: string) => void;
+  playerFouls?: Record<number, number>;
+  onPlayerFoulsChange?: (fouls: Record<number, number>) => void;
 };
 
 type Category = 'Uomo' | 'Rimesse' | 'Zona';
 
-export default function SchemeSelector({ onSelect }: Props) {
+export default function SchemeSelector({ onSelect, playerFouls: externalPlayerFouls, onPlayerFoulsChange }: Props) {
   const { tabletMode } = useTheme();
   const { getEnabledSchemes } = useTeamData();
   const [selectedCategory, setSelectedCategory] = useState<Category>('Uomo');
-  const [playerFouls, setPlayerFouls] = useState<Record<number, number>>({});
+  const [localPlayerFouls, setLocalPlayerFouls] = useState<Record<number, number>>({});
   const [showFoulModal, setShowFoulModal] = useState<number | null>(null);
+
+  // Use external fouls if provided, otherwise use local state
+  const playerFouls = externalPlayerFouls || localPlayerFouls;
 
   const schemes = getEnabledSchemes();
   const { getEnabledPlayers } = useTeamData();
@@ -106,11 +111,23 @@ export default function SchemeSelector({ onSelect }: Props) {
   };
 
   const updatePlayerFouls = (playerId: number, change: number) => {
-    setPlayerFouls(prev => {
+    const updateFouls = (prev: Record<number, number>) => {
       const currentFouls = prev[playerId] || 0;
       const newFouls = Math.max(0, Math.min(5, currentFouls + change));
-      return { ...prev, [playerId]: newFouls };
-    });
+      const updatedFouls = { ...prev, [playerId]: newFouls };
+      
+      // Update external state if callback is provided
+      if (onPlayerFoulsChange) {
+        onPlayerFoulsChange(updatedFouls);
+      } else {
+        // Update local state if no external callback
+        setLocalPlayerFouls(updatedFouls);
+      }
+      
+      return updatedFouls;
+    };
+    
+    updateFouls(playerFouls);
   };
 
   if (tabletMode) {

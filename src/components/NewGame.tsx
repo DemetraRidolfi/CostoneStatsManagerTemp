@@ -49,8 +49,10 @@ export default function NewGame() {
     showStats,
     showEndConfirm,
     timeouts,
+    playerFouls,
     toggleTimeout,
     changeQuarter,
+    setPlayerFouls,
     setCurrentStep,
     setSelectedScheme,
     setSelectedPlayer,
@@ -306,7 +308,11 @@ export default function NewGame() {
         {/* Right Side - Main Content */}
         <div className="lg:col-span-5 flex flex-col min-h-0">
           {currentStep === 'scheme' && (
-            <SchemeSelector onSelect={handleSchemeSelect} />
+            <SchemeSelector 
+              onSelect={handleSchemeSelect}
+              playerFouls={playerFouls}
+              onPlayerFoulsChange={setPlayerFouls}
+            />
           )}
 
           {currentStep === 'player' && (

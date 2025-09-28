@@ -26,6 +26,7 @@ export function useGameState(draftId?: string) {
   const [saveMessage, setSaveMessage] = useState<string>('');
   const [showStats, setShowStats] = useState(false);
   const [showEndConfirm, setShowEndConfirm] = useState(false);
+  const [playerFouls, setPlayerFouls] = useState<Record<number, number>>({});
   const [timeouts, setTimeouts] = useState({
     firstHalf: [false, false],    // 1° e 2° quarto insieme (max 2)
     secondHalf: [false, false, false],   // 3° e 4° quarto insieme (max 3)
@@ -182,7 +183,9 @@ export function useGameState(draftId?: string) {
     endGame,
     resetGame,
     timeouts,
+    playerFouls,
     toggleTimeout,
     changeQuarter,
+    setPlayerFouls,
   };
 }
