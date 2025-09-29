@@ -99,6 +99,7 @@ export default function PlayResult({ schemeId, playerId, onSave, onCancel }: Pro
 
   const handleFreeThrowSave = (points: number) => {
     if (madeBasketPoints) {
+      // For and-1 situations, always ask for assist since there was a made field goal
       const result = {
         type: 'foulShot',
         playerId,
@@ -109,18 +110,12 @@ export default function PlayResult({ schemeId, playerId, onSave, onCancel }: Pro
         freeThrowPoints: points,
       };
       
-      if (points > 0) {
-        // Show assist modal for successful free throws
-        setPendingPlayResult(result);
-        setShowAssistModal(true);
-        setShowFreeThrowModal(false);
-      } else {
-        onSave(result);
-        setShowFreeThrowModal(false);
-        setSelectedType(null);
-        setMadeBasketPoints(null);
-      }
+      // Always show assist modal for and-1 plays since there was a made field goal
+      setPendingPlayResult(result);
+      setShowAssistModal(true);
+      setShowFreeThrowModal(false);
     } else {
+      // For regular free throws (no field goal made), only ask for assist if successful
       const result = {
         type: 'foulShot',
         playerId,
