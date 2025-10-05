@@ -18,6 +18,7 @@ export function useGameState(draftId?: string) {
     location: '',
     matchType: 'AMICHEVOLE',
     plays: [],
+    playerFouls: {},
   });
 
   const [currentStep, setCurrentStep] = useState<'initial' | 'scheme' | 'player' | 'result'>('initial');
@@ -26,7 +27,7 @@ export function useGameState(draftId?: string) {
   const [saveMessage, setSaveMessage] = useState<string>('');
   const [showStats, setShowStats] = useState(false);
   const [showEndConfirm, setShowEndConfirm] = useState(false);
-  const [playerFouls, setPlayerFouls] = useState<Record<number, number>>({});
+  const [playerFouls, setPlayerFouls] = useState<Record<number, number>>(gameData.playerFouls || {});
   const [timeouts, setTimeouts] = useState({
     firstHalf: [false, false],    // 1° e 2° quarto insieme (max 2)
     secondHalf: [false, false, false],   // 3° e 4° quarto insieme (max 3)
@@ -45,6 +46,7 @@ export function useGameState(draftId?: string) {
           const draft = getDraftGame(draftId);
           if (draft) {
             setGameData(draft);
+            setPlayerFouls(draft.playerFouls || {});
             setCurrentStep('scheme');
             saveActiveGame(draft);
             return;
@@ -54,6 +56,7 @@ export function useGameState(draftId?: string) {
         const activeGame = getActiveGame();
         if (activeGame?.date && activeGame?.opponent && activeGame?.location) {
           setGameData(activeGame);
+          setPlayerFouls(activeGame.playerFouls || {});
           setCurrentStep('scheme');
         }
       } catch (error) {
@@ -64,17 +67,17 @@ export function useGameState(draftId?: string) {
     loadInitialState();
   }, [draftId]);
 
-  // Save active game whenever gameData changes
+  // Save active game whenever gameData or playerFouls changes
   useEffect(() => {
     if (gameData.opponent && currentStep !== 'initial') {
-      saveActiveGame(gameData);
+      saveActiveGame({ ...gameData, playerFouls });
     }
-  }, [gameData, currentStep]);
+  }, [gameData, currentStep, playerFouls]);
 
   const updateGameData = (updates: Partial<Game>) => {
     setGameData(prev => {
       const updated = { ...prev, ...updates };
-      saveActiveGame(updated);
+      saveActiveGame({ ...updated, playerFouls });
       return updated;
     });
   };
@@ -85,7 +88,7 @@ export function useGameState(draftId?: string) {
         ...prev,
         plays: [...(prev.plays || []), play],
       };
-      saveActiveGame(updated);
+      saveActiveGame({ ...updated, playerFouls });
       return updated;
     });
   };
@@ -96,7 +99,7 @@ export function useGameState(draftId?: string) {
         ...prev,
         plays: prev.plays?.filter(play => play.timestamp !== timestamp) || [],
       };
-      saveActiveGame(updated);
+      saveActiveGame({ ...updated, playerFouls });
       return updated;
     });
   };
@@ -104,7 +107,7 @@ export function useGameState(draftId?: string) {
   const saveDraft = () => {
     if (gameData.date && gameData.opponent && gameData.location) {
       try {
-        const newDraftId = saveDraftGame(gameData);
+        const newDraftId = saveDraftGame({ ...gameData, playerFouls });
         setSaveMessage('Partita salvata');
         setTimeout(() => setSaveMessage(''), 2000);
         return newDraftId;
@@ -124,7 +127,7 @@ export function useGameState(draftId?: string) {
         if (draftId) {
           deleteDraftGame(draftId);
         }
-        saveGame(gameData as Game);
+        saveGame({ ...gameData, playerFouls } as Game);
         clearActiveGame();
         return true;
       } catch (error) {
@@ -143,7 +146,9 @@ export function useGameState(draftId?: string) {
       location: '',
       matchType: 'AMICHEVOLE',
       plays: [],
+      playerFouls: {},
     });
+    setPlayerFouls({});
     setCurrentStep('initial');
     setSelectedScheme(null);
     setSelectedPlayer(null);

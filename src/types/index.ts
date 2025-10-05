@@ -23,6 +23,7 @@ export type Game = {
   plays: PlayResult[];
   status?: 'draft' | 'completed';
   lastUpdated?: string;
+  playerFouls?: Record<number, number>;
 };
 
 export type Player = {
