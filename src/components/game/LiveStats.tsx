@@ -21,15 +21,15 @@ export default function LiveStats({ plays }: Props) {
       const efficiency = calculateEfficiency(schemePlays);
       const productivity = calculateProductivity(schemePlays);
       const points = calculatePoints(schemePlays).total;
-      
+
       // Calculate rebound statistics
-      const rebounds = schemePlays.filter(p => 
+      const rebounds = schemePlays.filter(p =>
         (p.type === 'missed2' || p.type === 'missed3') && p.offensiveRebound === true
       ).length;
-      const reboundPoints = schemePlays.reduce((acc, p) => 
+      const reboundPoints = schemePlays.reduce((acc, p) =>
         acc + (p.reboundPoints || 0), 0
       );
-      
+
       return {
         name: scheme.name,
         category: scheme.category,
@@ -41,11 +41,10 @@ export default function LiveStats({ plays }: Props) {
         reboundPoints,
       };
     })
-    .filter(stat => stat.uses > 0)
     .sort((a, b) => b.points - a.points);
 
-  const uomoStats = schemeStats.filter(stat => stat.category === 'Uomo' && !stat.name.includes('ZONA'));
-  const zonaStats = schemeStats.filter(stat => stat.name.includes('ZONA'));
+  const uomoStats = schemeStats.filter(stat => stat.category === 'Uomo');
+  const zonaStats = schemeStats.filter(stat => stat.category === 'Zona');
   const rimesseStats = schemeStats.filter(stat => stat.category === 'Rimesse');
 
   const handleShare = async () => {
