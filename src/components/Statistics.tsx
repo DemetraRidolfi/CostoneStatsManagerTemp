@@ -23,9 +23,9 @@ export default function Statistics() {
   const allGames = getAllGames();
   const [selectedPlayerId, setSelectedPlayerId] = useState<number | null>(null);
   const { theme } = useTheme();
-  const { getEnabledPlayers, getEnabledSchemes } = useTeamData();
+  const { getEnabledPlayers, schemes: allSchemes } = useTeamData();
   const PLAYERS = getEnabledPlayers();
-  const schemes = getEnabledSchemes();
+  const schemes = allSchemes;
 
   // Get all plays based on whether we're viewing a single game or all games
   const allPlays = useMemo(() => {

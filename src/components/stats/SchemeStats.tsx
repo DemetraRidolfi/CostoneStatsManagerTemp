@@ -27,7 +27,8 @@ type Props = {
 };
 
 export default function SchemeStats({ stats }: Props) {
-  const { schemes } = useTeamData();
+  const { schemes: allSchemes } = useTeamData();
+  const schemes = allSchemes;
 
   const uomoSchemes = stats
     .filter(stat => {
