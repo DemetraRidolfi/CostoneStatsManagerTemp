@@ -41,6 +41,7 @@ export default function LiveStats({ plays }: Props) {
         reboundPoints,
       };
     })
+    .filter(stat => stat.uses > 0)
     .sort((a, b) => b.points - a.points);
 
   const uomoStats = schemeStats.filter(stat => stat.category === 'Uomo');
