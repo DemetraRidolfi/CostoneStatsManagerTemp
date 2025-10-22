@@ -28,18 +28,18 @@ type Props = {
 
 export default function SchemeStats({ stats }: Props) {
   const { schemes } = useTeamData();
-  
+
   const uomoSchemes = stats
     .filter(stat => {
       const scheme = schemes.find(s => s.name === stat.name);
-      return scheme?.category === 'Uomo' && !stat.name.includes('ZONA');
+      return scheme?.category === 'Uomo';
     })
     .sort((a, b) => b.points - a.points);
 
   const zonaSchemes = stats
     .filter(stat => {
       const scheme = schemes.find(s => s.name === stat.name);
-      return stat.name.includes('ZONA');
+      return scheme?.category === 'Zona';
     })
     .sort((a, b) => b.points - a.points);
 
