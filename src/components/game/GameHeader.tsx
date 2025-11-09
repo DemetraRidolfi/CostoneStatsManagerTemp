@@ -42,7 +42,7 @@ export default function GameHeader({ onStart, initialData }: Props) {
 
   return (
     <div className={`max-w-6xl mx-auto px-4 transition-all duration-300 ${
-      menuVisible ? 'pt-20' : 'pt-8'
+      menuVisible ? 'pt-24' : 'pt-8'
     }`}>
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
