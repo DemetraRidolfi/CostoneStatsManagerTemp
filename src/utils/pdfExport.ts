@@ -40,21 +40,21 @@ export async function exportStatsToPDF(
       const uomoSchemes = data.stats
         .filter(stat => {
           const scheme = data.schemes.find(s => s.name === stat.name);
-          return scheme?.category === 'Uomo' && !stat.name.includes('ZONA');
+          return scheme?.category === 'Uomo' && stat.total > 0;
         })
         .sort((a, b) => b.total - a.total);
 
       const zonaSchemes = data.stats
         .filter(stat => {
           const scheme = data.schemes.find(s => s.name === stat.name);
-          return scheme?.category === 'Zona';
+          return scheme?.category === 'Zona' && stat.total > 0;
         })
         .sort((a, b) => b.total - a.total);
 
       const rimesseSchemes = data.stats
         .filter(stat => {
           const scheme = data.schemes.find(s => s.name === stat.name);
-          return scheme?.category === 'Rimesse';
+          return scheme?.category === 'Rimesse' && stat.total > 0;
         })
         .sort((a, b) => b.total - a.total);
 
