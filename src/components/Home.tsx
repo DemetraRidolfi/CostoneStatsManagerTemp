@@ -15,6 +15,7 @@ const settingsItem = { icon: Settings, label: 'Impostazioni', path: '/settings' 
 
 export default function Home() {
   const { handleNavigation } = useNavigation();
+  const { menuVisible } = useTheme();
   const [draftGames, setDraftGames] = useState(getAllDraftGames());
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
 
@@ -25,7 +26,7 @@ export default function Home() {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto px-4 pt-8">
+    <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto px-4 transition-all duration-300 ${menuVisible ? 'pt-24' : 'pt-8'}`}>
       <div className="col-span-full mb-8 text-center">
         <img 
           src="https://i.ibb.co/Pxsjh0j/costone.png"
