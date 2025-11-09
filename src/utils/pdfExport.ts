@@ -47,7 +47,7 @@ export async function exportStatsToPDF(
       const zonaSchemes = data.stats
         .filter(stat => {
           const scheme = data.schemes.find(s => s.name === stat.name);
-          return stat.name.includes('ZONA');
+          return scheme?.category === 'Zona';
         })
         .sort((a, b) => b.total - a.total);
 
