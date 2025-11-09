@@ -181,8 +181,8 @@ export async function addSchemeDetails(doc: jsPDF, plays: PlayResult[], players:
     let isFirstScheme = true;
 
     // Group schemes by category
-    const uomoSchemes = schemes.filter(s => s.category === 'Uomo' && !s.name.includes('ZONA'));
-    const zonaSchemes = schemes.filter(s => s.name.includes('ZONA'));
+    const uomoSchemes = schemes.filter(s => s.category === 'Uomo');
+    const zonaSchemes = schemes.filter(s => s.category === 'Zona');
     const rimesseSchemes = schemes.filter(s => s.category === 'Rimesse');
 
     // Process Uomo schemes

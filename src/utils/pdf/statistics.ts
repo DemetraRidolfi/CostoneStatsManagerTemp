@@ -55,11 +55,11 @@ export async function addPlayerStats(
 
     // Group statistics by category
     const uomoSchemes = schemeStats
-      .filter(s => s.category === 'Uomo' && !s.name.includes('ZONA'))
+      .filter(s => s.category === 'Uomo')
       .sort((a, b) => b.points.total - a.points.total);
 
     const zonaSchemes = schemeStats
-      .filter(s => s.name.includes('ZONA'))
+      .filter(s => s.category === 'Zona')
       .sort((a, b) => b.points.total - a.points.total);
 
     const rimesseSchemes = schemeStats
