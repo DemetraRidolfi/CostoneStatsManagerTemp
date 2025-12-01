@@ -77,6 +77,48 @@ Vengono conteggiate come positive le seguenti azioni:
 - 1 × `foulShot` con `and1Points = 2` e `freeThrowPoints = 1`
 - Questa è 1 azione positiva (il canestro è stato realizzato con fallo subito)
 
+### Prompt AI per Calcolo EFFICIENZA
+
+Il seguente prompt può essere utilizzato per istruire un sistema AI a calcolare l'EFFICIENZA, indipendentemente dai parametri specifici del codice:
+
+---
+
+> **PROMPT: Calcolo EFFICIENZA nel Basket**
+>
+> Devi calcolare l'**EFFICIENZA** di un giocatore o schema di gioco nel basket. L'efficienza è una percentuale che misura il rapporto tra azioni che hanno prodotto punti e le azioni rilevanti totali.
+>
+> **INPUT**: Una lista di azioni/giocate, dove ogni azione ha:
+> - Un **tipo** (es: tiro realizzato da 2, tiro realizzato da 3, tiro sbagliato, palla persa, fallo subito con rimessa, fallo subito con tiri liberi, azione senza impatto, ecc.)
+> - Eventuali **proprietà aggiuntive** (es: punti ai tiri liberi, punti del canestro in situazione AND-1)
+>
+> **LOGICA DI CALCOLO**:
+>
+> 1. **STEP 1 - Filtra le azioni rilevanti**:
+>    - ESCLUDI dal conteggio totale le azioni che non hanno impatto significativo sul possesso (es: "nessun impatto", "fallo subito con rimessa laterale")
+>    - INCLUDI tutte le altre azioni: tiri realizzati, tiri sbagliati, palle perse, falli subiti con tiri liberi
+>
+> 2. **STEP 2 - Conta le azioni positive**:
+>    Un'azione è POSITIVA se ha prodotto almeno un punto. Conta come positiva:
+>    - Ogni tiro da 2 punti realizzato
+>    - Ogni tiro da 3 punti realizzato
+>    - Ogni situazione AND-1 (canestro + fallo = il canestro è stato realizzato, quindi positivo)
+>    - Ogni fallo subito con tiri liberi SE almeno un tiro libero è stato realizzato (punti > 0)
+>
+> 3. **STEP 3 - Calcola la percentuale**:
+>    ```
+>    EFFICIENZA = (Numero Azioni Positive / Numero Azioni Rilevanti) × 100
+>    ```
+>    Arrotonda al numero intero più vicino.
+>
+> **OUTPUT**: Un valore percentuale intero (0-100).
+>
+> **ESEMPI**:
+> - 5 tiri realizzati su 10 tentativi rilevanti → EFFICIENZA = 50%
+> - 3 canestri + 1 AND-1 su 6 azioni rilevanti → EFFICIENZA = 67% (4/6)
+> - 0 azioni positive su 5 azioni rilevanti → EFFICIENZA = 0%
+>
+> **NOTA**: Le azioni "fallo subito con rimessa" (senza tiri liberi) sono escluse dal calcolo perché non rappresentano un tentativo di segnare, ma danno comunque un vantaggio alla squadra (conteggiato nella PRODUTTIVITÀ).
+
 ---
 
 ## PRODUTTIVITÀ
