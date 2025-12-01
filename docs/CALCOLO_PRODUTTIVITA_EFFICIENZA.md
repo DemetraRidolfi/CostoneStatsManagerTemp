@@ -204,6 +204,59 @@ La **PRODUTTIVITÀ** è un valore numerico che rappresenta il contributo netto d
 **Calcolo:**
 **PRODUTTIVITÀ = 0**
 
+### Prompt AI per Calcolo PRODUTTIVITÀ
+
+Il seguente prompt può essere utilizzato per istruire un sistema AI a calcolare la PRODUTTIVITÀ, indipendentemente dai parametri specifici del codice:
+
+---
+
+> **PROMPT: Calcolo PRODUTTIVITÀ nel Basket**
+>
+> Devi calcolare la **PRODUTTIVITÀ** di un giocatore o schema di gioco nel basket. La produttività è un valore numerico (può essere positivo, negativo o zero) che rappresenta il contributo netto, sommando i valori di ogni azione.
+>
+> **INPUT**: Una lista di azioni/giocate, dove ogni azione ha:
+> - Un **tipo** (es: tiro realizzato da 2, tiro realizzato da 3, tiro sbagliato, palla persa, fallo subito, ecc.)
+> - Eventuali **proprietà aggiuntive**:
+>   - Se c'è stato un rimbalzo offensivo dopo un tiro sbagliato
+>   - Punti ai tiri liberi (0, 1, 2 o 3)
+>   - Punti del canestro in situazione AND-1 (canestro realizzato con fallo subito)
+>
+> **LOGICA DI CALCOLO**:
+>
+> Per ogni azione, assegna un valore secondo questa tabella e somma tutti i valori:
+>
+> | Tipo Azione | Condizione | Valore da Assegnare |
+> |-------------|------------|---------------------|
+> | Tiro da 2 realizzato | - | **+2** |
+> | Tiro da 3 realizzato | - | **+3** |
+> | Tiro sbagliato (2 o 3) | Senza rimbalzo offensivo | **-1** |
+> | Tiro sbagliato (2 o 3) | Con rimbalzo offensivo | **-0.5** |
+> | Palla persa/Turnover | - | **-0.5** |
+> | Fallo subito con rimessa | - | **+0.5** |
+> | Fallo subito con tiri liberi (AND-1) | Canestro + fallo | **+punti_canestro + punti_tiri_liberi** |
+> | Fallo subito con tiri liberi (normale) | Solo tiri liberi | **+punti_tiri_liberi** |
+> | Azione senza impatto | - | **0** |
+>
+> **FORMULA FINALE**:
+> ```
+> PRODUTTIVITÀ = Σ (valore di ogni azione)
+> ```
+>
+> **OUTPUT**: Un valore numerico (può essere decimale, es: +4.5, -1.0, +12.0).
+>
+> **ESEMPI**:
+> - 2 canestri da 2 + 1 tiro sbagliato senza rimbalzo → (+2) + (+2) + (-1) = **+3**
+> - 1 canestro da 3 + 1 palla persa + 1 fallo con rimessa → (+3) + (-0.5) + (+0.5) = **+3**
+> - 1 AND-1 (canestro da 2 + 1 tiro libero realizzato) → +2 + 1 = **+3**
+> - 2 tiri sbagliati con rimbalzo offensivo → (-0.5) + (-0.5) = **-1**
+>
+> **INTERPRETAZIONE DEI RISULTATI**:
+> - **≥ 2.0**: Prestazione eccellente (verde)
+> - **0 - 1.9**: Prestazione nella media (giallo/ambra)
+> - **< 0**: Prestazione da migliorare (rosso)
+>
+> **NOTA SUL RIMBALZO OFFENSIVO**: Quando un tiro viene sbagliato ma la squadra recupera il pallone con un rimbalzo offensivo, la penalità è ridotta da -1 a -0.5 perché l'opportunità non è completamente persa. Il rimbalzo stesso non ha un valore separato - il suo effetto è già incorporato nella riduzione della penalità.
+
 ---
 
 ## Riepilogo Visivo
