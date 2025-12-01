@@ -11,6 +11,10 @@ CostoneStatsManager è una piattaforma open source per la gestione e l'analisi d
 - **Esportazione dati**: Esporta facilmente le statistiche in formato Excel/CSV o PDF.
 - **Gestione utenti e permessi**: Accessi differenziati per staff, allenatori, dirigenti, ecc.
 
+## Documentazione
+
+- [Schema di Calcolo: PRODUTTIVITÀ ed EFFICIENZA](docs/CALCOLO_PRODUTTIVITA_EFFICIENZA.md) - Descrizione dettagliata del calcolo delle metriche di produttività ed efficienza.
+
 ## Tecnologie utilizzate
 
 - **Backend**: (es. Python, Node.js, PHP) — Sostituisci con la tecnologia effettiva
